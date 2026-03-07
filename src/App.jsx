@@ -623,29 +623,29 @@ export default function App() {
 
                 {/* Tab Selection */}
                 <div className="flex flex-col sm:flex-row items-center justify-between mb-10 border-b border-white/10 pb-4">
-                    <div className="flex space-x-2 mb-4 sm:mb-0 bg-white/5 p-1 rounded-full border border-white/5 backdrop-blur-xl">
+                    <div className="flex space-x-2 mb-4 sm:mb-0 bg-black/5 p-1 rounded-full border border-black/5">
                         <button
                             onClick={() => setActiveTab('clothing')}
-                            className={`relative px-8 py-3 rounded-full text-sm font-bold transition-all z-10 ${activeTab === 'clothing' ? 'text-black' : 'text-gray-400 hover:text-white'
+                            className={`relative px-8 py-3 rounded-full text-sm font-bold transition-all z-10 ${activeTab === 'clothing' ? 'text-white' : 'text-black/40 hover:text-black'
                                 }`}
                         >
                             {activeTab === 'clothing' && (
                                 <motion.div
                                     layoutId="activeTab"
-                                    className="absolute inset-0 bg-white rounded-full shadow-lg z-[-1]"
+                                    className="absolute inset-0 bg-black rounded-full shadow-lg z-[-1]"
                                 />
                             )}
                             <span className="flex items-center"><ShoppingBag className="w-4 h-4 mr-2" /> Clothing</span>
                         </button>
                         <button
                             onClick={() => setActiveTab('makeup')}
-                            className={`relative px-8 py-3 rounded-full text-sm font-bold transition-all z-10 ${activeTab === 'makeup' ? 'text-black' : 'text-gray-400 hover:text-white'
+                            className={`relative px-8 py-3 rounded-full text-sm font-bold transition-all z-10 ${activeTab === 'makeup' ? 'text-white' : 'text-black/40 hover:text-black'
                                 }`}
                         >
                             {activeTab === 'makeup' && (
                                 <motion.div
                                     layoutId="activeTab"
-                                    className="absolute inset-0 bg-white rounded-full shadow-lg z-[-1]"
+                                    className="absolute inset-0 bg-black rounded-full shadow-lg z-[-1]"
                                 />
                             )}
                             <span className="flex items-center"><Sparkles className="w-4 h-4 mr-2" /> Makeup</span>
