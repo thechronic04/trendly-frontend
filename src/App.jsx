@@ -46,224 +46,172 @@ export default function App() {
             id: 1,
             name: "Oversized Vintage Leather Moto Jacket",
             brand: "AllSaints",
-            price: 329.00,
+            price: 24999.00,
             category: "clothing",
             image_url: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500&q=80",
-            affiliate_link: "https://www.allsaints.com/us/men/jackets/leather-jackets",
+            affiliate_link: "https://www.allsaints.com/",
             trend_score: 95.8,
             predicted_next_month: true,
             momentum: "+24% 7d"
         },
         {
-            id: 3,
-            name: "Parachute Cargo Utility Pants",
-            brand: "Urban Outfitters",
-            price: 75.00,
+            id: 2,
+            name: "Premium Cotton Oxford Shirt",
+            brand: "The Bear House",
+            price: 2499.00,
             category: "clothing",
-            image_url: "https://images.unsplash.com/photo-1542280756-74b2f55e73e1?w=500&q=80",
-            affiliate_link: "https://www.urbanoutfitters.com/mens-pants",
-            trend_score: 88.0,
+            image_url: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500&q=80",
+            affiliate_link: "https://thebearhouse.com/",
+            trend_score: 87.5,
             predicted_next_month: false,
-            momentum: "-5% 7d"
+            momentum: "Steady"
+        },
+        {
+            id: 3,
+            name: "Urban Minimalist Tech Shorts",
+            brand: "Hermod",
+            price: 1899.00,
+            category: "clothing",
+            image_url: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=500&q=80",
+            affiliate_link: "https://hermod.in/",
+            trend_score: 91.2,
+            predicted_next_month: true,
+            momentum: "+15% 7d"
+        },
+        {
+            id: 4,
+            name: "Oversized Streetwear Hoodie",
+            brand: "Bonkers",
+            price: 1599.00,
+            category: "clothing",
+            image_url: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500&q=80",
+            affiliate_link: "https://www.bonkerscorner.com/",
+            trend_score: 98.4,
+            predicted_next_month: true,
+            momentum: "+64% 7d"
         },
         {
             id: 5,
             name: "Asymmetric Satin Slip Midi",
-            brand: "& Other Stories",
-            price: 129.00,
+            brand: "Zara",
+            price: 3499.00,
             category: "clothing",
             image_url: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=500&q=80",
-            affiliate_link: "https://www.stories.com/en_usd/clothing/dresses.html",
+            affiliate_link: "https://www.zara.com/",
             trend_score: 89.5,
             predicted_next_month: true,
             momentum: "+12% 7d"
         },
         {
-            id: 7,
-            name: "Chunky Loafers w/ Hardware",
-            brand: "Prada",
-            price: 1150.00,
-            category: "clothing",
-            image_url: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=500&q=80",
-            affiliate_link: "https://www.prada.com/us/en/p/monolith-brushed-leather-loafers/1D649M_B4L_F0002_F_B055",
-            trend_score: 97.4,
-            predicted_next_month: true,
-            momentum: "+42% 7d"
-        },
-        {
-            id: 8,
-            name: "Ribbed Knit Halter Top",
-            brand: "Zara",
-            price: 25.90,
-            category: "clothing",
-            image_url: "https://images.unsplash.com/photo-1532453288672-3a27e9be9efd?w=500&q=80",
-            affiliate_link: "https://www.zara.com/us/en/woman-tops-l1322.html",
-            trend_score: 82.1,
-            predicted_next_month: false,
-            momentum: "Steady"
-        },
-        {
-            id: 9,
-            name: "Relaxed Fit Trench Coat",
-            brand: "Burberry",
-            price: 2490.00,
-            category: "clothing",
-            image_url: "https://images.unsplash.com/photo-1539533113208-f6df8cc8b543?w=500&q=80",
-            affiliate_link: "https://us.burberry.com/womens-trench-coats/",
-            trend_score: 91.0,
-            predicted_next_month: true,
-            momentum: "+18% 7d"
-        },
-
-        // MAKEUP
-        {
-            id: 2,
-            name: "Soft Pinch Liquid Blush - Virtue",
-            brand: "Rare Beauty",
-            price: 23.00,
-            category: "makeup",
-            image_url: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500&q=80",
-            affiliate_link: "https://www.sephora.com/product/rare-beauty-by-selena-gomez-soft-pinch-liquid-blush-P498484",
-            trend_score: 98.2,
-            predicted_next_month: true,
-            momentum: "+45% 7d"
-        },
-        {
-            id: 4,
-            name: "Cherry Glow Lip Oil Hybrid",
-            brand: "Dior",
-            price: 40.00,
-            category: "makeup",
-            image_url: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=500&q=80",
-            affiliate_link: "https://www.sephora.com/product/dior-lip-glow-oil-P453814",
-            trend_score: 99.1,
-            predicted_next_month: true,
-            momentum: "+80% 7d"
-        },
-        {
             id: 6,
-            name: "Peptide Glazing Fluid Base",
-            brand: "Rhode",
-            price: 29.00,
-            category: "makeup",
-            image_url: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=500&q=80",
-            affiliate_link: "https://www.rhodeskin.com/products/peptide-glazing-fluid",
-            trend_score: 93.4,
-            predicted_next_month: false,
-            momentum: "Steady"
-        },
-        {
-            id: 10,
-            name: "Flawless Filter Foundation",
-            brand: "Charlotte Tilbury",
-            price: 49.00,
-            category: "makeup",
-            image_url: "https://images.unsplash.com/photo-1512496015851-a1fbcf69f59f?w=500&q=80",
-            affiliate_link: "https://www.sephora.com/product/hollywood-flawless-filter-P431108",
-            trend_score: 96.5,
-            predicted_next_month: true,
-            momentum: "+33% 7d"
-        },
-        {
-            id: 11,
-            name: "Liquid Liner Pen - Intense Black",
-            brand: "Fenty Beauty",
-            price: 24.00,
-            category: "makeup",
-            image_url: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=500&q=80",
-            affiliate_link: "https://fentybeauty.com/products/flyliner-longwear-liquid-eyeliner-cuz-im-black",
-            trend_score: 87.2,
-            predicted_next_month: false,
-            momentum: "-2% 7d"
-        },
-        {
-            id: 12,
-            name: "Luminous Silk Concealer",
-            brand: "Armani Beauty",
-            price: 3900.00,
-            category: "makeup",
-            image_url: "https://images.unsplash.com/photo-1599305090598-fe179d501227?w=500&q=80",
-            affiliate_link: "https://www.sephora.com/product/armani-beauty-luminous-silk-face-under-eye-concealer-P456632",
-            trend_score: 90.8,
-            predicted_next_month: true,
-            momentum: "+14% 7d"
-        },
-        // MYNTRA, AJIO & NYKAA (INDIA TIER-1 EXCLUSIVES)
-        {
-            id: 13,
-            name: "Libas Embroidered Kurta Set",
-            brand: "Myntra",
-            price: 2499.00,
-            category: "clothing",
-            image_url: "https://images.unsplash.com/photo-1583391733958-d25e07fac0ce?w=500&q=80",
-            affiliate_link: "https://www.myntra.com/kurta-sets/libas/libas-women-embroidered-kurta-set",
-            trend_score: 97.5,
-            predicted_next_month: true,
-            momentum: "+52% 7d"
-        },
-        {
-            id: 14,
-            name: "DNMX Graphic Print T-Shirt",
-            brand: "Ajio",
-            price: 699.00,
-            category: "clothing",
-            image_url: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=500&q=80",
-            affiliate_link: "https://www.ajio.com/dnmx-men-typographic-print-crew-neck-t-shirt",
-            trend_score: 88.0,
-            predicted_next_month: false,
-            momentum: "+15% 7d"
-        },
-        {
-            id: 15,
-            name: "H&M Wide Leg Cargo Pants",
-            brand: "Myntra (H&M)",
+            name: "Wide Leg Cargo Pants",
+            brand: "H&M",
             price: 2299.00,
             category: "clothing",
             image_url: "https://images.unsplash.com/photo-1542280756-74b2f55e73e1?w=500&q=80",
-            affiliate_link: "https://www.myntra.com/trousers/hm",
+            affiliate_link: "https://www2.hm.com/",
             trend_score: 94.2,
             predicted_next_month: true,
             momentum: "+38% 7d"
         },
         {
-            id: 16,
-            name: "Puma Suede Classic Sneakers",
-            brand: "Ajio (Puma)",
+            id: 7,
+            name: "Libas Embroidered Kurta Set",
+            brand: "Myntra",
             price: 4599.00,
             category: "clothing",
-            image_url: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=500&q=80",
-            affiliate_link: "https://www.ajio.com/men-sneakers/c/830207010",
-            trend_score: 96.0,
+            image_url: "https://images.unsplash.com/photo-1583391733958-d25e07fac0ce?w=500&q=80",
+            affiliate_link: "https://www.myntra.com/",
+            trend_score: 97.5,
             predicted_next_month: true,
-            momentum: "+28% 7d"
+            momentum: "+52% 7d"
         },
         {
-            id: 17,
-            name: "Maybelline Fit Me Foundation",
-            brand: "Nykaa",
-            price: 599.00,
-            category: "makeup",
-            image_url: "https://images.unsplash.com/photo-1512496015851-a1fbcf69f59f?w=500&q=80",
-            affiliate_link: "https://www.nykaa.com/makeup/face/foundation/c/245",
-            trend_score: 92.5,
+            id: 8,
+            name: "DNMX Graphic Print T-Shirt",
+            brand: "Ajio",
+            price: 799.00,
+            category: "clothing",
+            image_url: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=500&q=80",
+            affiliate_link: "https://www.ajio.com/",
+            trend_score: 88.0,
             predicted_next_month: false,
-            momentum: "Steady"
+            momentum: "+15% 7d"
+        },
+
+        // MAKEUP
+        {
+            id: 9,
+            name: "Soft Pinch Liquid Blush",
+            brand: "Nykaa",
+            price: 2499.00,
+            category: "makeup",
+            image_url: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500&q=80",
+            affiliate_link: "https://www.nykaa.com/",
+            trend_score: 98.2,
+            predicted_next_month: true,
+            momentum: "+45% 7d"
         },
         {
-            id: 18,
-            name: "Kay Beauty Matte Lipstick",
-            brand: "Nykaa (Kay Beauty)",
-            price: 999.00,
+            id: 10,
+            name: "Cherry Glow Lip Oil",
+            brand: "Nykaa",
+            price: 4200.00,
             category: "makeup",
             image_url: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=500&q=80",
-            affiliate_link: "https://www.nykaa.com/makeup/lips/lipstick/c/240",
+            affiliate_link: "https://www.nykaa.com/",
+            trend_score: 99.1,
+            predicted_next_month: true,
+            momentum: "+80% 7d"
+        },
+        {
+            id: 11,
+            name: "Kay Beauty Matte Lipstick",
+            brand: "Nykaa",
+            price: 1200.00,
+            category: "makeup",
+            image_url: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=500&q=80",
+            affiliate_link: "https://www.nykaa.com/",
             trend_score: 98.8,
             predicted_next_month: true,
             momentum: "+45% 7d"
+        },
+        {
+            id: 12,
+            name: "Liquid Liner Pen",
+            brand: "Nykaa",
+            price: 899.00,
+            category: "makeup",
+            image_url: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=500&q=80",
+            affiliate_link: "https://www.nykaa.com/",
+            trend_score: 87.2,
+            predicted_next_month: false,
+            momentum: "-2% 7d"
         }
     ];
 
     const [products, setProducts] = useState(mockProducts);
+
+    const Logo = ({ className = "", showText = true }) => (
+        <div className={`flex items-center space-x-4 ${className}`}>
+            <div className="relative w-10 h-10 flex flex-col justify-between p-0.5">
+                <div className="flex w-full h-1/3 space-x-0.5">
+                    <div className="w-1/2 h-full bg-[#00E5FF] rounded-sm" />
+                    <div className="w-1/2 h-full bg-[#2979FF] rounded-sm" />
+                </div>
+                <div className="flex w-full h-1/3 bg-gradient-to-r from-[#FF5252] to-[#FF1744] rounded-sm my-0.5 shadow-sm" />
+                <div className="flex w-full h-1/3 space-x-0.5">
+                    <div className="w-1/2 h-full bg-[#304FFE] rounded-sm" />
+                    <div className="w-1/2 h-full bg-[#2979FF] opacity-60 rounded-sm" />
+                </div>
+            </div>
+            {showText && (
+                <span className="text-3xl font-black tracking-tighter leading-none select-none">
+                    trendly<span className="text-[#2979FF]">.</span>Ai
+                </span>
+            )}
+        </div>
+    );
 
     // Monitor Scroll for Navbar Glass Effect
     useEffect(() => {
@@ -388,10 +336,7 @@ export default function App() {
 
                     {/* Center: Brand Identity */}
                     <div className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center">
-                        <h1 className="text-4xl font-black italic tracking-tighter leading-none select-none">
-                            TRNDLY
-                        </h1>
-                        <span className="text-[8px] font-bold uppercase tracking-[0.4em] opacity-40 mt-1">Archive 2026</span>
+                        <Logo className="scale-75 md:scale-100" />
                     </div>
 
                     {/* Right: Actions */}
@@ -621,7 +566,7 @@ export default function App() {
                             </h1>
 
                             <p className="text-black/40 text-sm md:text-base max-w-sm font-bold uppercase tracking-widest mb-12 leading-relaxed">
-                                AI Stylist Active // {userName}'s Archive Synced
+                                AI Stylist Active // {userName}'s trendly.Ai Archive Synced
                             </p>
 
                             <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
@@ -1085,7 +1030,7 @@ export default function App() {
             <footer className="bg-black text-white py-32 px-12 mt-40">
                 <div className="max-w-[1800px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-24">
                     <div className="col-span-1 md:col-span-2">
-                        <h2 className="heading-jumbo mb-12 select-none">TRNDLY.</h2>
+                        <Logo className="invert mb-12" />
                         <div className="flex space-x-12 opacity-40">
                             {['Instagram', 'Pinterest', 'Editorial', 'Support'].map(item => (
                                 <button key={item} className="text-[10px] font-black uppercase tracking-[0.3em] hover:text-white transition-colors">{item}</button>
@@ -1102,7 +1047,7 @@ export default function App() {
                     </div>
                     <div>
                         <p className="text-[10px] font-black uppercase tracking-widest leading-loose max-w-[200px]">
-                            Built for those who navigate the world with aesthetic intention. Trendly AI Archive 2026.
+                            Built for those who navigate the world with aesthetic intention. trendly.Ai Archive 2026.
                         </p>
                     </div>
                 </div>
