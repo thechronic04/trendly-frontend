@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, ShoppingBag, Search, ChevronRight, Star, TrendingUp, Zap, Activity, Cpu, User, Settings, Heart, X, LogOut, Camera } from 'lucide-react';
+import { Sparkles, Search, ChevronRight, Star, TrendingUp, Zap, Activity, Cpu, User, Settings, Heart, X, LogOut, Camera } from 'lucide-react';
 
 
 
@@ -21,8 +21,6 @@ export default function App() {
     const [isEditingName, setIsEditingName] = useState(false);
     const [showMegaMenu, setShowMegaMenu] = useState(false);
     const [showSearch, setShowSearch] = useState(false);
-    const [showCheckout, setShowCheckout] = useState(false);
-    const [cartCount, setCartCount] = useState(0);
     const [tempName, setTempName] = useState("");
     const [profilePic, setProfilePic] = useState(() => {
         return localStorage.getItem("userProfilePic") || "";
@@ -327,6 +325,81 @@ export default function App() {
         return () => clearInterval(interval);
     }, []);
 
+    const SearchOverlay = () => (
+        <AnimatePresence>
+            {showSearch && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-[100] bg-white/90 backdrop-blur-2xl p-12 overflow-hidden"
+                >
+                    <div className="max-w-[1400px] mx-auto h-full flex flex-col">
+                        <div className="flex justify-between items-center mb-20">
+                            <div className="flex items-center space-x-4">
+                                <Cpu className="w-5 h-5 text-[#2979FF] animate-pulse" />
+                                <span className="text-[10px] font-black uppercase tracking-[0.5em] text-black/40">Neural Search Active</span>
+                            </div>
+                            <button onClick={() => setShowSearch(false)} className="group p-4 hover:bg-black/5 rounded-full transition-all">
+                                <X className="w-8 h-8 group-hover:rotate-90 transition-transform duration-500" />
+                            </button>
+                        </div>
+
+                        <div className="relative mb-24">
+                            <input
+                                autoFocus
+                                type="text"
+                                placeholder="Search Trends, Aesthetics, or Brands..."
+                                className="w-full bg-transparent text-6xl md:text-8xl font-black italic tracking-tighter outline-none placeholder:text-black/5"
+                            />
+                            <div className="absolute -bottom-4 left-0 w-full h-[2px] bg-black/5 overflow-hidden">
+                                <motion.div
+                                    animate={{ x: ['-100%', '100%'] }}
+                                    transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                                    className="w-1/2 h-full bg-gradient-to-r from-transparent via-[#2979FF] to-transparent"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                            <div>
+                                <h3 className="text-[10px] font-black uppercase tracking-[0.3em] mb-8 flex items-center">
+                                    <Sparkles className="w-4 h-4 mr-3 text-pink-500" /> Live Social Trends
+                                </h3>
+                                <div className="space-y-6">
+                                    {['#QuietLuxury', '#UrbanExplorer', '#EveningNoir', '#ArchiveFashion'].map(tag => (
+                                        <div key={tag} className="flex items-center justify-between group cursor-pointer">
+                                            <span className="text-xl font-bold group-hover:underline italic">{tag}</span>
+                                            <TrendingUp className="w-4 h-4 opacity-0 group-hover:opacity-100 text-green-500 transition-all" />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            <div>
+                                <h3 className="text-[10px] font-black uppercase tracking-[0.3em] mb-8">Quick Discovery</h3>
+                                <div className="flex flex-wrap gap-4">
+                                    {['Oversized', 'Leather', 'Monochrome', 'Vintage', 'Sustainable', 'Streetwear'].map(chip => (
+                                        <button key={chip} className="px-6 py-3 border border-black/5 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-black hover:text-white transition-all">
+                                            {chip}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="bg-[#EDEDED] p-8 rounded-[2rem] relative overflow-hidden group">
+                                <div className="absolute inset-0 bg-gradient-to-br from-[#2979FF]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                                <h4 className="text-sm font-black mb-4 relative">AI Trend Prediction</h4>
+                                <p className="text-xs text-black/40 leading-relaxed mb-6 relative font-medium">
+                                    Our neural engines predict a 42% surge in "Distressed Denim" within the next 72 hours across urban hubs.
+                                </p>
+                                <button className="text-[10px] font-black uppercase tracking-[0.3em] border-b border-black pb-1 relative">Explore Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </motion.div>
+            )}
+        </AnimatePresence>
+    );
+
     return (
         <div className="relative min-h-screen selection:bg-pink-500/40 text-black font-sans overflow-x-hidden">
 
@@ -403,14 +476,6 @@ export default function App() {
                                         )}
                                     </div>
                                     <span className="text-[10px] font-black uppercase tracking-widest hidden sm:block">{userName}</span>
-                                </button>
-                                <button onClick={() => setShowCheckout(true)} className="relative hover:opacity-50 transition-opacity">
-                                    <ShoppingBag className="w-5 h-5 stroke-[1.5px]" />
-                                    {cartCount > 0 && (
-                                        <span className="absolute -top-1 -right-1 w-3 h-3 bg-black text-white text-[8px] flex items-center justify-center rounded-full font-bold">
-                                            {cartCount}
-                                        </span>
-                                    )}
                                 </button>
                             </div>
                         ) : (
@@ -799,7 +864,7 @@ export default function App() {
                                     </div>
                                 </div>
                                 <div
-                                    onClick={() => { setSelectedCollection('New In'); setSelectedSubCategory('Knitwear'); }}
+                                    onClick={() => window.open("https://www.bonkerscorner.com/", '_blank')}
                                     className="absolute bottom-[30%] right-[30%] group/hotspot cursor-pointer"
                                 >
                                     <div className="w-4 h-4 bg-white rounded-full animate-ping absolute inset-0" />
@@ -817,13 +882,13 @@ export default function App() {
                                 </p>
                                 <div className="space-y-6">
                                     {[
-                                        { name: "Oversized Leather Jacket", price: "₹24,999", brand: "AllSaints", sub: "Outerwear" },
-                                        { name: "Oversized Street Hoodie", price: "₹1,599", brand: "Bonkers", sub: "Knitwear" },
-                                        { name: "Wide Leg Cargo Pants", price: "₹2,299", brand: "H&M", sub: "Denim" }
+                                        { name: "Oversized Leather Jacket", price: "₹24,999", brand: "AllSaints", sub: "Outerwear", link: "https://www.allsaints.com/" },
+                                        { name: "Oversized Street Hoodie", price: "₹1,599", brand: "Bonkers", sub: "Knitwear", link: "https://www.bonkerscorner.com/" },
+                                        { name: "Wide Leg Cargo Pants", price: "₹2,299", brand: "H&M", sub: "Denim", link: "https://www2.hm.com/" }
                                     ].map((item, i) => (
                                         <div
                                             key={i}
-                                            onClick={() => setSelectedSubCategory(item.sub)}
+                                            onClick={() => window.open(item.link || "#", '_blank')}
                                             className="flex items-center justify-between border-b border-black/5 pb-4 group cursor-pointer hover:border-black transition-all"
                                         >
                                             <div>
@@ -893,10 +958,10 @@ export default function App() {
                                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors" />
 
                                     <button
-                                        onClick={() => setCartCount(prev => prev + 1)}
+                                        onClick={() => window.open(product.affiliate_link, '_blank')}
                                         className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white text-black px-6 py-3 text-[8px] font-black uppercase tracking-widest opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all shadow-xl"
                                     >
-                                        Add to Cart
+                                        View on {product.brand}
                                     </button>
 
                                     <div className="absolute top-4 right-4 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-all">
@@ -1035,7 +1100,7 @@ export default function App() {
                                 </button>
                                 <button className="w-full flex items-center space-x-4 p-4 hover:bg-white/5 rounded-2xl transition-all group">
                                     <div className="p-2 bg-blue-500/10 rounded-xl group-hover:bg-blue-500/20 transition-colors">
-                                        <ShoppingBag className="w-5 h-5 text-blue-400" />
+                                        <TrendingUp className="w-5 h-5 text-blue-400" />
                                     </div>
                                     <span className="font-bold text-gray-300 group-hover:text-white">Trend History</span>
                                 </button>
@@ -1062,70 +1127,7 @@ export default function App() {
                 )}
             </AnimatePresence>
 
-            {/* Minimalist Checkout Flow */}
-            <AnimatePresence>
-                {showCheckout && (
-                    <motion.div
-                        initial={{ x: '100%' }}
-                        animate={{ x: 0 }}
-                        exit={{ x: '100%' }}
-                        transition={{ type: "spring", damping: 30, stiffness: 200 }}
-                        className="fixed inset-0 bg-white z-[100] p-12 overflow-y-auto"
-                    >
-                        <div className="max-w-4xl mx-auto">
-                            <div className="flex justify-between items-center mb-20">
-                                <h1 className="text-4xl font-black tracking-tighter italic">Checkout</h1>
-                                <button onClick={() => setShowCheckout(false)} className="hover:opacity-50">
-                                    <X className="w-8 h-8" />
-                                </button>
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
-                                <div className="space-y-12">
-                                    <section>
-                                        <h3 className="text-[10px] font-black uppercase tracking-[0.3em] mb-8">01. Shipping</h3>
-                                        <div className="space-y-6">
-                                            <input type="text" placeholder="Full Name" className="w-full border-b border-black/10 py-4 outline-none focus:border-black transition-all" />
-                                            <input type="text" placeholder="Address line" className="w-full border-b border-black/10 py-4 outline-none focus:border-black transition-all" />
-                                            <input type="text" placeholder="City" className="w-full border-b border-black/10 py-4 outline-none focus:border-black transition-all" />
-                                        </div>
-                                    </section>
-                                    <section>
-                                        <h3 className="text-[10px] font-black uppercase tracking-[0.3em] mb-8">02. Payment</h3>
-                                        <div className="p-8 border border-black/5 bg-[#F9F7F2] rounded-xl flex items-center justify-between cursor-pointer hover:border-black transition-all">
-                                            <span className="font-bold">Cards / UPI / NetBanking</span>
-                                            <div className="w-4 h-4 rounded-full border border-black p-0.5">
-                                                <div className="w-full h-full bg-black rounded-full" />
-                                            </div>
-                                        </div>
-                                    </section>
-                                </div>
-
-                                <div className="bg-[#F9F7F2] p-12 rounded-3xl h-fit sticky top-12">
-                                    <h3 className="text-[10px] font-black uppercase tracking-[0.3em] mb-8">Order Summary</h3>
-                                    <div className="space-y-4 mb-8">
-                                        <div className="flex justify-between font-bold">
-                                            <span>Subtotal</span>
-                                            <span>₹15,798</span>
-                                        </div>
-                                        <div className="flex justify-between text-black/40">
-                                            <span>Shipping</span>
-                                            <span>Free</span>
-                                        </div>
-                                    </div>
-                                    <div className="flex justify-between text-2xl font-black italic border-t border-black/5 pt-6 mb-12">
-                                        <span>Total</span>
-                                        <span>₹15,798</span>
-                                    </div>
-                                    <button className="w-full bg-black text-white py-6 text-[10px] font-black uppercase tracking-[0.4em] hover:bg-[#E04296] transition-colors">
-                                        Complete Purchase
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            <SearchOverlay />
 
             {/* Quiet Luxury Footer */}
             <footer className="bg-black text-white py-32 px-12 mt-40">
