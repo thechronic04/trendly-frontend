@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, ShoppingBag, Search, ChevronRight, Star, TrendingUp, Zap, Activity, Cpu, Eye, EyeOff } from 'lucide-react';
+import { Sparkles, ShoppingBag, Search, ChevronRight, Star, TrendingUp, Zap, Activity, Cpu, Eye, EyeOff, User, Settings, Heart, X, LogOut, Camera } from 'lucide-react';
 
 // Container Variants for staggering children
 const containerVariants = {
@@ -35,8 +35,12 @@ export default function App() {
     const [emailInput, setEmailInput] = useState("");
     const [passwordInput, setPasswordInput] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const [showProfile, setShowProfile] = useState(false);
     const [userName, setUserName] = useState(() => {
         return localStorage.getItem("userName") || "Guest";
+    });
+    const [userEmail, setUserEmail] = useState(() => {
+        return localStorage.getItem("userEmail") || "";
     });
 
     // Real-time password validation logic
@@ -286,6 +290,27 @@ export default function App() {
         setSelectedBrand("All Brands");
     }, [activeTab]);
 
+    const handleLogout = () => {
+        setIsSignedIn(false);
+        setShowProfile(false);
+        localStorage.removeItem("isSignedIn");
+        localStorage.removeItem("userName");
+        localStorage.removeItem("userEmail");
+    };
+
+    const handleLogin = () => {
+        const derivedName = emailInput.split('@')[0] || "Guest";
+        setUserName(derivedName);
+        setUserEmail(emailInput);
+        setIsSignedIn(true);
+        localStorage.setItem("isSignedIn", "true");
+        localStorage.setItem("userName", derivedName);
+        localStorage.setItem("userEmail", emailInput);
+        setShowLoginModal(false);
+        setEmailInput("");
+        setPasswordInput("");
+    };
+
     const currentTabProducts = products.filter(p => p.category === activeTab);
     const availableBrands = ["All Brands", ...new Set(currentTabProducts.map(p => p.brand))];
     const filteredProducts = selectedBrand === "All Brands"
@@ -373,18 +398,17 @@ export default function App() {
                         <div className="flex items-center space-x-6">
                             {isSignedIn ? (
                                 <div className="flex items-center space-x-4">
-                                    <div className="flex items-center space-x-2">
-                                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-pink-500 to-purple-500 overflow-hidden border-2 border-white/20 flex items-center justify-center">
-                                            <span className="text-xs font-bold text-white uppercase">{userName.charAt(0)}</span>
+                                    <div
+                                        onClick={() => setShowProfile(true)}
+                                        className="flex items-center space-x-3 bg-white/5 hover:bg-white/10 p-1.5 pr-4 rounded-full border border-white/10 transition-all cursor-pointer group"
+                                    >
+                                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-pink-500 to-purple-500 flex items-center justify-center text-xs font-bold border border-white/20 group-hover:scale-105 transition-transform">
+                                            {userName.charAt(0).toUpperCase()}
                                         </div>
                                         <span className="text-sm font-semibold text-white hidden sm:block">{userName}</span>
                                     </div>
                                     <button
-                                        onClick={() => {
-                                            setIsSignedIn(false);
-                                            localStorage.removeItem("isSignedIn");
-                                            localStorage.removeItem("userName");
-                                        }}
+                                        onClick={handleLogout}
                                         className="text-xs font-semibold text-gray-400 hover:text-white transition-colors"
                                     >
                                         Log Out
@@ -481,16 +505,7 @@ export default function App() {
                                 </div>
                                 <button
                                     disabled={!isPasswordValid || emailInput.length === 0}
-                                    onClick={() => {
-                                        const derivedName = emailInput.split('@')[0] || "Guest";
-                                        setUserName(derivedName);
-                                        setIsSignedIn(true);
-                                        localStorage.setItem("isSignedIn", "true");
-                                        localStorage.setItem("userName", derivedName);
-                                        setShowLoginModal(false);
-                                        setEmailInput("");
-                                        setPasswordInput("");
-                                    }}
+                                    onClick={handleLogin}
                                     className={`w-full font-bold py-3 rounded-xl transition-all mt-4 shadow-lg ${isPasswordValid && emailInput.length > 0
                                         ? "bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:opacity-90 shadow-pink-500/20 cursor-pointer"
                                         : "bg-white/10 text-gray-400 cursor-not-allowed"
@@ -725,6 +740,97 @@ export default function App() {
                 </motion.div>
 
             </main>
+
+            {/* Profile Sidebar */}
+            <AnimatePresence>
+                {showProfile && (
+                    <>
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setShowProfile(false)}
+                            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60]"
+                        />
+                        <motion.div
+                            initial={{ x: '100%' }}
+                            animate={{ x: 0 }}
+                            exit={{ x: '100%' }}
+                            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                            className="fixed top-0 right-0 h-full w-full max-w-sm glass border-l border-white/10 z-[70] p-8 overflow-y-auto"
+                        >
+                            <div className="flex justify-between items-center mb-10">
+                                <h2 className="text-2xl font-black tracking-tight">Your Profile</h2>
+                                <button
+                                    onClick={() => setShowProfile(false)}
+                                    className="p-2 hover:bg-white/10 rounded-full transition-colors"
+                                >
+                                    <X className="w-6 h-6" />
+                                </button>
+                            </div>
+
+                            {/* User Profile Info */}
+                            <div className="flex flex-col items-center mb-10">
+                                <div className="relative mb-4 group">
+                                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-3xl font-black border-2 border-white/20 shadow-2xl">
+                                        {userName.charAt(0).toUpperCase()}
+                                    </div>
+                                    <div className="absolute bottom-0 right-0 p-1.5 bg-white text-black rounded-full border-4 border-[#111] opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                                        <Camera className="w-4 h-4" />
+                                    </div>
+                                </div>
+                                <h3 className="text-xl font-bold">{userName}</h3>
+                                <p className="text-gray-400 text-sm">{userEmail}</p>
+                            </div>
+
+                            {/* Quick Stats */}
+                            <div className="grid grid-cols-2 gap-4 mb-10">
+                                <div className="bg-white/5 border border-white/5 rounded-2xl p-4 text-center">
+                                    <p className="text-2xl font-black text-pink-400">24</p>
+                                    <p className="text-[10px] uppercase font-bold tracking-widest text-gray-500">Liked Trends</p>
+                                </div>
+                                <div className="bg-white/5 border border-white/5 rounded-2xl p-4 text-center">
+                                    <p className="text-2xl font-black text-purple-400">142</p>
+                                    <p className="text-[10px] uppercase font-bold tracking-widest text-gray-500">Closet Items</p>
+                                </div>
+                            </div>
+
+                            {/* Menu Links */}
+                            <div className="space-y-2 mb-10">
+                                <button className="w-full flex items-center space-x-4 p-4 hover:bg-white/5 rounded-2xl transition-all group">
+                                    <div className="p-2 bg-pink-500/10 rounded-xl group-hover:bg-pink-500/20 transition-colors">
+                                        <Heart className="w-5 h-5 text-pink-400" />
+                                    </div>
+                                    <span className="font-bold text-gray-300 group-hover:text-white">Saved Outfits</span>
+                                </button>
+                                <button className="w-full flex items-center space-x-4 p-4 hover:bg-white/5 rounded-2xl transition-all group">
+                                    <div className="p-2 bg-blue-500/10 rounded-xl group-hover:bg-blue-500/20 transition-colors">
+                                        <ShoppingBag className="w-5 h-5 text-blue-400" />
+                                    </div>
+                                    <span className="font-bold text-gray-300 group-hover:text-white">Trend History</span>
+                                </button>
+                                <button className="w-full flex items-center space-x-4 p-4 hover:bg-white/5 rounded-2xl transition-all group">
+                                    <div className="p-2 bg-purple-500/10 rounded-xl group-hover:bg-purple-500/20 transition-colors">
+                                        <Settings className="w-5 h-5 text-purple-400" />
+                                    </div>
+                                    <span className="font-bold text-gray-300 group-hover:text-white">Settings</span>
+                                </button>
+                            </div>
+
+                            {/* Bottom Actions */}
+                            <div className="pt-6 border-t border-white/10">
+                                <button
+                                    onClick={handleLogout}
+                                    className="w-full flex items-center justify-center space-x-2 p-4 text-gray-400 hover:text-red-400 transition-colors font-bold"
+                                >
+                                    <LogOut className="w-5 h-5" />
+                                    <span>Sign Out of Trendly</span>
+                                </button>
+                            </div>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
         </div>
     );
 }
