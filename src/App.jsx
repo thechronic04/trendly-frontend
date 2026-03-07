@@ -7,6 +7,8 @@ import { Sparkles, ShoppingBag, Search, ChevronRight, Star, TrendingUp, Zap, Act
 export default function App() {
     const [activeTab, setActiveTab] = useState('clothing');
     const [selectedBrand, setSelectedBrand] = useState('All Brands');
+    const [selectedSubCategory, setSelectedSubCategory] = useState('All');
+    const [selectedCollection, setSelectedCollection] = useState('All');
     const [isScrolled, setIsScrolled] = useState(false);
 
     const [isSignedIn, setIsSignedIn] = useState(() => {
@@ -48,7 +50,9 @@ export default function App() {
             brand: "AllSaints",
             price: 24999.00,
             category: "clothing",
-            image_url: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500&q=80",
+            subCategory: "Outerwear",
+            collection: "New In",
+            image_url: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&q=80",
             affiliate_link: "https://www.allsaints.com/",
             trend_score: 95.8,
             predicted_next_month: true,
@@ -60,7 +64,9 @@ export default function App() {
             brand: "The Bear House",
             price: 2499.00,
             category: "clothing",
-            image_url: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500&q=80",
+            subCategory: "Tops",
+            collection: "Ready to Wear",
+            image_url: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&q=80",
             affiliate_link: "https://thebearhouse.com/",
             trend_score: 87.5,
             predicted_next_month: false,
@@ -72,7 +78,9 @@ export default function App() {
             brand: "Hermod",
             price: 1899.00,
             category: "clothing",
-            image_url: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=500&q=80",
+            subCategory: "Denim", // Grouped as bottoms/denim-adjacent for this mock
+            collection: "Urban Street",
+            image_url: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=800&q=80",
             affiliate_link: "https://hermod.in/",
             trend_score: 91.2,
             predicted_next_month: true,
@@ -84,7 +92,9 @@ export default function App() {
             brand: "Bonkers",
             price: 1599.00,
             category: "clothing",
-            image_url: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500&q=80",
+            subCategory: "Knitwear", // Hoodies/Sweats category
+            collection: "New In",
+            image_url: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&q=80",
             affiliate_link: "https://www.bonkerscorner.com/",
             trend_score: 98.4,
             predicted_next_month: true,
@@ -96,7 +106,9 @@ export default function App() {
             brand: "Zara",
             price: 3499.00,
             category: "clothing",
-            image_url: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=500&q=80",
+            subCategory: "Tops", // Categorized as tops/dresses
+            collection: "Quiet Luxury",
+            image_url: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=800&q=80",
             affiliate_link: "https://www.zara.com/",
             trend_score: 89.5,
             predicted_next_month: true,
@@ -108,7 +120,9 @@ export default function App() {
             brand: "H&M",
             price: 2299.00,
             category: "clothing",
-            image_url: "https://images.unsplash.com/photo-1542280756-74b2f55e73e1?w=500&q=80",
+            subCategory: "Denim",
+            collection: "Ready to Wear",
+            image_url: "https://images.unsplash.com/photo-1542280756-74b2f55e73e1?w=800&q=80",
             affiliate_link: "https://www2.hm.com/",
             trend_score: 94.2,
             predicted_next_month: true,
@@ -120,7 +134,9 @@ export default function App() {
             brand: "Myntra",
             price: 4599.00,
             category: "clothing",
-            image_url: "https://images.unsplash.com/photo-1583391733958-d25e07fac0ce?w=500&q=80",
+            subCategory: "Knitwear",
+            collection: "Selected Edits",
+            image_url: "https://images.unsplash.com/photo-1583391733958-d25e07fac0ce?w=800&q=80",
             affiliate_link: "https://www.myntra.com/",
             trend_score: 97.5,
             predicted_next_month: true,
@@ -128,15 +144,17 @@ export default function App() {
         },
         {
             id: 8,
-            name: "DNMX Graphic Print T-Shirt",
-            brand: "Ajio",
-            price: 799.00,
+            name: "Urban Explorer Backpack",
+            brand: "Hermod",
+            price: 3499.00,
             category: "clothing",
-            image_url: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=500&q=80",
-            affiliate_link: "https://www.ajio.com/",
-            trend_score: 88.0,
-            predicted_next_month: false,
-            momentum: "+15% 7d"
+            subCategory: "Bags",
+            collection: "Accessories",
+            image_url: "https://images.unsplash.com/photo-1553062407-98eeb94c6a62?w=800&q=80",
+            affiliate_link: "https://hermod.in/",
+            trend_score: 92.4,
+            predicted_next_month: true,
+            momentum: "+8% 7d"
         },
 
         // MAKEUP
@@ -146,7 +164,8 @@ export default function App() {
             brand: "Nykaa",
             price: 2499.00,
             category: "makeup",
-            image_url: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500&q=80",
+            subCategory: "Tops", // Visual categories for makeup if needed
+            image_url: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&q=80",
             affiliate_link: "https://www.nykaa.com/",
             trend_score: 98.2,
             predicted_next_month: true,
@@ -158,7 +177,8 @@ export default function App() {
             brand: "Nykaa",
             price: 4200.00,
             category: "makeup",
-            image_url: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=500&q=80",
+            subCategory: "Jewelry",
+            image_url: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=800&q=80",
             affiliate_link: "https://www.nykaa.com/",
             trend_score: 99.1,
             predicted_next_month: true,
@@ -170,7 +190,8 @@ export default function App() {
             brand: "Nykaa",
             price: 1200.00,
             category: "makeup",
-            image_url: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=500&q=80",
+            subCategory: "Jewelry",
+            image_url: "https://images.unsplash.com/photo-1625091392900-53bc07684617?w=800&q=80",
             affiliate_link: "https://www.nykaa.com/",
             trend_score: 98.8,
             predicted_next_month: true,
@@ -182,7 +203,8 @@ export default function App() {
             brand: "Nykaa",
             price: 899.00,
             category: "makeup",
-            image_url: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=500&q=80",
+            subCategory: "Eyewear",
+            image_url: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=800&q=80",
             affiliate_link: "https://www.nykaa.com/",
             trend_score: 87.2,
             predicted_next_month: false,
@@ -191,6 +213,24 @@ export default function App() {
     ];
 
     const [products, setProducts] = useState(mockProducts);
+
+    // Derived filtering logic
+    const currentTabProducts = products.filter(p => p.category === activeTab);
+    const availableBrands = ["All Brands", ...new Set(currentTabProducts.map(p => p.brand))];
+
+    // Multi-dimensional filter
+    const filteredProducts = currentTabProducts.filter(product => {
+        const matchesBrand = selectedBrand === "All Brands" || product.brand === selectedBrand;
+        const matchesSubCategory = selectedSubCategory === "All" || product.subCategory === selectedSubCategory;
+        const matchesCollection = selectedCollection === "All" || product.collection === selectedCollection;
+        return matchesBrand && matchesSubCategory && matchesCollection;
+    });
+
+    const handleClearFilters = () => {
+        setSelectedBrand("All Brands");
+        setSelectedSubCategory("All");
+        setSelectedCollection("All");
+    };
 
     const Logo = ({ className = "", showText = true }) => (
         <div className={`flex items-center space-x-4 ${className}`}>
@@ -222,10 +262,7 @@ export default function App() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Reset brand filter when switching tabs
-    useEffect(() => {
-        setSelectedBrand("All Brands");
-    }, [activeTab]);
+    // Reset filters when switching tabs is handled by a consolidated useEffect further down
 
     const handleLogout = () => {
         setIsSignedIn(false);
@@ -265,11 +302,10 @@ export default function App() {
         localStorage.setItem("userProfilePic", mockGooglePic);
     };
 
-    const currentTabProducts = products.filter(p => p.category === activeTab);
-    const availableBrands = ["All Brands", ...new Set(currentTabProducts.map(p => p.brand))];
-    const filteredProducts = selectedBrand === "All Brands"
-        ? currentTabProducts
-        : currentTabProducts.filter(p => p.brand === selectedBrand);
+    // Reset filters when switching tabs
+    useEffect(() => {
+        handleClearFilters();
+    }, [activeTab]);
 
     // Simulate real-time neural network updates
     useEffect(() => {
@@ -327,7 +363,15 @@ export default function App() {
 
                         <div className="hidden lg:flex items-center space-x-8">
                             {['New Arrivals', 'Collections', 'Editorial'].map((item) => (
-                                <button key={item} className="text-[10px] font-black uppercase tracking-[0.2em] hover:opacity-50 transition-opacity">
+                                <button
+                                    key={item}
+                                    onClick={() => {
+                                        if (item === 'New Arrivals') setSelectedCollection('New In');
+                                        else if (item === 'Collections') setSelectedCollection('Ready to Wear');
+                                        else if (item === 'Editorial') document.getElementById('editorial-section')?.scrollIntoView({ behavior: 'smooth' });
+                                    }}
+                                    className="text-[10px] font-black uppercase tracking-[0.2em] hover:opacity-50 transition-opacity"
+                                >
                                     {item}
                                 </button>
                             ))}
@@ -401,30 +445,67 @@ export default function App() {
                         >
                             <div className="max-w-[1400px] mx-auto grid grid-cols-4 gap-12">
                                 <div>
-                                    <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-black/40 mb-8">Ready to Wear</h3>
+                                    <h3
+                                        onClick={() => { setSelectedCollection('All'); setSelectedSubCategory('All'); setShowMegaMenu(false); }}
+                                        className="text-[10px] font-black uppercase tracking-[0.3em] text-black/40 mb-8 cursor-pointer hover:text-black transition-colors"
+                                    >
+                                        Ready to Wear
+                                    </h3>
                                     <div className="flex flex-col space-y-4">
                                         {['New In', 'Tops', 'Denim', 'Outerwear', 'Knitwear'].map(item => (
-                                            <button key={item} className="text-2xl font-black italic tracking-tighter hover:translate-x-4 transition-transform text-left">
+                                            <button
+                                                key={item}
+                                                onClick={() => {
+                                                    if (item === 'New In') setSelectedCollection('New In');
+                                                    else setSelectedSubCategory(item);
+                                                    setShowMegaMenu(false);
+                                                }}
+                                                className="text-2xl font-black italic tracking-tighter hover:translate-x-4 transition-transform text-left"
+                                            >
                                                 {item}
                                             </button>
                                         ))}
                                     </div>
                                 </div>
                                 <div>
-                                    <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-black/40 mb-8">Accessories</h3>
+                                    <h3
+                                        onClick={() => { setSelectedSubCategory('All'); setShowMegaMenu(false); }}
+                                        className="text-[10px] font-black uppercase tracking-[0.3em] text-black/40 mb-8 cursor-pointer hover:text-black transition-colors"
+                                    >
+                                        Accessories
+                                    </h3>
                                     <div className="flex flex-col space-y-4">
                                         {['Jewelry', 'Bags', 'Footwear', 'Belts', 'Eyewear'].map(item => (
-                                            <button key={item} className="text-2xl font-black italic tracking-tighter hover:translate-x-4 transition-transform text-left">
+                                            <button
+                                                key={item}
+                                                onClick={() => {
+                                                    setSelectedSubCategory(item);
+                                                    setShowMegaMenu(false);
+                                                }}
+                                                className="text-2xl font-black italic tracking-tighter hover:translate-x-4 transition-transform text-left"
+                                            >
                                                 {item}
                                             </button>
                                         ))}
                                     </div>
                                 </div>
                                 <div>
-                                    <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-black/40 mb-8">Selected Edits</h3>
+                                    <h3
+                                        onClick={() => { setSelectedCollection('All'); setShowMegaMenu(false); }}
+                                        className="text-[10px] font-black uppercase tracking-[0.3em] text-black/40 mb-8 cursor-pointer hover:text-black transition-colors"
+                                    >
+                                        Selected Edits
+                                    </h3>
                                     <div className="flex flex-col space-y-4">
                                         {['Quiet Luxury', 'Urban Street', 'Evening Noir', 'The Archive'].map(item => (
-                                            <button key={item} className="text-2xl font-black italic tracking-tighter hover:translate-x-4 transition-transform text-left">
+                                            <button
+                                                key={item}
+                                                onClick={() => {
+                                                    setSelectedCollection(item);
+                                                    setShowMegaMenu(false);
+                                                }}
+                                                className="text-2xl font-black italic tracking-tighter hover:translate-x-4 transition-transform text-left"
+                                            >
                                                 {item}
                                             </button>
                                         ))}
@@ -668,6 +749,14 @@ export default function App() {
                         </div>
 
                         <div className="flex items-center space-x-2 text-xs font-semibold uppercase tracking-widest text-gray-500">
+                            {(selectedBrand !== "All Brands" || selectedSubCategory !== "All" || selectedCollection !== "All") && (
+                                <button
+                                    onClick={handleClearFilters}
+                                    className="mr-4 px-3 py-1 bg-black text-white text-[8px] font-black rounded-full hover:bg-pink-500 transition-colors"
+                                >
+                                    Clear Filters
+                                </button>
+                            )}
                             {isSignedIn ? (
                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500 flex items-center">
                                     Personalised Feed Active <Activity className="w-3 h-3 ml-1" />
@@ -689,33 +778,38 @@ export default function App() {
 
 
                 {/* Shop the Look - Interactive Module */}
-                <section className="py-32 px-6">
+                <section id="editorial-section" className="py-32 px-6">
                     <div className="max-w-[1400px] mx-auto">
-                        <div className="flex flex-col md:flex-row items-center gap-20">
-                            <div className="w-full md:w-1/2 relative group">
+                        <div className="flex flex-col md:flex-row items-start gap-20">
+                            <div className="w-full md:w-1/2 relative group rounded-[2rem] overflow-hidden">
                                 <img
                                     src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=80"
                                     alt="Shop the Look"
                                     className="w-full aspect-[4/5] object-cover"
                                 />
                                 {/* Hotspots */}
-                                <div className="absolute top-[20%] left-[40%] group/hotspot cursor-pointer">
+                                <div
+                                    onClick={() => { setSelectedCollection('Urban Street'); setSelectedSubCategory('Outerwear'); }}
+                                    className="absolute top-[20%] left-[40%] group/hotspot cursor-pointer"
+                                >
                                     <div className="w-4 h-4 bg-white rounded-full animate-ping absolute inset-0" />
                                     <div className="w-4 h-4 bg-white rounded-full relative" />
-                                    <div className="absolute left-full ml-4 top-1/2 -translate-y-1/2 bg-white px-4 py-2 opacity-0 group-hover/hotspot:opacity-100 transition-opacity whitespace-nowrap shadow-xl">
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-black/40">Wool Overcoat</p>
-                                        <p className="text-sm font-bold">₹12,499</p>
+                                    <div className="absolute left-6 top-1/2 -translate-y-1/2 bg-black text-white px-3 py-1.5 whitespace-nowrap opacity-0 group-hover/hotspot:opacity-100 transition-all text-[8px] font-black uppercase tracking-widest pointer-events-none">
+                                        Moto Jacket // ₹24,999
                                     </div>
                                 </div>
-                                <div className="absolute top-[60%] left-[30%] group/hotspot cursor-pointer">
+                                <div
+                                    onClick={() => { setSelectedCollection('New In'); setSelectedSubCategory('Knitwear'); }}
+                                    className="absolute bottom-[30%] right-[30%] group/hotspot cursor-pointer"
+                                >
                                     <div className="w-4 h-4 bg-white rounded-full animate-ping absolute inset-0" />
                                     <div className="w-4 h-4 bg-white rounded-full relative" />
-                                    <div className="absolute left-full ml-4 top-1/2 -translate-y-1/2 bg-white px-4 py-2 opacity-0 group-hover/hotspot:opacity-100 transition-opacity whitespace-nowrap shadow-xl">
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-black/40">Ribbed Crewneck</p>
-                                        <p className="text-sm font-bold">₹3,299</p>
+                                    <div className="absolute right-6 top-1/2 -translate-y-1/2 bg-black text-white px-3 py-1.5 whitespace-nowrap opacity-0 group-hover/hotspot:opacity-100 transition-all text-[8px] font-black uppercase tracking-widest pointer-events-none">
+                                        Street Hoodie // ₹1,599
                                     </div>
                                 </div>
                             </div>
+
                             <div className="w-full md:w-1/2 space-y-12">
                                 <h3 className="heading-display mb-8">The Urban<br /><span className="italic font-normal">Architect</span></h3>
                                 <p className="text-sm text-black/40 leading-relaxed max-w-sm font-medium">
@@ -723,11 +817,15 @@ export default function App() {
                                 </p>
                                 <div className="space-y-6">
                                     {[
-                                        { name: "Oversized Wool Blend Coat", price: "₹12,499", brand: "Trendly Archive" },
-                                        { name: "Premium Cotton Crewneck", price: "₹3,299", brand: "Trendly Archive" },
-                                        { name: "Straight Fit Tailored Trousers", price: "₹5,999", brand: "Trendly Archive" }
+                                        { name: "Oversized Leather Jacket", price: "₹24,999", brand: "AllSaints", sub: "Outerwear" },
+                                        { name: "Oversized Street Hoodie", price: "₹1,599", brand: "Bonkers", sub: "Knitwear" },
+                                        { name: "Wide Leg Cargo Pants", price: "₹2,299", brand: "H&M", sub: "Denim" }
                                     ].map((item, i) => (
-                                        <div key={i} className="flex items-center justify-between border-b border-black/5 pb-4 group cursor-pointer hover:border-black transition-all">
+                                        <div
+                                            key={i}
+                                            onClick={() => setSelectedSubCategory(item.sub)}
+                                            className="flex items-center justify-between border-b border-black/5 pb-4 group cursor-pointer hover:border-black transition-all"
+                                        >
                                             <div>
                                                 <p className="text-[10px] font-black uppercase tracking-tighter text-black/40">{item.brand}</p>
                                                 <p className="font-bold">{item.name}</p>
@@ -739,7 +837,7 @@ export default function App() {
                                         </div>
                                     ))}
                                 </div>
-                                <button className="btn-minimal">Shop Full Look</button>
+                                <button onClick={handleClearFilters} className="btn-minimal">Shop Full Look</button>
                             </div>
                         </div>
                     </div>
@@ -754,7 +852,10 @@ export default function App() {
                                 {['All', 'Clothing', 'Makeup', 'Editorial'].map(tab => (
                                     <button
                                         key={tab}
-                                        onClick={() => setActiveTab(tab.toLowerCase())}
+                                        onClick={() => {
+                                            setActiveTab(tab.toLowerCase());
+                                            if (tab === 'All') handleClearFilters();
+                                        }}
                                         className={`text-[10px] font-black uppercase tracking-[0.3em] pb-1 border-b-2 transition-all duration-500 ${activeTab === tab.toLowerCase() ? "border-black text-black" : "border-transparent text-black/20 hover:text-black"
                                             }`}
                                     >
