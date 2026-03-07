@@ -36,6 +36,11 @@ export default function App() {
     const [passwordInput, setPasswordInput] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [showProfile, setShowProfile] = useState(false);
+    const [isEditingName, setIsEditingName] = useState(false);
+    const [tempName, setTempName] = useState("");
+    const [profilePic, setProfilePic] = useState(() => {
+        return localStorage.getItem("userProfilePic") || "";
+    });
     const [userName, setUserName] = useState(() => {
         return localStorage.getItem("userName") || "Guest";
     });
@@ -296,6 +301,8 @@ export default function App() {
         localStorage.removeItem("isSignedIn");
         localStorage.removeItem("userName");
         localStorage.removeItem("userEmail");
+        localStorage.removeItem("userProfilePic");
+        setProfilePic("");
     };
 
     const handleLogin = () => {
@@ -309,6 +316,21 @@ export default function App() {
         setShowLoginModal(false);
         setEmailInput("");
         setPasswordInput("");
+    };
+
+    const handleSaveName = () => {
+        if (tempName.trim()) {
+            setUserName(tempName);
+            localStorage.setItem("userName", tempName);
+            setIsEditingName(false);
+        }
+    };
+
+    const handleLinkGoogle = () => {
+        // Mocking a Google profile picture fetch
+        const mockGooglePic = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&h=150&fit=crop";
+        setProfilePic(mockGooglePic);
+        localStorage.setItem("userProfilePic", mockGooglePic);
     };
 
     const currentTabProducts = products.filter(p => p.category === activeTab);
@@ -402,8 +424,12 @@ export default function App() {
                                         onClick={() => setShowProfile(true)}
                                         className="flex items-center space-x-3 bg-white/5 hover:bg-white/10 p-1.5 pr-4 rounded-full border border-white/10 transition-all cursor-pointer group"
                                     >
-                                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-pink-500 to-purple-500 flex items-center justify-center text-xs font-bold border border-white/20 group-hover:scale-105 transition-transform">
-                                            {userName.charAt(0).toUpperCase()}
+                                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-pink-500 to-purple-500 flex items-center justify-center text-xs font-bold border border-white/20 group-hover:scale-105 transition-transform overflow-hidden">
+                                            {profilePic ? (
+                                                <img src={profilePic} alt="Profile" className="w-full h-full object-cover" />
+                                            ) : (
+                                                userName.charAt(0).toUpperCase()
+                                            )}
                                         </div>
                                         <span className="text-sm font-semibold text-white hidden sm:block">{userName}</span>
                                     </div>
@@ -772,15 +798,57 @@ export default function App() {
                             {/* User Profile Info */}
                             <div className="flex flex-col items-center mb-10">
                                 <div className="relative mb-4 group">
-                                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-3xl font-black border-2 border-white/20 shadow-2xl">
-                                        {userName.charAt(0).toUpperCase()}
+                                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-3xl font-black border-2 border-white/20 shadow-2xl overflow-hidden">
+                                        {profilePic ? (
+                                            <img src={profilePic} alt="Profile" className="w-full h-full object-cover" />
+                                        ) : (
+                                            userName.charAt(0).toUpperCase()
+                                        )}
                                     </div>
                                     <div className="absolute bottom-0 right-0 p-1.5 bg-white text-black rounded-full border-4 border-[#111] opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
                                         <Camera className="w-4 h-4" />
                                     </div>
                                 </div>
-                                <h3 className="text-xl font-bold">{userName}</h3>
+
+                                {isEditingName ? (
+                                    <div className="flex flex-col items-center space-y-2">
+                                        <input
+                                            type="text"
+                                            value={tempName}
+                                            onChange={(e) => setTempName(e.target.value)}
+                                            className="bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-white text-center font-bold focus:outline-none focus:border-pink-500"
+                                            autoFocus
+                                        />
+                                        <div className="flex space-x-2">
+                                            <button onClick={handleSaveName} className="text-xs font-bold text-green-400 hover:text-green-300">Save</button>
+                                            <button onClick={() => setIsEditingName(false)} className="text-xs font-bold text-gray-400 hover:text-gray-300">Cancel</button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="flex items-center space-x-2">
+                                        <h3 className="text-xl font-bold">{userName}</h3>
+                                        <button
+                                            onClick={() => {
+                                                setTempName(userName);
+                                                setIsEditingName(true);
+                                            }}
+                                            className="p-1 hover:bg-white/10 rounded-md transition-colors"
+                                        >
+                                            <User className="w-4 h-4 text-gray-400" />
+                                        </button>
+                                    </div>
+                                )}
                                 <p className="text-gray-400 text-sm">{userEmail}</p>
+
+                                {!profilePic && (
+                                    <button
+                                        onClick={handleLinkGoogle}
+                                        className="mt-4 flex items-center space-x-2 bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-2 rounded-full text-xs font-bold transition-all"
+                                    >
+                                        <Cpu className="w-3 h-3 text-pink-400" />
+                                        <span>Link Google Profile Picture</span>
+                                    </button>
+                                )}
                             </div>
 
                             {/* Quick Stats */}
