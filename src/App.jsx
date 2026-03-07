@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, Search, ChevronRight, Star, TrendingUp, Zap, Activity, Cpu, User, Settings, Heart, X, LogOut, Camera } from 'lucide-react';
+import { Sparkles, Search, ChevronRight, Star, TrendingUp, Zap, Activity, Cpu, User, Settings, Heart, X, LogOut, Camera, Eye, EyeOff } from 'lucide-react';
 
 
 
@@ -31,6 +31,8 @@ export default function App() {
     const [userEmail, setUserEmail] = useState(() => {
         return localStorage.getItem("userEmail") || "";
     });
+    const [showPassword, setShowPassword] = useState(false);
+    const [loginError, setLoginError] = useState("");
 
     // Real-time password validation logic
     const hasLength = passwordInput.length >= 8;
@@ -621,7 +623,7 @@ export default function App() {
                                 <input
                                     type="email"
                                     value={emailInput}
-                                    onChange={(e) => { setEmailInput(e.target.value); setLoginError(""); }}
+                                    onChange={(e) => setEmailInput(e.target.value)}
                                     placeholder="Email Address"
                                     className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-500/50"
                                 />
@@ -781,7 +783,7 @@ export default function App() {
                                     className="absolute inset-0 bg-black rounded-full shadow-lg z-[-1]"
                                 />
                             )}
-                            <span className="flex items-center"><ShoppingBag className="w-4 h-4 mr-2" /> Clothing</span>
+                            <span className="flex items-center"><TrendingUp className="w-4 h-4 mr-2" /> Clothing</span>
                         </button>
                         <button
                             onClick={() => setActiveTab('makeup')}
@@ -897,7 +899,7 @@ export default function App() {
                                             </div>
                                             <div className="flex items-center space-x-4">
                                                 <p className="font-bold">{item.price}</p>
-                                                <ShoppingBag className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all" />
+                                                <TrendingUp className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all" />
                                             </div>
                                         </div>
                                     ))}
