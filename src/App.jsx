@@ -1,27 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, ShoppingBag, Search, ChevronRight, Star, TrendingUp, Zap, Activity, Cpu, Eye, EyeOff, User, Settings, Heart, X, LogOut, Camera } from 'lucide-react';
+import { Sparkles, ShoppingBag, Search, ChevronRight, Star, TrendingUp, Zap, Activity, Cpu, User, Settings, Heart, X, LogOut, Camera } from 'lucide-react';
 
-// Container Variants for staggering children
-const containerVariants = {
-    hidden: { opacity: 0 },
-    show: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.15,
-            delayChildren: 0.2,
-        }
-    }
-};
 
-const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    show: {
-        opacity: 1,
-        y: 0,
-        transition: { type: "spring", stiffness: 100, damping: 20 }
-    }
-};
 
 export default function App() {
     const [activeTab, setActiveTab] = useState('clothing');
@@ -34,9 +15,12 @@ export default function App() {
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [emailInput, setEmailInput] = useState("");
     const [passwordInput, setPasswordInput] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
     const [showProfile, setShowProfile] = useState(false);
     const [isEditingName, setIsEditingName] = useState(false);
+    const [showMegaMenu, setShowMegaMenu] = useState(false);
+    const [showSearch, setShowSearch] = useState(false);
+    const [showCheckout, setShowCheckout] = useState(false);
+    const [cartCount, setCartCount] = useState(0);
     const [tempName, setTempName] = useState("");
     const [profilePic, setProfilePic] = useState(() => {
         return localStorage.getItem("userProfilePic") || "";
@@ -360,7 +344,7 @@ export default function App() {
     }, []);
 
     return (
-        <div className="relative min-h-screen selection:bg-pink-500/40 text-white font-sans overflow-x-hidden">
+        <div className="relative min-h-screen selection:bg-pink-500/40 text-black font-sans overflow-x-hidden">
 
             {/* Aurora Background Layers */}
             <div className="aurora-bg">
@@ -372,89 +356,150 @@ export default function App() {
             {/* Floating Nano-Grid Overlay */}
             <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px)', backgroundSize: '40px 40px', zIndex: 0 }}></div>
 
-            {/* Navigation */}
-            <motion.nav
-                initial={{ y: -100 }}
-                animate={{ y: 0 }}
-                transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-                className={`fixed top-0 w-full z-50 transition-all duration-500 border-b ${isScrolled ? 'glass border-white/10 shadow-2xl' : 'bg-transparent border-transparent'
+            {/* Zara-Style Navbar */}
+            <nav
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 px-6 py-8 ${isScrolled ? "bg-white/80 backdrop-blur-xl border-b border-black/5 py-4" : "bg-transparent"
                     }`}
             >
-                <div className="max-w-7xl mx-auto px-6 lg:px-12 py-4">
-                    <div className="flex justify-between items-center">
+                <div className="max-w-[1800px] mx-auto flex items-center justify-between">
 
-                        <div className="flex items-center space-x-3 cursor-pointer group">
-                            <div className="p-2 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl group-hover:scale-110 transition-transform">
-                                <Cpu className="w-5 h-5 text-white" />
+                    {/* Left: Menu & Categories */}
+                    <div className="flex items-center space-x-12">
+                        <button
+                            onMouseEnter={() => setShowMegaMenu(true)}
+                            className="flex items-center space-x-3 group"
+                        >
+                            <div className="flex flex-col space-y-1.5 overflow-hidden">
+                                <span className={`h-[1px] bg-black transition-all duration-500 w-8 group-hover:translate-x-4`} />
+                                <span className={`h-[1px] bg-black transition-all duration-500 w-5 group-hover:translate-x-2`} />
+                                <span className={`h-[1px] bg-black transition-all duration-500 w-8 group-hover:translate-x-0`} />
                             </div>
-                            <span className="font-extrabold text-2xl tracking-tighter text-white">
-                                Trendly<span className="text-pink-400">.ai</span>
-                            </span>
-                        </div>
+                            <span className="text-[10px] font-black uppercase tracking-[0.2em]">Menu</span>
+                        </button>
 
-                        {/* Top Navigation Links */}
-                        <div className="hidden lg:flex items-center space-x-8 ml-8">
-                            <a href="#" className="text-sm font-bold text-white hover:text-pink-400 transition-colors border-b-2 border-pink-500 pb-1">Home</a>
-                            <a href="#" className="text-sm font-semibold text-gray-400 hover:text-white transition-colors">Features</a>
-                            <a href="#" className="text-sm font-semibold text-gray-400 hover:text-white transition-colors">Menu/Categories</a>
-                        </div>
-
-                        <div className="hidden md:flex flex-1 max-w-xl mx-8">
-                            <div className="relative w-full group">
-                                <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-500"></div>
-                                <div className="relative flex items-center bg-black/40 backdrop-blur-xl border border-white/10 rounded-full">
-                                    <Search className="absolute left-4 w-4 h-4 text-gray-400" />
-                                    <input
-                                        type="text"
-                                        placeholder="Search AI predicted trends..."
-                                        className="w-full bg-transparent border-none py-3 pl-12 pr-4 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-0"
-                                    />
-                                    <div className="absolute right-2 px-2 py-1 bg-white/10 rounded-full border border-white/5 flex items-center space-x-1">
-                                        <kbd className="text-[10px] font-mono text-gray-300">⌘</kbd>
-                                        <kbd className="text-[10px] font-mono text-gray-300">K</kbd>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="flex items-center space-x-6">
-                            {isSignedIn ? (
-                                <div className="flex items-center space-x-4">
-                                    <div
-                                        onClick={() => setShowProfile(true)}
-                                        className="flex items-center space-x-3 bg-white/5 hover:bg-white/10 p-1.5 pr-4 rounded-full border border-white/10 transition-all cursor-pointer group"
-                                    >
-                                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-pink-500 to-purple-500 flex items-center justify-center text-xs font-bold border border-white/20 group-hover:scale-105 transition-transform overflow-hidden">
-                                            {profilePic ? (
-                                                <img src={profilePic} alt="Profile" className="w-full h-full object-cover" />
-                                            ) : (
-                                                userName.charAt(0).toUpperCase()
-                                            )}
-                                        </div>
-                                        <span className="text-sm font-semibold text-white hidden sm:block">{userName}</span>
-                                    </div>
-                                    <button
-                                        onClick={handleLogout}
-                                        className="text-xs font-semibold text-gray-400 hover:text-white transition-colors"
-                                    >
-                                        Log Out
-                                    </button>
-                                </div>
-                            ) : (
-                                <button
-                                    onClick={() => setShowLoginModal(true)}
-                                    className="text-sm font-semibold text-gray-300 hover:text-white transition-colors tracking-wide hidden sm:block"
-                                >
-                                    Sign In
+                        <div className="hidden lg:flex items-center space-x-8">
+                            {['New Arrivals', 'Collections', 'Editorial'].map((item) => (
+                                <button key={item} className="text-[10px] font-black uppercase tracking-[0.2em] hover:opacity-50 transition-opacity">
+                                    {item}
                                 </button>
-                            )}
-                            <button className="relative px-6 py-2.5 bg-white text-black rounded-full text-sm font-bold shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] hover:bg-gray-100 transform hover:scale-105 transition-all outline-none">
-                                Get Premium
-                            </button>
+                            ))}
                         </div>
                     </div>
+
+                    {/* Center: Brand Identity */}
+                    <div className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center">
+                        <h1 className="text-4xl font-black italic tracking-tighter leading-none select-none">
+                            TRNDLY
+                        </h1>
+                        <span className="text-[8px] font-bold uppercase tracking-[0.4em] opacity-40 mt-1">Archive 2026</span>
+                    </div>
+
+                    {/* Right: Actions */}
+                    <div className="flex items-center space-x-8">
+                        <button onClick={() => setShowSearch(true)} className="hover:opacity-50 transition-opacity">
+                            <Search className="w-5 h-5 stroke-[1.5px]" />
+                        </button>
+
+                        {isSignedIn ? (
+                            <div className="flex items-center space-x-6">
+                                <button
+                                    onClick={() => setShowProfile(true)}
+                                    className="flex items-center space-x-2 group"
+                                >
+                                    <div className="w-6 h-6 rounded-full bg-black/5 border border-black/10 flex items-center justify-center overflow-hidden">
+                                        {profilePic ? (
+                                            <img src={profilePic} alt="P" className="w-full h-full object-cover" />
+                                        ) : (
+                                            <span className="text-[10px] font-bold">{userName.charAt(0)}</span>
+                                        )}
+                                    </div>
+                                    <span className="text-[10px] font-black uppercase tracking-widest hidden sm:block">{userName}</span>
+                                </button>
+                                <button onClick={() => setShowCheckout(true)} className="relative hover:opacity-50 transition-opacity">
+                                    <ShoppingBag className="w-5 h-5 stroke-[1.5px]" />
+                                    {cartCount > 0 && (
+                                        <span className="absolute -top-1 -right-1 w-3 h-3 bg-black text-white text-[8px] flex items-center justify-center rounded-full font-bold">
+                                            {cartCount}
+                                        </span>
+                                    )}
+                                </button>
+                            </div>
+                        ) : (
+                            <button
+                                onClick={() => setShowLoginModal(true)}
+                                className="text-[10px] font-black uppercase tracking-[0.2em] border-b border-black/50 pb-0.5 hover:border-black transition-all"
+                            >
+                                Sign In
+                            </button>
+                        )}
+                    </div>
                 </div>
-            </motion.nav>
+            </nav>
+
+            {/* Bonkers-Style Mega Menu */}
+            <AnimatePresence>
+                {showMegaMenu && (
+                    <>
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onMouseEnter={() => setShowMegaMenu(false)}
+                            className="fixed inset-0 bg-white/40 backdrop-blur-md z-[55]"
+                        />
+                        <motion.div
+                            initial={{ y: -50, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: -50, opacity: 0 }}
+                            onMouseLeave={() => setShowMegaMenu(false)}
+                            className="fixed top-0 left-0 right-0 bg-white border-b border-black/5 pt-32 pb-20 px-12 z-[56] shadow-2xl"
+                        >
+                            <div className="max-w-[1400px] mx-auto grid grid-cols-4 gap-12">
+                                <div>
+                                    <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-black/40 mb-8">Ready to Wear</h3>
+                                    <div className="flex flex-col space-y-4">
+                                        {['New In', 'Tops', 'Denim', 'Outerwear', 'Knitwear'].map(item => (
+                                            <button key={item} className="text-2xl font-black italic tracking-tighter hover:translate-x-4 transition-transform text-left">
+                                                {item}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-black/40 mb-8">Accessories</h3>
+                                    <div className="flex flex-col space-y-4">
+                                        {['Jewelry', 'Bags', 'Footwear', 'Belts', 'Eyewear'].map(item => (
+                                            <button key={item} className="text-2xl font-black italic tracking-tighter hover:translate-x-4 transition-transform text-left">
+                                                {item}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-black/40 mb-8">Selected Edits</h3>
+                                    <div className="flex flex-col space-y-4">
+                                        {['Quiet Luxury', 'Urban Street', 'Evening Noir', 'The Archive'].map(item => (
+                                            <button key={item} className="text-2xl font-black italic tracking-tighter hover:translate-x-4 transition-transform text-left">
+                                                {item}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="relative group overflow-hidden bg-black aspect-[3/4]">
+                                    <img
+                                        src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80"
+                                        alt="Editorial Catch"
+                                        className="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-1000"
+                                    />
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        <p className="text-white text-[10px] font-black uppercase tracking-[0.5em] -rotate-90">SS 2026 Collection</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
 
             {/* Login Modal Overlay */}
             <AnimatePresence>
@@ -570,13 +615,13 @@ export default function App() {
 
                     {isSignedIn ? (
                         <>
-                            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-6 leading-[1.1] text-glow">
-                                <span className="text-white">Welcome back,</span><br />
-                                <span className="text-gradient-accent">{userName}.</span>
+                            <h1 className="heading-jumbo mb-8 transition-all duration-1000">
+                                <span className="text-black">Welcome back,</span><br />
+                                <span className="text-gradient-accent">{userName}</span>
                             </h1>
 
-                            <p className="text-gray-400 text-lg md:text-xl max-w-2xl font-medium mb-10 leading-relaxed">
-                                Your AI Stylist has scanned your synced closet and analyzed your local area. Here are the customized trends matching your aesthetics.
+                            <p className="text-black/40 text-sm md:text-base max-w-sm font-bold uppercase tracking-widest mb-12 leading-relaxed">
+                                AI Stylist Active // {userName}'s Archive Synced
                             </p>
 
                             <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
@@ -600,13 +645,13 @@ export default function App() {
                         </>
                     ) : (
                         <>
-                            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-6 leading-[1.1] text-glow">
-                                <span className="text-white">Discover Tomorrow’s</span><br />
-                                <span className="text-gradient-accent">Fashion Today.</span>
+                            <h1 className="heading-jumbo mb-8 transition-all duration-1000">
+                                <span className="text-black">Discover Tomorrow's</span><br />
+                                <span className="text-gradient-accent">Fashion Today</span>
                             </h1>
 
-                            <p className="text-gray-400 text-lg md:text-xl max-w-2xl font-medium mb-10 leading-relaxed">
-                                Our neural networks analyze millions of real-time social signals to predict the hottest fashion and makeup trends before they peak.
+                            <p className="text-black/40 text-sm md:text-base max-w-sm font-bold uppercase tracking-widest mb-12 leading-relaxed">
+                                Real-time social signals // Predicted for you
                             </p>
 
                             <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
@@ -694,76 +739,147 @@ export default function App() {
                     </div>
                 </div>
 
-                {/* Product Grid Animation Container */}
-                <motion.div
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="show"
-                    key={activeTab} // Retriggers animation on tab switch
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-                >
-                    {filteredProducts.map((product) => (
-                        <motion.div
-                            variants={itemVariants}
-                            key={product.id}
-                            className="group glass-card rounded-[2rem] p-4 flex flex-col relative overflow-hidden"
-                        >
-                            {/* Product Image Wrapper */}
-                            <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem] border border-white/5 mb-6">
+
+
+
+
+                {/* Shop the Look - Interactive Module */}
+                <section className="py-32 px-6">
+                    <div className="max-w-[1400px] mx-auto">
+                        <div className="flex flex-col md:flex-row items-center gap-20">
+                            <div className="w-full md:w-1/2 relative group">
                                 <img
-                                    src={product.image_url}
-                                    alt={product.name}
-                                    className="w-full h-full object-cover transform duration-700 ease-[cubic-bezier(0.25, 1, 0.5, 1)] group-hover:scale-110 group-hover:rotate-1"
+                                    src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=80"
+                                    alt="Shop the Look"
+                                    className="w-full aspect-[4/5] object-cover"
                                 />
-
-                                {/* Image Overlay Gradient */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
-
-                                {/* AI Score Badge */}
-                                <div className="absolute top-4 right-4 bg-black/40 backdrop-blur-xl border border-white/20 text-white text-xs font-black px-3 py-2 rounded-xl flex items-center shadow-lg">
-                                    <Star className="w-3.5 h-3.5 text-pink-400 mr-1.5 fill-pink-400" />
-                                    {product.trend_score.toFixed(1)} / 100
+                                {/* Hotspots */}
+                                <div className="absolute top-[20%] left-[40%] group/hotspot cursor-pointer">
+                                    <div className="w-4 h-4 bg-white rounded-full animate-ping absolute inset-0" />
+                                    <div className="w-4 h-4 bg-white rounded-full relative" />
+                                    <div className="absolute left-full ml-4 top-1/2 -translate-y-1/2 bg-white px-4 py-2 opacity-0 group-hover/hotspot:opacity-100 transition-opacity whitespace-nowrap shadow-xl">
+                                        <p className="text-[10px] font-black uppercase tracking-widest text-black/40">Wool Overcoat</p>
+                                        <p className="text-sm font-bold">₹12,499</p>
+                                    </div>
                                 </div>
+                                <div className="absolute top-[60%] left-[30%] group/hotspot cursor-pointer">
+                                    <div className="w-4 h-4 bg-white rounded-full animate-ping absolute inset-0" />
+                                    <div className="w-4 h-4 bg-white rounded-full relative" />
+                                    <div className="absolute left-full ml-4 top-1/2 -translate-y-1/2 bg-white px-4 py-2 opacity-0 group-hover/hotspot:opacity-100 transition-opacity whitespace-nowrap shadow-xl">
+                                        <p className="text-[10px] font-black uppercase tracking-widest text-black/40">Ribbed Crewneck</p>
+                                        <p className="text-sm font-bold">₹3,299</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="w-full md:w-1/2 space-y-12">
+                                <h3 className="heading-display mb-8">The Urban<br /><span className="italic font-normal">Architect</span></h3>
+                                <p className="text-sm text-black/40 leading-relaxed max-w-sm font-medium">
+                                    A study in proportions and minimalist silhouettes. Each piece is crafted to transition between the architectural lines of the city and the soft textures of a private sanctuary.
+                                </p>
+                                <div className="space-y-6">
+                                    {[
+                                        { name: "Oversized Wool Blend Coat", price: "₹12,499", brand: "Trendly Archive" },
+                                        { name: "Premium Cotton Crewneck", price: "₹3,299", brand: "Trendly Archive" },
+                                        { name: "Straight Fit Tailored Trousers", price: "₹5,999", brand: "Trendly Archive" }
+                                    ].map((item, i) => (
+                                        <div key={i} className="flex items-center justify-between border-b border-black/5 pb-4 group cursor-pointer hover:border-black transition-all">
+                                            <div>
+                                                <p className="text-[10px] font-black uppercase tracking-tighter text-black/40">{item.brand}</p>
+                                                <p className="font-bold">{item.name}</p>
+                                            </div>
+                                            <div className="flex items-center space-x-4">
+                                                <p className="font-bold">{item.price}</p>
+                                                <ShoppingBag className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all" />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <button className="btn-minimal">Shop Full Look</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-                                {/* Tags */}
-                                <div className="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2">
+                {/* H&M Style Scannable Grid */}
+                <section className="py-20 border-t border-black/5">
+                    <div className="px-6 mb-12 flex justify-between items-end">
+                        <div>
+                            <h2 className="heading-display mb-4">Editor's<br /><span className="italic font-normal">Picks</span></h2>
+                            <div className="flex space-x-8 mt-8">
+                                {['All', 'Clothing', 'Makeup', 'Editorial'].map(tab => (
+                                    <button
+                                        key={tab}
+                                        onClick={() => setActiveTab(tab.toLowerCase())}
+                                        className={`text-[10px] font-black uppercase tracking-[0.3em] pb-1 border-b-2 transition-all duration-500 ${activeTab === tab.toLowerCase() ? "border-black text-black" : "border-transparent text-black/20 hover:text-black"
+                                            }`}
+                                    >
+                                        {tab}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="flex items-center space-x-4">
+                            <p className="text-[10px] font-black uppercase tracking-widest text-black/40">Sort by:</p>
+                            <select className="bg-transparent text-[10px] font-black uppercase tracking-widest outline-none cursor-pointer">
+                                <option>Newest</option>
+                                <option>Trending</option>
+                                <option>Archive</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className="product-grid">
+                        {filteredProducts.map((product) => (
+                            <motion.div
+                                key={product.id}
+                                layout
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                className="product-card-premium group"
+                            >
+                                <div className="relative aspect-[3/4] overflow-hidden bg-[#EDEDED]">
+                                    <img
+                                        src={product.image_url}
+                                        alt={product.name}
+                                        className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+                                    />
+                                    {/* Action Overlays */}
+                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors" />
+
+                                    <button
+                                        onClick={() => setCartCount(prev => prev + 1)}
+                                        className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white text-black px-6 py-3 text-[8px] font-black uppercase tracking-widest opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all shadow-xl"
+                                    >
+                                        Add to Cart
+                                    </button>
+
+                                    <div className="absolute top-4 right-4 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-all">
+                                        <button className="p-2 bg-white text-black rounded-full shadow-lg hover:bg-black hover:text-white transition-colors">
+                                            <Heart className="w-3.5 h-3.5" />
+                                        </button>
+                                    </div>
+
                                     {product.predicted_next_month && (
-                                        <div className="bg-gradient-to-r from-pink-500 to-purple-600 text-white text-[10px] uppercase tracking-widest font-bold px-2.5 py-1.5 rounded-lg whitespace-nowrap shadow-lg">
-                                            🔥 Next Month's Trend
+                                        <div className="absolute top-4 left-4 bg-black text-white px-3 py-1 text-[8px] font-black uppercase tracking-[0.2em]">
+                                            Hot Entry
                                         </div>
                                     )}
-                                    <div className="bg-white/20 backdrop-blur-md border border-white/20 text-white text-[10px] uppercase tracking-widest font-bold px-2.5 py-1.5 rounded-lg flex items-center whitespace-nowrap">
-                                        <TrendingUp className="w-3 h-3 mr-1" />
-                                        {product.momentum}
+                                </div>
+                                <div className="p-6">
+                                    <div className="flex justify-between items-start mb-1">
+                                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-black/40">{product.brand}</p>
+                                        <p className="text-xs font-bold leading-none">₹{product.price.toLocaleString('en-IN')}</p>
+                                    </div>
+                                    <h4 className="text-sm font-bold leading-none mb-3 hover:underline cursor-pointer">{product.name}</h4>
+                                    <div className="flex items-center space-x-2">
+                                        <div className="w-2 h-2 rounded-full bg-pink-500" />
+                                        <span className="text-[10px] font-black uppercase tracking-widest text-black/60">Score {product.trend_score}</span>
                                     </div>
                                 </div>
-                            </div>
-
-                            {/* Product Info */}
-                            <div className="px-2 flex-1 flex flex-col justify-between z-10">
-                                <div>
-                                    <div className="flex justify-between items-start mb-2">
-                                        <p className="text-gray-400 text-xs font-bold uppercase tracking-widest">{product.brand}</p>
-                                        <p className="text-white text-lg font-black">₹{product.price.toLocaleString('en-IN')}</p>
-                                    </div>
-                                    <h3 className="font-semibold text-lg text-white leading-tight mb-4">{product.name}</h3>
-                                </div>
-
-                                <a
-                                    href={product.affiliate_link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    referrerPolicy="no-referrer"
-                                    className="w-full mt-4 bg-white/5 hover:bg-white text-white hover:text-black border border-white/10 hover:border-white text-sm font-bold py-3.5 rounded-xl flex items-center justify-center transition-all group/btn"
-                                >
-                                    Find Similar & Buy
-                                    <ChevronRight className="w-4 h-4 ml-1 transform group-hover/btn:translate-x-1 transition-transform" />
-                                </a>
-                            </div>
-
-                        </motion.div>
-                    ))}
-                </motion.div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </section>
 
             </main>
 
@@ -899,6 +1015,98 @@ export default function App() {
                     </>
                 )}
             </AnimatePresence>
-        </div>
+
+            {/* Minimalist Checkout Flow */}
+            <AnimatePresence>
+                {showCheckout && (
+                    <motion.div
+                        initial={{ x: '100%' }}
+                        animate={{ x: 0 }}
+                        exit={{ x: '100%' }}
+                        transition={{ type: "spring", damping: 30, stiffness: 200 }}
+                        className="fixed inset-0 bg-white z-[100] p-12 overflow-y-auto"
+                    >
+                        <div className="max-w-4xl mx-auto">
+                            <div className="flex justify-between items-center mb-20">
+                                <h1 className="text-4xl font-black tracking-tighter italic">Checkout</h1>
+                                <button onClick={() => setShowCheckout(false)} className="hover:opacity-50">
+                                    <X className="w-8 h-8" />
+                                </button>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
+                                <div className="space-y-12">
+                                    <section>
+                                        <h3 className="text-[10px] font-black uppercase tracking-[0.3em] mb-8">01. Shipping</h3>
+                                        <div className="space-y-6">
+                                            <input type="text" placeholder="Full Name" className="w-full border-b border-black/10 py-4 outline-none focus:border-black transition-all" />
+                                            <input type="text" placeholder="Address line" className="w-full border-b border-black/10 py-4 outline-none focus:border-black transition-all" />
+                                            <input type="text" placeholder="City" className="w-full border-b border-black/10 py-4 outline-none focus:border-black transition-all" />
+                                        </div>
+                                    </section>
+                                    <section>
+                                        <h3 className="text-[10px] font-black uppercase tracking-[0.3em] mb-8">02. Payment</h3>
+                                        <div className="p-8 border border-black/5 bg-[#F9F7F2] rounded-xl flex items-center justify-between cursor-pointer hover:border-black transition-all">
+                                            <span className="font-bold">Cards / UPI / NetBanking</span>
+                                            <div className="w-4 h-4 rounded-full border border-black p-0.5">
+                                                <div className="w-full h-full bg-black rounded-full" />
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+
+                                <div className="bg-[#F9F7F2] p-12 rounded-3xl h-fit sticky top-12">
+                                    <h3 className="text-[10px] font-black uppercase tracking-[0.3em] mb-8">Order Summary</h3>
+                                    <div className="space-y-4 mb-8">
+                                        <div className="flex justify-between font-bold">
+                                            <span>Subtotal</span>
+                                            <span>₹15,798</span>
+                                        </div>
+                                        <div className="flex justify-between text-black/40">
+                                            <span>Shipping</span>
+                                            <span>Free</span>
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-between text-2xl font-black italic border-t border-black/5 pt-6 mb-12">
+                                        <span>Total</span>
+                                        <span>₹15,798</span>
+                                    </div>
+                                    <button className="w-full bg-black text-white py-6 text-[10px] font-black uppercase tracking-[0.4em] hover:bg-[#E04296] transition-colors">
+                                        Complete Purchase
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Quiet Luxury Footer */}
+            <footer className="bg-black text-white py-32 px-12 mt-40">
+                <div className="max-w-[1800px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-24">
+                    <div className="col-span-1 md:col-span-2">
+                        <h2 className="heading-jumbo mb-12 select-none">TRNDLY.</h2>
+                        <div className="flex space-x-12 opacity-40">
+                            {['Instagram', 'Pinterest', 'Editorial', 'Support'].map(item => (
+                                <button key={item} className="text-[10px] font-black uppercase tracking-[0.3em] hover:text-white transition-colors">{item}</button>
+                            ))}
+                        </div>
+                    </div>
+                    <div>
+                        <h3 className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 mb-8">Collections</h3>
+                        <div className="flex flex-col space-y-3">
+                            {['Essential Edit', 'The Archive', 'Urban Luxe', 'SS26 Debut'].map(item => (
+                                <button key={item} className="text-sm font-bold hover:underline text-left">{item}</button>
+                            ))}
+                        </div>
+                    </div>
+                    <div>
+                        <p className="text-[10px] font-black uppercase tracking-widest leading-loose max-w-[200px]">
+                            Built for those who navigate the world with aesthetic intention. Trendly AI Archive 2026.
+                        </p>
+                    </div>
+                </div>
+            </footer>
+        </div >
     );
 }
