@@ -21,6 +21,7 @@ export default function App() {
     const [isEditingName, setIsEditingName] = useState(false);
     const [showMegaMenu, setShowMegaMenu] = useState(false);
     const [showSearch, setShowSearch] = useState(false);
+    const [selectedProductAnalytics, setSelectedProductAnalytics] = useState(null);
     const [tempName, setTempName] = useState("");
     const [profilePic, setProfilePic] = useState(() => {
         return localStorage.getItem("userProfilePic") || "";
@@ -56,7 +57,13 @@ export default function App() {
             affiliate_link: "https://www.allsaints.com/",
             trend_score: 95.8,
             predicted_next_month: true,
-            momentum: "+24% 7d"
+            momentum: "+24% 7d",
+            analytics: {
+                engagement_graph: [40, 55, 45, 70, 85, 95, 92],
+                social_mentions: "124.5K",
+                top_regions: ["New York", "London", "Tokyo"],
+                sentiment_score: 92
+            }
         },
         {
             id: 2,
@@ -70,7 +77,13 @@ export default function App() {
             affiliate_link: "https://thebearhouse.com/",
             trend_score: 87.5,
             predicted_next_month: false,
-            momentum: "Steady"
+            momentum: "Steady",
+            analytics: {
+                engagement_graph: [60, 62, 58, 65, 63, 67, 65],
+                social_mentions: "42.1K",
+                top_regions: ["Mumbai", "Sydney", "Dubai"],
+                sentiment_score: 85
+            }
         },
         {
             id: 3,
@@ -84,7 +97,13 @@ export default function App() {
             affiliate_link: "https://hermod.in/",
             trend_score: 91.2,
             predicted_next_month: true,
-            momentum: "+15% 7d"
+            momentum: "+15% 7d",
+            analytics: {
+                engagement_graph: [30, 45, 60, 75, 82, 88, 91],
+                social_mentions: "88.9K",
+                top_regions: ["Berlin", "Seoul", "Paris"],
+                sentiment_score: 89
+            }
         },
         {
             id: 4,
@@ -98,7 +117,13 @@ export default function App() {
             affiliate_link: "https://www.bonkerscorner.com/",
             trend_score: 98.4,
             predicted_next_month: true,
-            momentum: "+64% 7d"
+            momentum: "+64% 7d",
+            analytics: {
+                engagement_graph: [20, 35, 55, 80, 95, 98, 99],
+                social_mentions: "256.2K",
+                top_regions: ["Los Angeles", "Milan", "Shanghai"],
+                sentiment_score: 96
+            }
         },
         {
             id: 5,
@@ -326,6 +351,117 @@ export default function App() {
         }, 2500);
         return () => clearInterval(interval);
     }, []);
+
+    const ProductAnalyticsModal = () => {
+        if (!selectedProductAnalytics) return null;
+        const { analytics, name, brand, image_url, trend_score } = selectedProductAnalytics;
+
+        return (
+            <AnimatePresence>
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-[110] flex items-center justify-center bg-black/80 backdrop-blur-2xl px-4"
+                >
+                    <motion.div
+                        initial={{ scale: 0.9, y: 20, opacity: 0 }}
+                        animate={{ scale: 1, y: 0, opacity: 1 }}
+                        exit={{ scale: 0.9, y: 20, opacity: 0 }}
+                        className="bg-white rounded-[3rem] w-full max-w-4xl overflow-hidden shadow-2xl flex flex-col md:flex-row h-[80vh] md:h-auto"
+                    >
+                        {/* Left: Product Visuals */}
+                        <div className="w-full md:w-2/5 relative bg-[#EDEDED]">
+                            <img src={image_url} alt={name} className="w-full h-full object-cover" />
+                            <div className="absolute top-8 left-8 bg-black text-white px-4 py-2 text-[10px] font-black uppercase tracking-[0.4em]">
+                                ID: {selectedProductAnalytics.id}
+                            </div>
+                        </div>
+
+                        {/* Right: Data & Analytics */}
+                        <div className="w-full md:w-3/5 p-12 overflow-y-auto">
+                            <div className="flex justify-between items-start mb-8">
+                                <div>
+                                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-black/40 mb-2">{brand}</p>
+                                    <h2 className="text-3xl font-black italic tracking-tighter">{name}</h2>
+                                </div>
+                                <button onClick={() => setSelectedProductAnalytics(null)} className="p-4 hover:bg-black/5 rounded-full transition-colors">
+                                    <X className="w-6 h-6" />
+                                </button>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-8 mb-12">
+                                <div className="bg-black/5 p-6 rounded-3xl">
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-black/40 mb-4 flex items-center">
+                                        <Activity className="w-3 h-3 mr-2 text-blue-500" /> Viral Momentum
+                                    </p>
+                                    <div className="flex items-end space-x-1.5 h-16">
+                                        {analytics.engagement_graph.map((val, i) => (
+                                            <motion.div
+                                                key={i}
+                                                initial={{ height: 0 }}
+                                                animate={{ height: `${val}%` }}
+                                                transition={{ delay: i * 0.1, duration: 1 }}
+                                                className="flex-1 bg-black rounded-t-sm"
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="bg-black/5 p-6 rounded-3xl">
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-black/40 mb-4 flex items-center">
+                                        <Sparkles className="w-3 h-3 mr-2 text-pink-500" /> Social Sentiment
+                                    </p>
+                                    <div className="flex flex-col justify-center h-16">
+                                        <div className="flex justify-between text-xl font-black italic mb-2">
+                                            <span>{analytics.sentiment_score}%</span>
+                                            <span className="text-green-500 text-xs">Positive</span>
+                                        </div>
+                                        <div className="w-full h-1 bg-black/10 rounded-full overflow-hidden">
+                                            <motion.div
+                                                initial={{ width: 0 }}
+                                                animate={{ width: `${analytics.sentiment_score}%` }}
+                                                transition={{ duration: 1.5, ease: "easeOut" }}
+                                                className="h-full bg-gradient-to-r from-pink-500 to-green-500"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="space-y-8 mb-12">
+                                <section>
+                                    <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-black/40 mb-4">Neural Hotspots</h3>
+                                    <div className="flex flex-wrap gap-2">
+                                        {analytics.top_regions.map(region => (
+                                            <span key={region} className="px-4 py-2 bg-black text-white text-[10px] font-bold rounded-full">{region}</span>
+                                        ))}
+                                        <span className="px-4 py-2 border border-black/10 text-[10px] font-bold rounded-full">+ 12 more cities</span>
+                                    </div>
+                                </section>
+                                <section>
+                                    <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-black/40 mb-4">Live Social Reach</h3>
+                                    <p className="text-4xl font-black italic tracking-tighter text-[#2979FF]">{analytics.social_mentions}</p>
+                                    <p className="text-[10px] font-bold uppercase tracking-widest text-black/20 mt-1">Total Mentions [Next 48H Prediction: +12%]</p>
+                                </section>
+                            </div>
+
+                            <div className="pt-8 border-t border-black/5 flex space-x-4">
+                                <button
+                                    onClick={() => window.open(selectedProductAnalytics.affiliate_link, '_blank')}
+                                    className="flex-1 bg-black text-white py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#2979FF] transition-colors"
+                                >
+                                    Explore Piece
+                                </button>
+                                <button className="px-8 py-5 border border-black/10 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-black hover:text-white transition-all">
+                                    Track Trend
+                                </button>
+                            </div>
+                        </div>
+                    </motion.div>
+                </motion.div>
+            </AnimatePresence>
+        );
+    };
 
     const SearchOverlay = () => (
         <AnimatePresence>
@@ -959,12 +1095,20 @@ export default function App() {
                                     {/* Action Overlays */}
                                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors" />
 
-                                    <button
-                                        onClick={() => window.open(product.affiliate_link, '_blank')}
-                                        className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white text-black px-6 py-3 text-[8px] font-black uppercase tracking-widest opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all shadow-xl"
-                                    >
-                                        View on {product.brand}
-                                    </button>
+                                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col space-y-2 w-full px-6 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all">
+                                        <button
+                                            onClick={() => window.open(product.affiliate_link, '_blank')}
+                                            className="bg-white text-black py-3 text-[8px] font-black uppercase tracking-widest shadow-xl hover:bg-black hover:text-white transition-colors"
+                                        >
+                                            View on {product.brand}
+                                        </button>
+                                        <button
+                                            onClick={() => setSelectedProductAnalytics(product)}
+                                            className="bg-black text-white py-3 text-[8px] font-black uppercase tracking-widest shadow-xl hover:bg-[#2979FF] transition-colors flex items-center justify-center"
+                                        >
+                                            <Activity className="w-3 h-3 mr-2" /> Neural Analytics
+                                        </button>
+                                    </div>
 
                                     <div className="absolute top-4 right-4 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-all">
                                         <button className="p-2 bg-white text-black rounded-full shadow-lg hover:bg-black hover:text-white transition-colors">
@@ -1129,6 +1273,7 @@ export default function App() {
                 )}
             </AnimatePresence>
 
+            <ProductAnalyticsModal />
             <SearchOverlay />
 
             {/* Quiet Luxury Footer */}
