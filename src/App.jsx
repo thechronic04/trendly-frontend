@@ -137,7 +137,13 @@ export default function App() {
             affiliate_link: "https://www.zara.com/",
             trend_score: 89.5,
             predicted_next_month: true,
-            momentum: "+12% 7d"
+            momentum: "+12% 7d",
+            analytics: {
+                engagement_graph: [50, 45, 60, 55, 75, 85, 89],
+                social_mentions: "64.3K",
+                top_regions: ["Paris", "Tokyo", "Milan"],
+                sentiment_score: 91
+            }
         },
         {
             id: 6,
@@ -151,7 +157,13 @@ export default function App() {
             affiliate_link: "https://www2.hm.com/",
             trend_score: 94.2,
             predicted_next_month: true,
-            momentum: "+38% 7d"
+            momentum: "+38% 7d",
+            analytics: {
+                engagement_graph: [45, 50, 55, 60, 75, 88, 94],
+                social_mentions: "92.4K",
+                top_regions: ["London", "NYC", "Paris"],
+                sentiment_score: 89
+            }
         },
         {
             id: 7,
@@ -165,7 +177,13 @@ export default function App() {
             affiliate_link: "https://www.myntra.com/",
             trend_score: 97.5,
             predicted_next_month: true,
-            momentum: "+52% 7d"
+            momentum: "+52% 7d",
+            analytics: {
+                engagement_graph: [20, 40, 60, 80, 90, 95, 98],
+                social_mentions: "154.2K",
+                top_regions: ["Mumbai", "Delhi", "Bangalore"],
+                sentiment_score: 97
+            }
         },
         {
             id: 8,
@@ -354,7 +372,15 @@ export default function App() {
 
     const ProductAnalyticsModal = () => {
         if (!selectedProductAnalytics) return null;
-        const { analytics, name, brand, image_url, trend_score } = selectedProductAnalytics;
+
+        // Safety check for missing analytics data
+        const analytics = selectedProductAnalytics.analytics || {
+            engagement_graph: [10, 20, 15, 25, 30, 25, 40],
+            social_mentions: "Analysing...",
+            top_regions: ["Data Pending"],
+            sentiment_score: 50
+        };
+        const { name, brand, image_url, trend_score } = selectedProductAnalytics;
 
         return (
             <AnimatePresence>
