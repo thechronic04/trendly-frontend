@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Search, ChevronRight, Star, TrendingUp, Zap, Activity, Cpu, User, Settings, Heart, X, LogOut, Camera, Eye, EyeOff } from 'lucide-react';
 
+// ✅ NEW: Backend API URL
+const API_URL = import.meta.env.VITE_API_URL || "https://trendly-backend.vercel.app";
+
 // --- Separate Functional Components (Stability Fix) ---
 
 const Logo = ({ className = "", showText = true }) => (
@@ -49,7 +52,6 @@ const ProductAnalyticsModal = ({ selectedProductAnalytics, setSelectedProductAna
                 exit={{ scale: 0.9, y: 20, opacity: 0 }}
                 className="bg-white rounded-[3rem] w-full max-w-4xl overflow-hidden shadow-2xl flex flex-col md:flex-row h-[80vh] md:h-auto"
             >
-                {/* Left: Product Visuals */}
                 <div className="w-full md:w-2/5 relative bg-[#EDEDED]">
                     <img src={image_url} alt={name} className="w-full h-full object-cover" />
                     <div className="absolute top-8 left-8 bg-black text-white px-4 py-2 text-[10px] font-black uppercase tracking-[0.4em]">
@@ -57,7 +59,6 @@ const ProductAnalyticsModal = ({ selectedProductAnalytics, setSelectedProductAna
                     </div>
                 </div>
 
-                {/* Right: Data & Analytics */}
                 <div className="w-full md:w-3/5 p-12 overflow-y-auto">
                     <div className="flex justify-between items-start mb-8">
                         <div>
@@ -76,13 +77,7 @@ const ProductAnalyticsModal = ({ selectedProductAnalytics, setSelectedProductAna
                             </p>
                             <div className="flex items-end space-x-1.5 h-16">
                                 {analytics.engagement_graph.map((val, i) => (
-                                    <motion.div
-                                        key={i}
-                                        initial={{ height: 0 }}
-                                        animate={{ height: `${val}%` }}
-                                        transition={{ delay: i * 0.1, duration: 1 }}
-                                        className="flex-1 bg-black rounded-t-sm"
-                                    />
+                                    <motion.div key={i} initial={{ height: 0 }} animate={{ height: `${val}%` }} transition={{ delay: i * 0.1, duration: 1 }} className="flex-1 bg-black rounded-t-sm" />
                                 ))}
                             </div>
                         </div>
@@ -96,12 +91,7 @@ const ProductAnalyticsModal = ({ selectedProductAnalytics, setSelectedProductAna
                                     <span className="text-green-500 text-xs">Positive</span>
                                 </div>
                                 <div className="w-full h-1 bg-black/10 rounded-full overflow-hidden">
-                                    <motion.div
-                                        initial={{ width: 0 }}
-                                        animate={{ width: `${analytics.sentiment_score}%` }}
-                                        transition={{ duration: 1.5, ease: "easeOut" }}
-                                        className="h-full bg-gradient-to-r from-pink-500 to-green-500"
-                                    />
+                                    <motion.div initial={{ width: 0 }} animate={{ width: `${analytics.sentiment_score}%` }} transition={{ duration: 1.5, ease: "easeOut" }} className="h-full bg-gradient-to-r from-pink-500 to-green-500" />
                                 </div>
                             </div>
                         </div>
@@ -125,10 +115,7 @@ const ProductAnalyticsModal = ({ selectedProductAnalytics, setSelectedProductAna
                     </div>
 
                     <div className="pt-8 border-t border-black/5 flex space-x-4">
-                        <button
-                            onClick={() => window.open(selectedProductAnalytics.affiliate_link, '_blank')}
-                            className="flex-1 bg-black text-white py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#2979FF] transition-colors"
-                        >
+                        <button onClick={() => window.open(selectedProductAnalytics.affiliate_link, '_blank')} className="flex-1 bg-black text-white py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#2979FF] transition-colors">
                             Explore Piece
                         </button>
                         <button className="px-8 py-5 border border-black/10 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-black hover:text-white transition-all">
@@ -144,12 +131,7 @@ const ProductAnalyticsModal = ({ selectedProductAnalytics, setSelectedProductAna
 const SearchOverlay = ({ showSearch, setShowSearch }) => (
     <AnimatePresence>
         {showSearch && (
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[100] bg-white/90 backdrop-blur-2xl p-12 overflow-hidden"
-            >
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] bg-white/90 backdrop-blur-2xl p-12 overflow-hidden">
                 <div className="max-w-[1400px] mx-auto h-full flex flex-col">
                     <div className="flex justify-between items-center mb-20">
                         <div className="flex items-center space-x-4">
@@ -162,18 +144,9 @@ const SearchOverlay = ({ showSearch, setShowSearch }) => (
                     </div>
 
                     <div className="relative mb-24">
-                        <input
-                            autoFocus
-                            type="text"
-                            placeholder="Search Trends, Aesthetics, or Brands..."
-                            className="w-full bg-transparent text-6xl md:text-8xl font-black italic tracking-tighter outline-none placeholder:text-black/5"
-                        />
+                        <input autoFocus type="text" placeholder="Search Trends, Aesthetics, or Brands..." className="w-full bg-transparent text-6xl md:text-8xl font-black italic tracking-tighter outline-none placeholder:text-black/5" />
                         <div className="absolute -bottom-4 left-0 w-full h-[2px] bg-black/5 overflow-hidden">
-                            <motion.div
-                                animate={{ x: ['-100%', '100%'] }}
-                                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                                className="w-1/2 h-full bg-gradient-to-r from-transparent via-[#2979FF] to-transparent"
-                            />
+                            <motion.div animate={{ x: ['-100%', '100%'] }} transition={{ duration: 3, repeat: Infinity, ease: "linear" }} className="w-1/2 h-full bg-gradient-to-r from-transparent via-[#2979FF] to-transparent" />
                         </div>
                     </div>
 
@@ -195,18 +168,14 @@ const SearchOverlay = ({ showSearch, setShowSearch }) => (
                             <h3 className="text-[10px] font-black uppercase tracking-[0.3em] mb-8">Quick Discovery</h3>
                             <div className="flex flex-wrap gap-4">
                                 {['Oversized', 'Leather', 'Monochrome', 'Vintage', 'Sustainable', 'Streetwear'].map(chip => (
-                                    <button key={chip} className="px-6 py-3 border border-black/5 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-black hover:text-white transition-all">
-                                        {chip}
-                                    </button>
+                                    <button key={chip} className="px-6 py-3 border border-black/5 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-black hover:text-white transition-all">{chip}</button>
                                 ))}
                             </div>
                         </div>
                         <div className="bg-[#EDEDED] p-8 rounded-[2rem] relative overflow-hidden group">
                             <div className="absolute inset-0 bg-gradient-to-br from-[#2979FF]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                             <h4 className="text-sm font-black mb-4 relative">AI Trend Prediction</h4>
-                            <p className="text-xs text-black/40 leading-relaxed mb-6 relative font-medium">
-                                Our neural engines predict a 42% surge in "Distressed Denim" within the next 72 hours across urban hubs.
-                            </p>
+                            <p className="text-xs text-black/40 leading-relaxed mb-6 relative font-medium">Our neural engines predict a 42% surge in "Distressed Denim" within the next 72 hours across urban hubs.</p>
                             <button className="text-[10px] font-black uppercase tracking-[0.3em] border-b border-black pb-1 relative">Explore Now</button>
                         </div>
                     </div>
@@ -219,217 +188,25 @@ const SearchOverlay = ({ showSearch, setShowSearch }) => (
 // --- Main App Component ---
 
 const mockProductsData = [
-    {
-        id: 1,
-        name: "Oversized Vintage Leather Moto Jacket",
-        brand: "AllSaints",
-        price: 24999.00,
-        category: "clothing",
-        subCategory: "Outerwear",
-        collection: "New In",
-        image_url: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&q=80",
-        affiliate_link: "https://www.allsaints.com/",
-        trend_score: 95.8,
-        predicted_next_month: true,
-        momentum: "+24% 7d",
-        analytics: {
-            engagement_graph: [40, 55, 45, 70, 85, 95, 92],
-            social_mentions: "124.5K",
-            top_regions: ["New York", "London", "Tokyo"],
-            sentiment_score: 92
-        }
-    },
-    {
-        id: 2,
-        name: "Premium Cotton Oxford Shirt",
-        brand: "The Bear House",
-        price: 2499.00,
-        category: "clothing",
-        subCategory: "Tops",
-        collection: "Ready to Wear",
-        image_url: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&q=80",
-        affiliate_link: "https://thebearhouse.com/",
-        trend_score: 87.5,
-        predicted_next_month: false,
-        momentum: "Steady",
-        analytics: {
-            engagement_graph: [60, 62, 58, 65, 63, 67, 65],
-            social_mentions: "42.1K",
-            top_regions: ["Mumbai", "Sydney", "Dubai"],
-            sentiment_score: 85
-        }
-    },
-    {
-        id: 3,
-        name: "Urban Minimalist Tech Shorts",
-        brand: "Hermod",
-        price: 1899.00,
-        category: "clothing",
-        subCategory: "Denim",
-        collection: "Urban Street",
-        image_url: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=800&q=80",
-        affiliate_link: "https://hermod.in/",
-        trend_score: 91.2,
-        predicted_next_month: true,
-        momentum: "+15% 7d",
-        analytics: {
-            engagement_graph: [30, 45, 60, 75, 82, 88, 91],
-            social_mentions: "88.9K",
-            top_regions: ["Berlin", "Seoul", "Paris"],
-            sentiment_score: 89
-        }
-    },
-    {
-        id: 4,
-        name: "Oversized Streetwear Hoodie",
-        brand: "Bonkers",
-        price: 1599.00,
-        category: "clothing",
-        subCategory: "Knitwear",
-        collection: "New In",
-        image_url: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&q=80",
-        affiliate_link: "https://www.bonkerscorner.com/",
-        trend_score: 98.4,
-        predicted_next_month: true,
-        momentum: "+64% 7d",
-        analytics: {
-            engagement_graph: [20, 35, 55, 80, 95, 98, 99],
-            social_mentions: "256.2K",
-            top_regions: ["Los Angeles", "Milan", "Shanghai"],
-            sentiment_score: 96
-        }
-    },
-    {
-        id: 5,
-        name: "Asymmetric Satin Slip Midi",
-        brand: "Zara",
-        price: 3499.00,
-        category: "clothing",
-        subCategory: "Tops",
-        collection: "Quiet Luxury",
-        image_url: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=800&q=80",
-        affiliate_link: "https://www.zara.com/",
-        trend_score: 89.5,
-        predicted_next_month: true,
-        momentum: "+12% 7d",
-        analytics: {
-            engagement_graph: [50, 45, 60, 55, 75, 85, 89],
-            social_mentions: "64.3K",
-            top_regions: ["Paris", "Tokyo", "Milan"],
-            sentiment_score: 91
-        }
-    },
-    {
-        id: 6,
-        name: "Wide Leg Cargo Pants",
-        brand: "H&M",
-        price: 2299.00,
-        category: "clothing",
-        subCategory: "Denim",
-        collection: "Ready to Wear",
-        image_url: "https://images.unsplash.com/photo-1542280756-74b2f55e73e1?w=800&q=80",
-        affiliate_link: "https://www2.hm.com/",
-        trend_score: 94.2,
-        predicted_next_month: true,
-        momentum: "+38% 7d",
-        analytics: {
-            engagement_graph: [45, 50, 55, 60, 75, 88, 94],
-            social_mentions: "92.4K",
-            top_regions: ["London", "NYC", "Paris"],
-            sentiment_score: 89
-        }
-    },
-    {
-        id: 7,
-        name: "Libas Embroidered Kurta Set",
-        brand: "Myntra",
-        price: 4599.00,
-        category: "clothing",
-        subCategory: "Knitwear",
-        collection: "Selected Edits",
-        image_url: "https://images.unsplash.com/photo-1583391733958-d25e07fac0ce?w=800&q=80",
-        affiliate_link: "https://www.myntra.com/",
-        trend_score: 97.5,
-        predicted_next_month: true,
-        momentum: "+52% 7d",
-        analytics: {
-            engagement_graph: [20, 40, 60, 80, 90, 95, 98],
-            social_mentions: "154.2K",
-            top_regions: ["Mumbai", "Delhi", "Bangalore"],
-            sentiment_score: 97
-        }
-    },
-    {
-        id: 8,
-        name: "Urban Explorer Backpack",
-        brand: "Hermod",
-        price: 3499.00,
-        category: "clothing",
-        subCategory: "Bags",
-        collection: "Accessories",
-        image_url: "https://images.unsplash.com/photo-1553062407-98eeb94c6a62?w=800&q=80",
-        affiliate_link: "https://hermod.in/",
-        trend_score: 92.4,
-        predicted_next_month: true,
-        momentum: "+8% 7d"
-    },
-    {
-        id: 9,
-        name: "Soft Pinch Liquid Blush",
-        brand: "Nykaa",
-        price: 2499.00,
-        category: "makeup",
-        subCategory: "Tops",
-        image_url: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&q=80",
-        affiliate_link: "https://www.nykaa.com/",
-        trend_score: 98.2,
-        predicted_next_month: true,
-        momentum: "+45% 7d"
-    },
-    {
-        id: 10,
-        name: "Cherry Glow Lip Oil",
-        brand: "Nykaa",
-        price: 4200.00,
-        category: "makeup",
-        subCategory: "Jewelry",
-        image_url: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=800&q=80",
-        affiliate_link: "https://www.nykaa.com/",
-        trend_score: 99.1,
-        predicted_next_month: true,
-        momentum: "+80% 7d"
-    },
-    {
-        id: 11,
-        name: "Kay Beauty Matte Lipstick",
-        brand: "Nykaa",
-        price: 1200.00,
-        category: "makeup",
-        subCategory: "Jewelry",
-        image_url: "https://images.unsplash.com/photo-1625091392900-53bc07684617?w=800&q=80",
-        affiliate_link: "https://www.nykaa.com/",
-        trend_score: 98.8,
-        predicted_next_month: true,
-        momentum: "+45% 7d"
-    },
-    {
-        id: 12,
-        name: "Liquid Liner Pen",
-        brand: "Nykaa",
-        price: 899.00,
-        category: "makeup",
-        subCategory: "Eyewear",
-        image_url: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=800&q=80",
-        affiliate_link: "https://www.nykaa.com/",
-        trend_score: 87.2,
-        predicted_next_month: false,
-        momentum: "-2% 7d"
-    }
+    { id: 1, name: "Oversized Vintage Leather Moto Jacket", brand: "AllSaints", price: 24999.00, category: "clothing", subCategory: "Outerwear", collection: "New In", image_url: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&q=80", affiliate_link: "https://www.allsaints.com/", trend_score: 95.8, predicted_next_month: true, momentum: "+24% 7d", analytics: { engagement_graph: [40, 55, 45, 70, 85, 95, 92], social_mentions: "124.5K", top_regions: ["New York", "London", "Tokyo"], sentiment_score: 92 } },
+    { id: 2, name: "Premium Cotton Oxford Shirt", brand: "The Bear House", price: 2499.00, category: "clothing", subCategory: "Tops", collection: "Ready to Wear", image_url: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&q=80", affiliate_link: "https://thebearhouse.com/", trend_score: 87.5, predicted_next_month: false, momentum: "Steady", analytics: { engagement_graph: [60, 62, 58, 65, 63, 67, 65], social_mentions: "42.1K", top_regions: ["Mumbai", "Sydney", "Dubai"], sentiment_score: 85 } },
+    { id: 3, name: "Urban Minimalist Tech Shorts", brand: "Hermod", price: 1899.00, category: "clothing", subCategory: "Denim", collection: "Urban Street", image_url: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=800&q=80", affiliate_link: "https://hermod.in/", trend_score: 91.2, predicted_next_month: true, momentum: "+15% 7d", analytics: { engagement_graph: [30, 45, 60, 75, 82, 88, 91], social_mentions: "88.9K", top_regions: ["Berlin", "Seoul", "Paris"], sentiment_score: 89 } },
+    { id: 4, name: "Oversized Streetwear Hoodie", brand: "Bonkers", price: 1599.00, category: "clothing", subCategory: "Knitwear", collection: "New In", image_url: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&q=80", affiliate_link: "https://www.bonkerscorner.com/", trend_score: 98.4, predicted_next_month: true, momentum: "+64% 7d", analytics: { engagement_graph: [20, 35, 55, 80, 95, 98, 99], social_mentions: "256.2K", top_regions: ["Los Angeles", "Milan", "Shanghai"], sentiment_score: 96 } },
+    { id: 5, name: "Asymmetric Satin Slip Midi", brand: "Zara", price: 3499.00, category: "clothing", subCategory: "Tops", collection: "Quiet Luxury", image_url: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=800&q=80", affiliate_link: "https://www.zara.com/", trend_score: 89.5, predicted_next_month: true, momentum: "+12% 7d", analytics: { engagement_graph: [50, 45, 60, 55, 75, 85, 89], social_mentions: "64.3K", top_regions: ["Paris", "Tokyo", "Milan"], sentiment_score: 91 } },
+    { id: 6, name: "Wide Leg Cargo Pants", brand: "H&M", price: 2299.00, category: "clothing", subCategory: "Denim", collection: "Ready to Wear", image_url: "https://images.unsplash.com/photo-1542280756-74b2f55e73e1?w=800&q=80", affiliate_link: "https://www2.hm.com/", trend_score: 94.2, predicted_next_month: true, momentum: "+38% 7d", analytics: { engagement_graph: [45, 50, 55, 60, 75, 88, 94], social_mentions: "92.4K", top_regions: ["London", "NYC", "Paris"], sentiment_score: 89 } },
+    { id: 7, name: "Libas Embroidered Kurta Set", brand: "Myntra", price: 4599.00, category: "clothing", subCategory: "Knitwear", collection: "Selected Edits", image_url: "https://images.unsplash.com/photo-1583391733958-d25e07fac0ce?w=800&q=80", affiliate_link: "https://www.myntra.com/", trend_score: 97.5, predicted_next_month: true, momentum: "+52% 7d", analytics: { engagement_graph: [20, 40, 60, 80, 90, 95, 98], social_mentions: "154.2K", top_regions: ["Mumbai", "Delhi", "Bangalore"], sentiment_score: 97 } },
+    { id: 8, name: "Urban Explorer Backpack", brand: "Hermod", price: 3499.00, category: "clothing", subCategory: "Bags", collection: "Accessories", image_url: "https://images.unsplash.com/photo-1553062407-98eeb94c6a62?w=800&q=80", affiliate_link: "https://hermod.in/", trend_score: 92.4, predicted_next_month: true, momentum: "+8% 7d" },
+    { id: 9, name: "Soft Pinch Liquid Blush", brand: "Nykaa", price: 2499.00, category: "makeup", subCategory: "Tops", image_url: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&q=80", affiliate_link: "https://www.nykaa.com/", trend_score: 98.2, predicted_next_month: true, momentum: "+45% 7d" },
+    { id: 10, name: "Cherry Glow Lip Oil", brand: "Nykaa", price: 4200.00, category: "makeup", subCategory: "Jewelry", image_url: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=800&q=80", affiliate_link: "https://www.nykaa.com/", trend_score: 99.1, predicted_next_month: true, momentum: "+80% 7d" },
+    { id: 11, name: "Kay Beauty Matte Lipstick", brand: "Nykaa", price: 1200.00, category: "makeup", subCategory: "Jewelry", image_url: "https://images.unsplash.com/photo-1625091392900-53bc07684617?w=800&q=80", affiliate_link: "https://www.nykaa.com/", trend_score: 98.8, predicted_next_month: true, momentum: "+45% 7d" },
+    { id: 12, name: "Liquid Liner Pen", brand: "Nykaa", price: 899.00, category: "makeup", subCategory: "Eyewear", image_url: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=800&q=80", affiliate_link: "https://www.nykaa.com/", trend_score: 87.2, predicted_next_month: false, momentum: "-2% 7d" }
 ];
 
 export default function App() {
     // --- State Management ---
     const [products, setProducts] = useState(mockProductsData);
+    // ✅ NEW: loading state for API fetch
+    const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('clothing');
     const [selectedBrand, setSelectedBrand] = useState('All Brands');
     const [selectedSubCategory, setSelectedSubCategory] = useState('All');
@@ -450,6 +227,26 @@ export default function App() {
     const [profilePic, setProfilePic] = useState(() => localStorage.getItem("userProfilePic") || "");
     const [userName, setUserName] = useState(() => localStorage.getItem("userName") || "Guest");
     const [userEmail, setUserEmail] = useState(() => localStorage.getItem("userEmail") || "");
+
+    // ✅ NEW: Fetch live products from backend, fall back to mock data on error
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const res = await fetch(`${API_URL}/api/products`);
+                const data = await res.json();
+                if (Array.isArray(data) && data.length > 0) {
+                    // Normalize sub_category → subCategory for filter compatibility
+                    const normalized = data.map(p => ({ ...p, subCategory: p.sub_category || p.subCategory || "All" }));
+                    setProducts(normalized);
+                }
+            } catch (err) {
+                console.warn("API unavailable, using mock data:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchProducts();
+    }, []);
 
     // --- Derived Data ---
     const currentTabProducts = products.filter(p => p.category === activeTab);
@@ -539,14 +336,11 @@ export default function App() {
     // --- Template Render ---
     return (
         <div className="relative min-h-screen selection:bg-pink-500/40 text-black font-sans overflow-x-hidden">
-            {/* Aurora Background Layers */}
             <div className="aurora-bg">
                 <div className="aurora-blob blob-1"></div>
                 <div className="aurora-blob blob-2"></div>
                 <div className="aurora-blob blob-3"></div>
             </div>
-
-            {/* Floating Nano-Grid Overlay */}
             <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px)', backgroundSize: '40px 40px', zIndex: 0 }}></div>
 
             {/* Navbar */}
@@ -574,14 +368,10 @@ export default function App() {
                         </div>
                     </div>
 
-                    <div className="absolute left-1/2 -translate-x-1/2">
-                        <Logo />
-                    </div>
+                    <div className="absolute left-1/2 -translate-x-1/2"><Logo /></div>
 
                     <div className="flex items-center space-x-8">
-                        <button onClick={() => setShowSearch(true)} className="hover:opacity-50 transition-opacity">
-                            <Search className="w-5 h-5 stroke-[1.5px]" />
-                        </button>
+                        <button onClick={() => setShowSearch(true)} className="hover:opacity-50 transition-opacity"><Search className="w-5 h-5 stroke-[1.5px]" /></button>
                         {isSignedIn ? (
                             <button onClick={() => setShowProfile(true)} className="flex items-center space-x-2 group">
                                 <div className="w-6 h-6 rounded-full bg-black/5 border border-black/10 flex items-center justify-center overflow-hidden">
@@ -590,9 +380,7 @@ export default function App() {
                                 <span className="text-[10px] font-black uppercase tracking-widest hidden sm:block">{userName}</span>
                             </button>
                         ) : (
-                            <button onClick={() => setShowLoginModal(true)} className="text-[10px] font-black uppercase tracking-[0.2em] border-b border-black/50 pb-0.5 hover:border-black transition-all">
-                                Sign In
-                            </button>
+                            <button onClick={() => setShowLoginModal(true)} className="text-[10px] font-black uppercase tracking-[0.2em] border-b border-black/50 pb-0.5 hover:border-black transition-all">Sign In</button>
                         )}
                     </div>
                 </div>
@@ -700,28 +488,37 @@ export default function App() {
                     </div>
                 </div>
 
-                {/* Grid */}
-                <div className="product-grid">
-                    {filteredProducts.map(product => (
-                        <motion.div key={product.id} layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="product-card-premium group">
-                            <div className="relative aspect-[3/4] overflow-hidden bg-[#EDEDED]">
-                                <img src={product.image_url} alt={product.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                                <div className="absolute inset-0 flex flex-col justify-end p-6 bg-black/0 group-hover:bg-black/20 transition-all opacity-0 group-hover:opacity-100">
-                                    <button onClick={() => window.open(product.affiliate_link, '_blank')} className="w-full bg-white text-black py-3 text-[8px] font-black uppercase tracking-widest mb-2">View on {product.brand}</button>
-                                    <button onClick={() => setSelectedProductAnalytics(product)} className="w-full bg-black text-white py-3 text-[8px] font-black uppercase tracking-widest flex items-center justify-center"><Activity className="w-3 h-3 mr-2" /> Neural Analytics</button>
+                {/* ✅ NEW: Loading state or product grid */}
+                {loading ? (
+                    <div className="flex items-center justify-center py-32">
+                        <div className="flex flex-col items-center space-y-4">
+                            <Cpu className="w-8 h-8 text-[#2979FF] animate-pulse" />
+                            <p className="text-[10px] font-black uppercase tracking-widest text-black/40">Neural Engine Loading...</p>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="product-grid">
+                        {filteredProducts.map(product => (
+                            <motion.div key={product.id} layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="product-card-premium group">
+                                <div className="relative aspect-[3/4] overflow-hidden bg-[#EDEDED]">
+                                    <img src={product.image_url} alt={product.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                                    <div className="absolute inset-0 flex flex-col justify-end p-6 bg-black/0 group-hover:bg-black/20 transition-all opacity-0 group-hover:opacity-100">
+                                        <button onClick={() => window.open(product.affiliate_link, '_blank')} className="w-full bg-white text-black py-3 text-[8px] font-black uppercase tracking-widest mb-2">View on {product.brand}</button>
+                                        <button onClick={() => setSelectedProductAnalytics(product)} className="w-full bg-black text-white py-3 text-[8px] font-black uppercase tracking-widest flex items-center justify-center"><Activity className="w-3 h-3 mr-2" /> Neural Analytics</button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="p-6">
-                                <p className="text-[8px] font-black uppercase tracking-widest text-black/40 mb-1">{product.brand}</p>
-                                <h4 className="text-xs font-bold mb-4">{product.name}</h4>
-                                <div className="flex items-center justify-between">
-                                    <p className="text-xs font-black">₹{product.price.toLocaleString()}</p>
-                                    <div className="flex items-center text-[8px] font-black uppercase tracking-widest text-pink-500"><TrendingUp className="w-3 h-3 mr-1" /> {product.trend_score}%</div>
+                                <div className="p-6">
+                                    <p className="text-[8px] font-black uppercase tracking-widest text-black/40 mb-1">{product.brand}</p>
+                                    <h4 className="text-xs font-bold mb-4">{product.name}</h4>
+                                    <div className="flex items-center justify-between">
+                                        <p className="text-xs font-black">₹{product.price.toLocaleString()}</p>
+                                        <div className="flex items-center text-[8px] font-black uppercase tracking-widest text-pink-500"><TrendingUp className="w-3 h-3 mr-1" /> {product.trend_score}%</div>
+                                    </div>
                                 </div>
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                )}
             </main>
 
             {/* Profile Sidebar */}
@@ -751,7 +548,6 @@ export default function App() {
                 )}
             </AnimatePresence>
 
-            {/* Modals */}
             <AnimatePresence>
                 <ProductAnalyticsModal selectedProductAnalytics={selectedProductAnalytics} setSelectedProductAnalytics={setSelectedProductAnalytics} />
             </AnimatePresence>
