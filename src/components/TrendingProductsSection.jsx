@@ -38,7 +38,7 @@ const TrendingProductsSection = () => {
 
                 {/* Category Filters (Section 12) */}
                 <div className="flex gap-2 mt-6 md:mt-0 bg-black/5 p-1 rounded-full border border-black/5">
-                    {['all', 'fashion', 'makeup'].map(cat => (
+                    {['all', 'fashion', 'makeup', 'accessories', 'skincare']
                         <button
                             key={cat}
                             onClick={() => setFilter(cat)}
@@ -71,4 +71,5 @@ const TrendingProductsSection = () => {
 };
 
 export default TrendingProductsSection;
+
 
