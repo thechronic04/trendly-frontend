@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Sparkles, Activity } from 'lucide-react';
 import ProductTrendCard from './ProductTrendCard';
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
+const API_URL = import.meta.env.VITE_API_URL || "https://trendly-backend.vercel.app/api";
+
 
 const TrendingProductsSection = () => {
     const [trendingProducts, setTrendingProducts] = useState([]);
@@ -70,3 +71,4 @@ const TrendingProductsSection = () => {
 };
 
 export default TrendingProductsSection;
+
