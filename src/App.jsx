@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, Search, ChevronRight, Star, TrendingUp, Zap, Activity, Cpu, User, Settings, Heart, X, LogOut, Camera, Eye, EyeOff } from 'lucide-react';
+import { Sparkles, Search, TrendingUp, Activity, Cpu, X, LogOut, Eye, EyeOff, ExternalLink, MapPin, Heart, BarChart2 } from 'lucide-react';
+import TrendingProductsSection from './components/TrendingProductsSection';
 import { api } from './lib/api';
 
 // --- Separate Functional Components (Stability Fix) ---
@@ -771,6 +772,9 @@ export default function App() {
                         </button>
                     </div>
                 </motion.div>
+
+                {/* AI Trending Now Section - Integrated via Automated Real-Time Scrapers */}
+                <TrendingProductsSection />
 
                 {/* Tabs & Filters */}
                 <div id="product-discovery-grid" className="flex flex-col lg:flex-row items-center justify-between mb-12 gap-8 scroll-mt-32">
