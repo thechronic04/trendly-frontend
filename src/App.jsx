@@ -854,12 +854,17 @@ export default function App() {
             </AnimatePresence>
             <SearchOverlay showSearch={showSearch} setShowSearch={setShowSearch} />
 
-            <footer className="bg-black text-white py-20 px-12 mt-20">
-                <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
-                    <Logo className="invert" />
-                    <p className="text-[8px] font-black uppercase tracking-[0.4em] opacity-40 text-center">Trendly.Ai Archive 2026 // Neural Fashion Discovery</p>
-                </div>
-            </footer>
+           <footer className="bg-black text-white py-20 px-12 mt-20">
+    <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-10">
+        <div>
+            <Logo className="invert" />
+            <p className="text-[8px] font-black uppercase tracking-[0.4em] opacity-40 mt-4">Trendly.Ai Archive 2026 // Neural Fashion Discovery</p>
         </div>
-    );
-}
+        <div className="flex flex-col gap-2 text-white/60">
+            <p className="text-[9px] font-black uppercase tracking-widest text-white/30 mb-1">Contact Us</p>
+            <a href="tel:6000010206" className="text-[11px] font-bold tracking-wide hover:text-white transition-colors">📞 +91 6000010206</a>
+            <p className="text-[11px] font-bold tracking-wide">📍 Katakipara, Lokhra, Guwahati</p>
+        </div>
+    </div>
+</footer>
+
