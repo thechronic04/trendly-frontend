@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles, Activity } from 'lucide-react';
+import { api } from '../lib/api';
 import ProductTrendCard from './ProductTrendCard';
-
-const API_URL = import.meta.env.VITE_API_URL || "https://trendly-backend.vercel.app/api";
 
 const TrendingProductsSection = ({ watchlist = [], onToggleWatchlist }) => {
     const [trendingProducts, setTrendingProducts] = useState([]);
@@ -11,15 +10,13 @@ const TrendingProductsSection = ({ watchlist = [], onToggleWatchlist }) => {
 
     useEffect(() => {
         setLoading(true);
-        let endpoint = `${API_URL}/trending-products`;
-        if (filter !== 'all') {
-            endpoint = `${API_URL}/trending-products/${filter}`;
-        }
+        const endpoint = filter === 'all'
+            ? '/trending-products/'
+            : `/trending-products/${filter}/`;
 
-        fetch(endpoint)
-            .then(res => res.json())
+        api.request(endpoint)
             .then(data => {
-                setTrendingProducts(data);
+                setTrendingProducts(data.data || []);
             })
             .catch(err => console.error("Error fetching trends:", err))
             .finally(() => setLoading(false));
