@@ -4,11 +4,10 @@ import ProductTrendCard from './ProductTrendCard';
 
 const API_URL = import.meta.env.VITE_API_URL || "https://trendly-backend.vercel.app/api";
 
-
 const TrendingProductsSection = () => {
     const [trendingProducts, setTrendingProducts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [filter, setFilter] = useState('all'); // all, fashion, makeup
+    const [filter, setFilter] = useState('all');
 
     useEffect(() => {
         setLoading(true);
@@ -36,9 +35,8 @@ const TrendingProductsSection = () => {
                     <p className="text-black/50 font-bold mt-2">AI-detected viral products sweeping the internet</p>
                 </div>
 
-                {/* Category Filters (Section 12) */}
-                <div className="flex gap-2 mt-6 md:mt-0 bg-black/5 p-1 rounded-full border border-black/5">
-                    {['all', 'fashion', 'makeup', 'accessories', 'skincare']
+                <div className="flex gap-2 mt-6 md:mt-0 bg-black/5 p-1 rounded-full border border-black/5 flex-wrap justify-center">
+                    {['all', 'fashion', 'makeup', 'accessories', 'skincare'].map(cat => (
                         <button
                             key={cat}
                             onClick={() => setFilter(cat)}
@@ -71,5 +69,3 @@ const TrendingProductsSection = () => {
 };
 
 export default TrendingProductsSection;
-
-
