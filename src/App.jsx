@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Search, TrendingUp, Activity, Cpu, X, LogOut, Eye, EyeOff, ExternalLink, MapPin, Heart, BarChart2 } from 'lucide-react';
 import TrendingProductsSection from './components/TrendingProductsSection';
+import AIChatAssistant from './components/AIChatAssistant';
 import { api } from './lib/api';
 
 // --- Separate Functional Components (Stability Fix) ---
@@ -20,7 +21,7 @@ const Logo = ({ className = "", showText = true }) => (
             </div>
         </div>
         {showText && (
-            <span className="text-3xl font-black tracking-tighter leading-none select-none">
+            <span className="text-3xl font-black tracking-tighter leading-none select-none dark:text-white">
                 trendly<span className="text-[#2979FF]">.</span>Ai
             </span>
         )}
@@ -33,8 +34,8 @@ const ProductAnalyticsModal = ({ selectedProductAnalytics, setSelectedProductAna
     const analytics = selectedProductAnalytics.analytics || {
         engagement_graph: [10, 20, 15, 25, 30, 25, 40],
         social_mentions: "Analysing...",
-        top_regions: ["Data Pending"],
-        sentiment_score: 50
+        top_regions: ["NYC", "Paris", "Seoul"],
+        sentiment_score: 82
     };
     const { name, brand, image_url, trend_score } = selectedProductAnalytics;
 
@@ -43,99 +44,171 @@ const ProductAnalyticsModal = ({ selectedProductAnalytics, setSelectedProductAna
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[110] flex items-center justify-center bg-black/80 backdrop-blur-2xl px-4"
+            className="fixed inset-0 z-[160] flex items-center justify-center bg-black/90 backdrop-blur-3xl px-4"
         >
             <motion.div
-                initial={{ scale: 0.9, y: 20, opacity: 0 }}
+                initial={{ scale: 0.9, y: 50, opacity: 0 }}
                 animate={{ scale: 1, y: 0, opacity: 1 }}
                 exit={{ scale: 0.9, y: 20, opacity: 0 }}
-                className="bg-white rounded-[3rem] w-full max-w-4xl overflow-hidden shadow-2xl flex flex-col md:flex-row h-[80vh] md:h-auto"
+                className="bg-white dark:bg-[#0A0A0A] rounded-[3.5rem] w-full max-w-5xl overflow-hidden shadow-4xl flex flex-col md:flex-row h-[90vh] md:h-auto border border-black/5 dark:border-white/10"
             >
                 {/* Left: Product Visuals */}
-                <div className="w-full md:w-2/5 relative bg-[#EDEDED]">
+                <div className="w-full md:w-2/5 relative bg-[#EDEDED] dark:bg-black/40">
                     <img src={image_url} alt={name} className="w-full h-full object-cover" />
-                    <div className="absolute top-8 left-8 bg-black text-white px-4 py-2 text-[10px] font-black uppercase tracking-[0.4em]">
+                    <div className="absolute top-8 left-8 bg-black dark:bg-white text-white dark:text-black px-6 py-2 text-[10px] font-black uppercase tracking-[0.4em] shadow-2xl">
                         ID: {selectedProductAnalytics.id}
+                    </div>
+                    {/* Visual DNA Badge */}
+                    <div className="absolute bottom-8 left-8 right-8 p-6 glass dark:glass-dark rounded-2xl border border-white/20">
+                        <p className="text-[9px] font-black uppercase tracking-widest mb-2 opacity-50 dark:text-white/40">Neural Signature</p>
+                        <div className="h-1 w-full bg-black/10 dark:bg-white/10 rounded-full overflow-hidden">
+                            <motion.div
+                                animate={{ x: ['-100%', '200%'] }}
+                                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                                className="h-full w-1/3 bg-gradient-to-r from-transparent via-[#2979FF] to-transparent"
+                            />
+                        </div>
                     </div>
                 </div>
 
                 {/* Right: Data & Analytics */}
-                <div className="w-full md:w-3/5 p-12 overflow-y-auto">
-                    <div className="flex justify-between items-start mb-8">
+                <div className="w-full md:w-3/5 p-10 md:p-14 overflow-y-auto custom-scrollbar">
+                    <div className="flex justify-between items-start mb-10">
                         <div>
-                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-black/40 mb-2">{brand}</p>
-                            <h2 className="text-3xl font-black italic tracking-tighter">{name}</h2>
+                            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#2979FF] dark:text-[#00E5FF] mb-3">{brand}</p>
+                            <h2 className="text-4xl font-black italic tracking-tighter dark:text-white leading-none">{name}</h2>
                         </div>
-                        <button onClick={() => setSelectedProductAnalytics(null)} className="p-4 hover:bg-black/5 rounded-full transition-colors">
-                            <X className="w-6 h-6" />
+                        <button onClick={() => setSelectedProductAnalytics(null)} className="p-4 hover:bg-black/5 dark:hover:bg-white/5 rounded-full transition-all">
+                            <X className="w-6 h-6 dark:text-white" />
                         </button>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-8 mb-12">
-                        <div className="bg-black/5 p-6 rounded-3xl">
-                            <p className="text-[10px] font-black uppercase tracking-widest text-black/40 mb-4 flex items-center">
-                                <Activity className="w-3 h-3 mr-2 text-blue-500" /> Viral Momentum
-                            </p>
-                            <div className="flex items-end space-x-1.5 h-16">
-                                {analytics.engagement_graph.map((val, i) => (
-                                    <motion.div
-                                        key={i}
-                                        initial={{ height: 0 }}
-                                        animate={{ height: `${val}%` }}
-                                        transition={{ delay: i * 0.1, duration: 1 }}
-                                        className="flex-1 bg-black rounded-t-sm"
+                    {/* Analytics Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-12">
+                        {/* Velocity Chart */}
+                        <div className="bg-black/[0.03] dark:bg-white/[0.03] p-8 rounded-[2rem] border border-black/5 dark:border-white/5 relative overflow-hidden group">
+                            <div className="flex justify-between items-center mb-6">
+                                <p className="text-[9px] font-black uppercase tracking-widest opacity-40 dark:text-white/40 flex items-center">
+                                    <Activity className="w-3 h-3 mr-2" /> Neural Velocity
+                                </p>
+                                <span className="text-[10px] font-black text-green-500 uppercase">+18.2%</span>
+                            </div>
+
+                            <div className="h-32 relative">
+                                <svg className="w-full h-full" viewBox="0 0 400 100" preserveAspectRatio="none">
+                                    <defs>
+                                        <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" stopColor="#2979FF" stopOpacity="0.4" />
+                                            <stop offset="100%" stopColor="#2979FF" stopOpacity="0" />
+                                        </linearGradient>
+                                    </defs>
+                                    <motion.path
+                                        initial={{ pathLength: 0 }}
+                                        animate={{ pathLength: 1 }}
+                                        transition={{ duration: 2 }}
+                                        d="M0,80 Q50,60 100,70 T200,40 T300,50 T400,20 V100 H0 Z"
+                                        fill="url(#chartGrad)"
+                                        stroke="#2979FF"
+                                        strokeWidth="3"
                                     />
-                                ))}
+                                    <motion.circle
+                                        animate={{ r: [3, 6, 3], opacity: [0.5, 1, 0.5] }}
+                                        transition={{ duration: 2, repeat: Infinity }}
+                                        cx="400" cy="20" r="4" fill="#2979FF"
+                                    />
+                                </svg>
                             </div>
                         </div>
-                        <div className="bg-black/5 p-6 rounded-3xl">
-                            <p className="text-[10px] font-black uppercase tracking-widest text-black/40 mb-4 flex items-center">
-                                <Sparkles className="w-3 h-3 mr-2 text-pink-500" /> Social Sentiment
+
+                        {/* Sentiment Alpha */}
+                        <div className="bg-black/[0.03] dark:bg-white/[0.03] p-8 rounded-[2rem] border border-black/5 dark:border-white/5">
+                            <p className="text-[9px] font-black uppercase tracking-widest opacity-40 dark:text-white/40 flex items-center mb-6">
+                                <Sparkles className="w-3 h-3 mr-2 text-pink-500" /> Alpha Sentiment
                             </p>
-                            <div className="flex flex-col justify-center h-16">
-                                <div className="flex justify-between text-xl font-black italic mb-2">
-                                    <span>{analytics.sentiment_score}%</span>
-                                    <span className="text-green-500 text-xs">Positive</span>
+                            <div className="flex items-center justify-between mb-4">
+                                <span className="text-4xl font-black italic tracking-tighter dark:text-white">{analytics.sentiment_score}%</span>
+                                <div className="text-right">
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-[#2979FF] dark:text-[#00E5FF]">Neural Alpha</p>
+                                    <p className="text-[8px] font-black uppercase text-green-500 tracking-widest">Bullish Momentum</p>
                                 </div>
-                                <div className="w-full h-1 bg-black/10 rounded-full overflow-hidden">
-                                    <motion.div
-                                        initial={{ width: 0 }}
-                                        animate={{ width: `${analytics.sentiment_score}%` }}
-                                        transition={{ duration: 1.5, ease: "easeOut" }}
-                                        className="h-full bg-gradient-to-r from-pink-500 to-green-500"
-                                    />
-                                </div>
+                            </div>
+                            <div className="w-full h-2 bg-black/5 dark:bg-white/10 rounded-full overflow-hidden">
+                                <motion.div
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${analytics.sentiment_score}%` }}
+                                    transition={{ duration: 1.5, delay: 0.5 }}
+                                    className="h-full bg-gradient-to-r from-pink-500 via-blue-500 to-green-500"
+                                />
                             </div>
                         </div>
                     </div>
 
-                    <div className="space-y-8 mb-12">
-                        <section>
-                            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-black/40 mb-4">Neural Hotspots</h3>
-                            <div className="flex flex-wrap gap-2">
-                                {analytics.top_regions.map(region => (
-                                    <span key={region} className="px-4 py-2 bg-black text-white text-[10px] font-bold rounded-full">{region}</span>
-                                ))}
-                                <span className="px-4 py-2 border border-black/10 text-[10px] font-bold rounded-full">+ 12 more cities</span>
+                    {/* Regional Heatmap Section */}
+                    <div className="mb-12">
+                        <section className="bg-black/[0.03] dark:bg-white/[0.03] p-8 rounded-[2rem] border border-black/5 dark:border-white/5 relative overflow-hidden">
+                            <div className="flex justify-between items-center mb-8">
+                                <h3 className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 dark:text-white/40">Global Market Hotspots</h3>
+                                <div className="flex items-center gap-1">
+                                    <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
+                                    <span className="text-[8px] font-black uppercase tracking-widest dark:text-white">Live Data</span>
+                                </div>
+                            </div>
+
+                            {/* Stylized Heatmap Visualization */}
+                            <div className="relative aspect-[21/9] bg-black/5 dark:bg-white/5 rounded-2xl flex items-center justify-center border border-black/5 dark:border-white/5 overflow-hidden">
+                                <div className="absolute inset-0 opacity-20 dark:opacity-40 flex items-center justify-center grayscale">
+                                    {/* Mock SVG Map Nodes */}
+                                    <div className="flex gap-4">
+                                        {[...Array(15)].map((_, i) => (
+                                            <div key={i} className="flex flex-col gap-2">
+                                                {[...Array(6)].map((_, j) => (
+                                                    <div key={j} className="w-2 h-2 rounded-sm bg-black dark:bg-white opacity-20" />
+                                                ))}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* pulsing hotspot indicators */}
+                                <div className="absolute top-1/4 left-1/4 group/hot">
+                                    <span className="absolute w-8 h-8 rounded-full bg-[#2979FF]/20 animate-ping" />
+                                    <span className="relative block w-3 h-3 rounded-full bg-[#2979FF] shadow-[0_0_15px_#2979FF]" />
+                                    <span className="absolute top-6 left-1/2 -translate-x-1/2 whitespace-nowrap bg-black text-white px-2 py-1 rounded-md text-[8px] font-black uppercase opacity-0 group-hover/hot:opacity-100 transition-opacity">Paris +24%</span>
+                                </div>
+                                <div className="absolute top-1/2 left-3/4 group/hot">
+                                    <span className="absolute w-12 h-12 rounded-full bg-pink-500/20 animate-ping" />
+                                    <span className="relative block w-4 h-4 rounded-full bg-pink-500 shadow-[0_0_15px_#FF5252]" />
+                                    <span className="absolute top-8 left-1/2 -translate-x-1/2 whitespace-nowrap bg-black text-white px-2 py-1 rounded-md text-[8px] font-black uppercase opacity-0 group-hover/hot:opacity-100 transition-opacity">Seoul +88% Viral</span>
+                                </div>
+                                <div className="absolute bottom-1/3 left-1/2 group/hot">
+                                    <span className="absolute w-6 h-6 rounded-full bg-green-500/20 animate-ping" />
+                                    <span className="relative block w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#4CAF50]" />
+                                    <span className="absolute top-6 left-1/2 -translate-x-1/2 whitespace-nowrap bg-black text-white px-2 py-1 rounded-md text-[8px] font-black uppercase opacity-0 group-hover/hot:opacity-100 transition-opacity">NYC Emerging</span>
+                                </div>
                             </div>
                         </section>
-                        <section>
-                            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-black/40 mb-4">Live Social Reach</h3>
-                            <p className="text-4xl font-black italic tracking-tighter text-[#2979FF]">{analytics.social_mentions}</p>
-                            <p className="text-[10px] font-bold uppercase tracking-widest text-black/20 mt-1">Total Mentions [Next 48H Prediction: +12%]</p>
-                        </section>
                     </div>
 
-                    <div className="pt-8 border-t border-black/5 flex space-x-4">
-                        <button
-                            onClick={() => window.open(selectedProductAnalytics.affiliate_link, '_blank')}
-                            className="flex-1 bg-black text-white py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#2979FF] transition-colors"
-                        >
-                            Explore Piece
-                        </button>
-                        <button className="px-8 py-5 border border-black/10 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-black hover:text-white transition-all">
-                            Track Trend
-                        </button>
+                    <div className="flex flex-wrap gap-4 items-center justify-between">
+                        <div className="flex -space-x-3">
+                            {[1, 2, 3, 4].map(i => (
+                                <div key={i} className="w-10 h-10 rounded-full border-2 border-white dark:border-[#0A0A0A] bg-gray-200 dark:bg-white/10 overflow-hidden">
+                                    <img src={`https://i.pravatar.cc/100?u=${i}`} alt="user" />
+                                </div>
+                            ))}
+                            <div className="w-10 h-10 rounded-full border-2 border-white dark:border-[#0A0A0A] bg-black dark:bg-white flex items-center justify-center text-white dark:text-black text-[8px] font-black">+42K</div>
+                        </div>
+                        <div className="flex gap-4 flex-1 sm:flex-initial">
+                            <button
+                                onClick={() => window.open(selectedProductAnalytics.affiliate_link, '_blank')}
+                                className="flex-1 sm:px-12 bg-black dark:bg-white text-white dark:text-black py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:-translate-y-1 transition-transform shadow-xl"
+                            >
+                                Secure Now
+                            </button>
+                            <button className="p-5 border border-black/10 dark:border-white/10 rounded-2xl group hover:border-[#2979FF] transition-colors">
+                                <Heart className="w-5 h-5 dark:text-white group-hover:fill-[#2979FF] transition-colors" />
+                            </button>
+                        </div>
                     </div>
                 </div>
             </motion.div>
@@ -143,91 +216,127 @@ const ProductAnalyticsModal = ({ selectedProductAnalytics, setSelectedProductAna
     );
 };
 
-const SearchOverlay = ({ showSearch, setShowSearch }) => (
-    <AnimatePresence>
-        {showSearch && (
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[100] bg-white/90 backdrop-blur-2xl p-12 overflow-hidden"
-            >
-                <div className="max-w-[1400px] mx-auto h-full flex flex-col">
-                    <div className="flex justify-between items-center mb-20">
-                        <div className="flex items-center space-x-4">
-                            <Cpu className="w-5 h-5 text-[#2979FF] animate-pulse" />
-                            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-black/40">Neural Search Active</span>
-                        </div>
-                        <button onClick={() => setShowSearch(false)} className="group p-4 hover:bg-black/5 rounded-full transition-all">
-                            <X className="w-8 h-8 group-hover:rotate-90 transition-transform duration-500" />
-                        </button>
-                    </div>
+const SearchOverlay = ({ showSearch, setShowSearch }) => {
+    const [isUploading, setIsUploading] = useState(false);
+    const [scanProgress, setScanProgress] = useState(0);
 
-                    <div className="relative mb-24">
-                        <input
-                            autoFocus
-                            type="text"
-                            placeholder="Search Trends, Aesthetics, or Brands..."
-                            className="w-full bg-transparent text-6xl md:text-8xl font-black italic tracking-tighter outline-none placeholder:text-black/5"
-                        />
-                        <div className="absolute -bottom-4 left-0 w-full h-[2px] bg-black/5 overflow-hidden">
-                            <motion.div
-                                animate={{ x: ['-100%', '100%'] }}
-                                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                                className="w-1/2 h-full bg-gradient-to-r from-transparent via-[#2979FF] to-transparent"
+    const handleVisualSearch = () => {
+        setIsUploading(true);
+        setScanProgress(0);
+        const interval = setInterval(() => {
+            setScanProgress(prev => {
+                if (prev >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => setIsUploading(false), 800);
+                    return 100;
+                }
+                return prev + 5;
+            });
+        }, 100);
+    };
+
+    return (
+        <AnimatePresence>
+            {showSearch && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-[150] bg-white/95 dark:bg-black/95 backdrop-blur-2xl p-12 overflow-y-auto duration-500"
+                >
+                    <div className="max-w-[1400px] mx-auto min-h-full flex flex-col">
+                        <div className="flex justify-between items-center mb-20">
+                            <div className="flex items-center space-x-4">
+                                <Cpu className="w-5 h-5 text-[#2979FF] animate-pulse" />
+                                <span className="text-[10px] font-black uppercase tracking-[0.5em] text-black/40 dark:text-white/40">Neural Search Active</span>
+                            </div>
+                            <button onClick={() => setShowSearch(false)} className="group p-4 hover:bg-black/5 dark:hover:bg-white/5 rounded-full transition-all">
+                                <X className="w-8 h-8 dark:text-white group-hover:rotate-90 transition-transform duration-500" />
+                            </button>
+                        </div>
+
+                        <div className="relative mb-24 group">
+                            <input
+                                autoFocus
+                                type="text"
+                                placeholder="Search Trends, Aesthetics, or Brands..."
+                                className="w-full bg-transparent text-5xl md:text-8xl font-black italic tracking-tighter outline-none placeholder:text-black/5 dark:placeholder:text-white/5 dark:text-white"
                             />
+                            <div className="absolute -bottom-4 left-0 w-full h-[2px] bg-black/5 dark:bg-white/5 overflow-hidden">
+                                <motion.div
+                                    animate={{ x: ['-100%', '100%'] }}
+                                    transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                                    className="w-1/2 h-full bg-gradient-to-r from-transparent via-[#2979FF] to-transparent"
+                                />
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                        <div>
-                            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] mb-8 flex items-center">
-                                <Sparkles className="w-4 h-4 mr-3 text-pink-500" /> Live Social Trends
-                            </h3>
-                            <div className="space-y-6">
-                                {['#QuietLuxury', '#UrbanExplorer', '#EveningNoir', '#ArchiveFashion'].map(tag => (
-                                    <div
-                                        key={tag}
-                                        onClick={() => {
-                                            const cleanTag = tag.replace('#', '');
-                                            const formattedTag = cleanTag === 'UrbanExplorer' ? 'Urban Street' :
-                                                cleanTag === 'EveningNoir' ? 'Evening Noir' :
-                                                    cleanTag === 'ArchiveFashion' ? 'The Archive' : 'Quiet Luxury';
-                                            setSelectedCollection(formattedTag);
-                                            setShowSearch(false);
-                                        }}
-                                        className="flex items-center justify-between group cursor-pointer"
-                                    >
-                                        <span className="text-xl font-bold group-hover:underline italic">{tag}</span>
-                                        <TrendingUp className="w-4 h-4 opacity-0 group-hover:opacity-100 text-green-500 transition-all" />
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                            <div>
+                                <h3 className="text-[10px] font-black uppercase tracking-[0.3em] mb-8 flex items-center dark:text-white/60">
+                                    <Sparkles className="w-4 h-4 mr-3 text-pink-500" /> Live Social Trends
+                                </h3>
+                                <div className="space-y-6">
+                                    {['#QuietLuxury', '#UrbanExplorer', '#EveningNoir', '#ArchiveFashion'].map(tag => (
+                                        <div key={tag} className="flex items-center justify-between group cursor-pointer dark:text-white">
+                                            <span className="text-xl font-bold group-hover:underline italic">{tag}</span>
+                                            <TrendingUp className="w-4 h-4 opacity-0 group-hover:opacity-100 text-green-500 transition-all" />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 className="text-[10px] font-black uppercase tracking-[0.3em] mb-8 dark:text-white/60">Quick Discovery</h3>
+                                <div className="flex flex-wrap gap-4">
+                                    {['Oversized', 'Leather', 'Monochrome', 'Vintage', 'Sustainable', 'Streetwear'].map(chip => (
+                                        <button key={chip} className="px-6 py-3 border border-black/5 dark:border-white/10 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black dark:text-white transition-all">
+                                            {chip}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Visual Search Section */}
+                            <div className="bg-black/5 dark:bg-white/5 rounded-[2.5rem] p-10 border border-dashed border-black/20 dark:border-white/20 flex flex-col items-center justify-center relative overflow-hidden transition-all hover:border-blue-500/50">
+                                {isUploading ? (
+                                    <div className="text-center w-full py-4">
+                                        <Activity className="w-12 h-12 mb-6 mx-auto text-[#2979FF] animate-pulse" />
+                                        <h4 className="text-xl font-black italic mb-2 dark:text-white">Neural Scanning...</h4>
+                                        <div className="w-full h-1 bg-black/10 dark:bg-white/10 rounded-full overflow-hidden mb-4 max-w-[200px] mx-auto">
+                                            <motion.div
+                                                className="h-full bg-[#2979FF]"
+                                                initial={{ width: 0 }}
+                                                animate={{ width: `${scanProgress}%` }}
+                                            />
+                                        </div>
+                                        <p className="text-[9px] font-black tracking-[0.3em] opacity-40 dark:text-white/40 uppercase">Isolating signatures</p>
                                     </div>
-                                ))}
+                                ) : (
+                                    <>
+                                        <div className="w-16 h-16 rounded-full bg-black dark:bg-white flex items-center justify-center text-white dark:text-black mb-6 shadow-xl">
+                                            <Cpu className="w-8 h-8" />
+                                        </div>
+                                        <h3 className="text-xl font-black italic mb-2 dark:text-white">Visual Search</h3>
+                                        <p className="text-center text-xs opacity-40 dark:text-white/40 mb-8 max-w-[200px] leading-relaxed font-medium">Upload a photo to find trending pattern matches.</p>
+                                        <button onClick={handleVisualSearch} className="bg-black dark:bg-white text-white dark:text-black px-10 py-4 rounded-full text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-transform shadow-lg active:scale-95">Identify</button>
+                                    </>
+                                )}
+                                {isUploading && (
+                                    <motion.div
+                                        className="absolute top-0 left-0 right-0 h-1 bg-[#2979FF]/40 blur-md shadow-[0_0_15px_rgba(41,121,255,0.5)] z-20"
+                                        animate={{ top: ['0%', '100%', '0%'] }}
+                                        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                                    />
+                                )}
                             </div>
-                        </div>
-                        <div>
-                            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] mb-8">Quick Discovery</h3>
-                            <div className="flex flex-wrap gap-4">
-                                {['Oversized', 'Leather', 'Monochrome', 'Vintage', 'Sustainable', 'Streetwear'].map(chip => (
-                                    <button key={chip} className="px-6 py-3 border border-black/5 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-black hover:text-white transition-all">
-                                        {chip}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                        <div className="bg-[#EDEDED] p-8 rounded-[2rem] relative overflow-hidden group">
-                            <div className="absolute inset-0 bg-gradient-to-br from-[#2979FF]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                            <h4 className="text-sm font-black mb-4 relative">AI Trend Prediction</h4>
-                            <p className="text-xs text-black/40 leading-relaxed mb-6 relative font-medium">
-                                Our neural engines predict a 42% surge in "Distressed Denim" within the next 72 hours across urban hubs.
-                            </p>
-                            <button className="text-[10px] font-black uppercase tracking-[0.3em] border-b border-black pb-1 relative">Explore Now</button>
                         </div>
                     </div>
-                </div>
-            </motion.div>
-        )}
-    </AnimatePresence>
-);
+                </motion.div>
+            )}
+        </AnimatePresence>
+    );
+};
 
 // --- Main App Component ---
 
@@ -495,6 +604,33 @@ export default function App() {
     const [userName, setUserName] = useState(() => localStorage.getItem("userName") || "Guest");
     const [userEmail, setUserEmail] = useState(() => localStorage.getItem("userEmail") || "");
 
+    const [darkMode, setDarkMode] = useState(() => localStorage.getItem("darkMode") === "true");
+    const [watchlist, setWatchlist] = useState(() => JSON.parse(localStorage.getItem("watchlist") || "[]"));
+    const [showWatchlist, setShowWatchlist] = useState(false);
+
+    useEffect(() => {
+        if (darkMode) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+        localStorage.setItem("darkMode", darkMode);
+    }, [darkMode]);
+
+    useEffect(() => {
+        localStorage.setItem("watchlist", JSON.stringify(watchlist));
+    }, [watchlist]);
+
+    const toggleWatchlist = (product) => {
+        setWatchlist(prev => {
+            const exists = prev.find(p => p.id === product.id);
+            if (exists) {
+                return prev.filter(p => p.id !== product.id);
+            }
+            return [...prev, product];
+        });
+    };
+
     // --- Backend Sync: Initial Fetch ---
     useEffect(() => {
         const syncProducts = async () => {
@@ -628,26 +764,26 @@ export default function App() {
 
     // --- Template Render ---
     return (
-        <div className="relative min-h-screen selection:bg-pink-500/40 text-black font-sans overflow-x-hidden">
+        <div className="relative min-h-screen selection:bg-pink-500/40 text-black dark:text-white font-sans overflow-x-hidden transition-colors duration-500">
             {/* Aurora Background Layers */}
-            <div className="aurora-bg">
+            <div className="aurora-bg opacity-40 dark:opacity-20">
                 <div className="aurora-blob blob-1"></div>
                 <div className="aurora-blob blob-2"></div>
                 <div className="aurora-blob blob-3"></div>
             </div>
 
             {/* Floating Nano-Grid Overlay */}
-            <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px)', backgroundSize: '40px 40px', zIndex: 0 }}></div>
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'radial-gradient(var(--text-primary) 1px, transparent 1px)', opacity: 0.05, backgroundSize: '40px 40px', zIndex: 0 }}></div>
 
             {/* Navbar */}
-            <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 px-6 py-8 ${isScrolled ? "bg-white/80 backdrop-blur-xl border-b border-black/5 py-4" : "bg-transparent"}`}>
+            <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 px-6 py-8 ${isScrolled ? "bg-white/80 dark:bg-black/80 backdrop-blur-xl border-b border-black/5 dark:border-white/10 py-4" : "bg-transparent"}`}>
                 <div className="max-w-[1800px] mx-auto flex items-center justify-between">
                     <div className="flex items-center space-x-12">
                         <button onMouseEnter={() => setShowMegaMenu(true)} className="flex items-center space-x-3 group">
                             <div className="flex flex-col space-y-1.5 overflow-hidden">
-                                <span className="h-[1px] bg-black transition-all duration-500 w-8 group-hover:translate-x-4" />
-                                <span className="h-[1px] bg-black transition-all duration-500 w-5 group-hover:translate-x-2" />
-                                <span className="h-[1px] bg-black transition-all duration-500 w-8 group-hover:translate-x-0" />
+                                <span className="h-[1px] bg-black dark:bg-white transition-all duration-500 w-8 group-hover:translate-x-4" />
+                                <span className="h-[1px] bg-black dark:bg-white transition-all duration-500 w-5 group-hover:translate-x-2" />
+                                <span className="h-[1px] bg-black dark:bg-white transition-all duration-500 w-8 group-hover:translate-x-0" />
                             </div>
                             <span className="text-[10px] font-black uppercase tracking-[0.2em]">Menu</span>
                         </button>
@@ -665,13 +801,31 @@ export default function App() {
                     </div>
 
                     <div className="absolute left-1/2 -translate-x-1/2">
-                        <Logo />
+                        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                            <Logo />
+                        </button>
                     </div>
 
                     <div className="flex items-center space-x-8">
+                        {/* Theme Toggle */}
+                        <button onClick={() => setDarkMode(!darkMode)} className="p-2 hover:bg-black/5 dark:hover:bg-white/5 rounded-full transition-all">
+                            {darkMode ? <Sparkles className="w-5 h-5 text-yellow-400" /> : <Activity className="w-5 h-5 text-blue-600" />}
+                        </button>
+
                         <button onClick={() => setShowSearch(true)} className="hover:opacity-50 transition-opacity">
                             <Search className="w-5 h-5 stroke-[1.5px]" />
                         </button>
+
+                        {/* Watchlist Trigger */}
+                        <button onClick={() => setShowWatchlist(true)} className="relative hover:opacity-50 transition-opacity group">
+                            <Heart className={`w-5 h-5 stroke-[1.5px] ${watchlist.length > 0 ? "fill-red-500 stroke-red-500" : ""}`} />
+                            {watchlist.length > 0 && (
+                                <span className="absolute -top-2 -right-2 bg-[#2979FF] text-white text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center border-2 border-white dark:border-black animate-bounce">
+                                    {watchlist.length}
+                                </span>
+                            )}
+                        </button>
+
                         {isSignedIn ? (
                             <button onClick={() => setShowProfile(true)} className="flex items-center space-x-2 group">
                                 <div className="w-6 h-6 rounded-full bg-black/5 border border-black/10 flex items-center justify-center overflow-hidden">
@@ -680,7 +834,7 @@ export default function App() {
                                 <span className="text-[10px] font-black uppercase tracking-widest hidden sm:block">{userName}</span>
                             </button>
                         ) : (
-                            <button onClick={() => setShowLoginModal(true)} className="text-[10px] font-black uppercase tracking-[0.2em] border-b border-black/50 pb-0.5 hover:border-black transition-all">
+                            <button onClick={() => setShowLoginModal(true)} className="text-[10px] font-black uppercase tracking-[0.2em] border-b border-black/50 dark:border-white/50 pb-0.5 hover:border-black dark:hover:border-white transition-all">
                                 Sign In
                             </button>
                         )}
@@ -774,7 +928,7 @@ export default function App() {
                 </motion.div>
 
                 {/* AI Trending Now Section - Integrated via Automated Real-Time Scrapers */}
-                <TrendingProductsSection />
+                <TrendingProductsSection watchlist={watchlist} onToggleWatchlist={toggleWatchlist} />
 
                 {/* Tabs & Filters */}
                 <div id="product-discovery-grid" className="flex flex-col lg:flex-row items-center justify-between mb-12 gap-8 scroll-mt-32">
@@ -803,6 +957,14 @@ export default function App() {
                         <motion.div key={product.id} layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="product-card-premium group">
                             <div className="relative aspect-[3/4] overflow-hidden bg-[#EDEDED]">
                                 <img src={product.image_url} alt={product.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                                <div className="absolute top-4 right-4 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity translate-x-4 group-hover:translate-x-0 duration-500">
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); toggleWatchlist(product); }}
+                                        className={`p-3 rounded-full backdrop-blur-md transition-all ${watchlist.some(w => w.id === product.id) ? "bg-red-500 text-white" : "bg-white/80 hover:bg-white text-black"}`}
+                                    >
+                                        <Heart className={`w-4 h-4 ${watchlist.some(w => w.id === product.id) ? "fill-current" : ""}`} />
+                                    </button>
+                                </div>
                                 <div className="absolute inset-0 flex flex-col justify-end p-6 bg-black/0 group-hover:bg-black/20 transition-all opacity-0 group-hover:opacity-100">
                                     <button onClick={() => window.open(product.affiliate_link, '_blank')} className="w-full bg-white text-black py-3 text-[8px] font-black uppercase tracking-widest mb-2">View on {product.brand}</button>
                                     <button onClick={() => handleProductClick(product)} className="w-full bg-black text-white py-3 text-[8px] font-black uppercase tracking-widest flex items-center justify-center"><Activity className="w-3 h-3 mr-2" /> Neural Analytics</button>
@@ -825,24 +987,104 @@ export default function App() {
             <AnimatePresence>
                 {showProfile && (
                     <>
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowProfile(false)} className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[60]" />
-                        <motion.div initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} className="fixed top-0 right-0 h-full w-full max-w-sm glass z-[70] p-8">
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowProfile(false)} className="fixed inset-0 bg-black/20 dark:bg-black/60 backdrop-blur-sm z-[60]" />
+                        <motion.div initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} className="fixed top-0 right-0 h-full w-full max-w-sm glass z-[70] p-8 dark:bg-[#0A0A0A] dark:border-white/10">
                             <div className="flex justify-between items-center mb-12">
-                                <h2 className="text-xl font-black uppercase tracking-tight">Profile</h2>
-                                <button onClick={() => setShowProfile(false)}><X className="w-6 h-6" /></button>
+                                <h2 className="text-xl font-black uppercase tracking-tight dark:text-white">Profile</h2>
+                                <button onClick={() => setShowProfile(false)}><X className="w-6 h-6 dark:text-white" /></button>
                             </div>
                             <div className="flex flex-col items-center mb-12">
-                                <div className="w-24 h-24 rounded-full bg-black flex items-center justify-center text-white text-3xl font-black mb-4 overflow-hidden">
-                                    {profilePic ? <img src={profilePic} alt="P" className="w-full h-full object-cover" /> : userName.charAt(0)}
+                                <div className="w-24 h-24 rounded-full bg-black dark:bg-white/10 flex items-center justify-center text-white text-3xl font-black mb-4 overflow-hidden border border-black/10 dark:border-white/10">
+                                    {profilePic ? <img src={profilePic} alt="P" className="w-full h-full object-cover" /> : <span className="dark:text-white">{userName.charAt(0)}</span>}
                                 </div>
-                                <h3 className="text-lg font-black">{userName}</h3>
-                                <p className="text-xs text-black/40">{userEmail}</p>
+                                <h3 className="text-lg font-black dark:text-white">{userName}</h3>
+                                <p className="text-xs text-black/40 dark:text-white/40">{userEmail}</p>
                             </div>
                             <div className="space-y-4">
-                                <button onClick={handleLogout} className="w-full flex items-center justify-center space-x-2 p-4 text-red-500 font-black text-[10px] uppercase tracking-widest bg-red-50 rounded-2xl">
+                                <button onClick={handleLogout} className="w-full flex items-center justify-center space-x-2 p-4 text-red-500 font-black text-[10px] uppercase tracking-widest bg-red-50 dark:bg-red-900/10 rounded-2xl">
                                     <LogOut className="w-4 h-4" /> <span>Sign Out</span>
                                 </button>
                             </div>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
+
+            {/* Watchlist Drawer */}
+            <AnimatePresence>
+                {showWatchlist && (
+                    <>
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setShowWatchlist(false)}
+                            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
+                        />
+                        <motion.div
+                            initial={{ x: '100%' }}
+                            animate={{ x: 0 }}
+                            exit={{ x: '100%' }}
+                            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                            className="fixed top-0 right-0 bottom-0 w-full max-w-md bg-white dark:bg-[#0A0A0A] z-[101] shadow-2xl p-8 flex flex-col border-l border-black/5 dark:border-white/10"
+                        >
+                            <div className="flex justify-between items-center mb-12">
+                                <h2 className="text-3xl font-black italic tracking-tighter dark:text-white">Saved Trends</h2>
+                                <button onClick={() => setShowWatchlist(false)} className="p-2 hover:bg-black/5 dark:hover:bg-white/5 rounded-full transition-colors">
+                                    <X className="w-6 h-6 dark:text-white" />
+                                </button>
+                            </div>
+
+                            <div className="flex-1 overflow-y-auto space-y-6 pr-4 custom-scrollbar">
+                                {watchlist.length === 0 ? (
+                                    <div className="h-full flex flex-col items-center justify-center text-center opacity-40 dark:text-white">
+                                        <Heart className="w-12 h-12 mb-4 stroke-[1px]" />
+                                        <p className="text-[10px] font-black uppercase tracking-[0.2em]">Your watchlist is empty</p>
+                                    </div>
+                                ) : (
+                                    watchlist.map(item => (
+                                        <motion.div
+                                            key={item.id}
+                                            layout
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            className="flex gap-4 group"
+                                        >
+                                            <div className="w-24 aspect-[3/4] bg-gray-100 dark:bg-white/5 overflow-hidden rounded-xl border border-black/5 dark:border-white/10">
+                                                <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
+                                            </div>
+                                            <div className="flex-1 flex flex-col justify-between py-1">
+                                                <div>
+                                                    <p className="text-[10px] font-black uppercase tracking-widest opacity-40 dark:text-white/40 mb-1">{item.brand}</p>
+                                                    <h4 className="text-sm font-black leading-tight dark:text-white line-clamp-2">{item.name}</h4>
+                                                </div>
+                                                <div className="flex items-center justify-between">
+                                                    <button
+                                                        onClick={() => { setSelectedProductAnalytics(item); setShowWatchlist(false); }}
+                                                        className="text-[8px] font-black uppercase tracking-widest border-b border-black dark:border-white dark:text-white hover:opacity-50 transition-opacity"
+                                                    >
+                                                        View Insights
+                                                    </button>
+                                                    <button
+                                                        onClick={() => toggleWatchlist(item)}
+                                                        className="text-red-500 hover:scale-110 transition-transform p-2"
+                                                    >
+                                                        <X className="w-4 h-4" />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    ))
+                                )}
+                            </div>
+
+                            {watchlist.length > 0 && (
+                                <button
+                                    className="mt-8 w-full bg-black dark:bg-white text-white dark:text-black py-4 rounded-full text-[10px] font-black uppercase tracking-[0.3em] hover:-translate-y-1 transition-transform shadow-xl"
+                                >
+                                    Export Neural Edit
+                                </button>
+                            )}
                         </motion.div>
                     </>
                 )}
@@ -867,6 +1109,8 @@ export default function App() {
                     </div>
                 </div>
             </footer>
+
+            <AIChatAssistant />
 
 
 

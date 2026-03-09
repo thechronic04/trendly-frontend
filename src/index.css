@@ -7,13 +7,28 @@
 @layer base {
   :root {
     --bg-primary: #F9F7F2;
-    /* Soft Pastel / Cream */
+    --bg-secondary: #ffffff;
     --text-primary: #000000;
-    /* Sharp Black */
+    --text-secondary: rgba(0, 0, 0, 0.4);
     --accent: #E04296;
-    /* Brand Pink */
-    --muted: #8E8E93;
+    --accent-secondary: #2979FF;
     --border: rgba(0, 0, 0, 0.08);
+    --glass-bg: rgba(255, 255, 255, 0.4);
+    --glass-border: rgba(0, 0, 0, 0.05);
+    --card-hover: #ffffff;
+  }
+
+  :root.dark {
+    --bg-primary: #050505;
+    --bg-secondary: #0a0a0a;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.4);
+    --accent: #FF5252;
+    --accent-secondary: #00E5FF;
+    --border: rgba(255, 255, 255, 0.08);
+    --glass-bg: rgba(0, 0, 0, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.05);
+    --card-hover: #111111;
   }
 
   body {
@@ -22,6 +37,7 @@
     font-family: 'Outfit', sans-serif;
     overflow-x: hidden;
     letter-spacing: -0.01em;
+    transition: background-color 0.5s ease, color 0.5s ease;
   }
 
   h1,
@@ -75,7 +91,7 @@
 }
 
 .product-card-premium:hover {
-  background-color: #fff;
+  background-color: var(--card-hover);
 }
 
 /* Bonkers Motion Effects */
@@ -97,19 +113,20 @@
 
 /* Quiet Luxury UI Elements */
 .glass-card {
-  background: rgba(255, 255, 255, 0.4);
+  background: var(--glass-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--glass-border);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.02);
+  transition: background 0.5s ease, border 0.5s ease;
 }
 
 .btn-minimal {
-  @apply px-8 py-4 border border-black text-[10px] font-black uppercase tracking-[0.3em] transition-all duration-500;
+  @apply px-8 py-4 border border-black dark:border-white text-[10px] font-black uppercase tracking-[0.3em] transition-all duration-500;
 }
 
 .btn-minimal:hover {
-  @apply bg-black text-white -translate-y-1 shadow-2xl;
+  @apply bg-black text-white dark:bg-white dark:text-black -translate-y-1 shadow-2xl;
 }
 
 .text-gradient-accent {
@@ -126,9 +143,9 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #ccc;
+  background: var(--text-secondary);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #000;
+  background: var(--text-primary);
 }

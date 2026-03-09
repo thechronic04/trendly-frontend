@@ -4,7 +4,7 @@ import ProductTrendCard from './ProductTrendCard';
 
 const API_URL = import.meta.env.VITE_API_URL || "https://trendly-backend.vercel.app/api";
 
-const TrendingProductsSection = () => {
+const TrendingProductsSection = ({ watchlist = [], onToggleWatchlist }) => {
     const [trendingProducts, setTrendingProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('all');
@@ -29,18 +29,19 @@ const TrendingProductsSection = () => {
         <section className="py-20 mb-12">
             <div className="flex flex-col md:flex-row justify-between items-center mb-12">
                 <div>
-                    <h2 className="text-4xl font-black italic tracking-tighter flex items-center gap-3">
+                    <h2 className="text-4xl font-black italic tracking-tighter flex items-center gap-3 dark:text-white">
                         <Sparkles className="w-8 h-8 text-pink-500" /> Trending Now
                     </h2>
-                    <p className="text-black/50 font-bold mt-2">AI-detected viral products sweeping the internet</p>
+                    <p className="text-black/50 dark:text-white/40 font-bold mt-2">AI-detected viral products sweeping the internet</p>
                 </div>
 
-                <div className="flex gap-2 mt-6 md:mt-0 bg-black/5 p-1 rounded-full border border-black/5 flex-wrap justify-center">
+                {/* Category Filters (Section 12) */}
+                <div className="flex gap-2 mt-6 md:mt-0 bg-black/5 dark:bg-white/5 p-1 rounded-full border border-black/5 dark:border-white/10 flex-wrap justify-center">
                     {['all', 'fashion', 'makeup', 'accessories', 'skincare'].map(cat => (
                         <button
                             key={cat}
                             onClick={() => setFilter(cat)}
-                            className={`px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${filter === cat ? 'bg-black text-white' : 'text-black/50 hover:text-black'}`}
+                            className={`px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${filter === cat ? 'bg-black text-white dark:bg-white dark:text-black' : 'text-black/50 dark:text-white/40 hover:text-black dark:hover:text-white'}`}
                         >
                             {cat}
                         </button>
@@ -51,17 +52,22 @@ const TrendingProductsSection = () => {
             {loading ? (
                 <div className="flex flex-col items-center justify-center py-24 gap-4">
                     <Activity className="w-8 h-8 text-[#2979FF] animate-pulse" />
-                    <span className="text-[10px] font-black uppercase tracking-widest text-black/30">Analyzing Hotspots...</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-black/30 dark:text-white/20">Analyzing Hotspots...</span>
                 </div>
             ) : trendingProducts.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {trendingProducts.map((product, idx) => (
-                        <ProductTrendCard key={product.id || idx} product={product} />
+                        <ProductTrendCard
+                            key={product.id || idx}
+                            product={product}
+                            watchlist={watchlist}
+                            onToggleWatchlist={onToggleWatchlist}
+                        />
                     ))}
                 </div>
             ) : (
-                <div className="text-center py-20 bg-gray-50 rounded-3xl border border-dashed border-gray-300">
-                    <p className="text-sm font-bold text-gray-500 uppercase tracking-widest">No viral trends detected for {filter} right now.</p>
+                <div className="text-center py-20 bg-gray-50 dark:bg-black/20 rounded-3xl border border-dashed border-gray-300 dark:border-white/10 text-black dark:text-white">
+                    <p className="text-sm font-bold text-gray-500 dark:text-white/40 uppercase tracking-widest">No viral trends detected for {filter} right now.</p>
                 </div>
             )}
         </section>
