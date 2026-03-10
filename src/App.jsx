@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Search, TrendingUp, Activity, Cpu, X, LogOut, Eye, EyeOff, ExternalLink, MapPin, Heart, BarChart2 } from 'lucide-react';
 import TrendingProductsSection from './components/TrendingProductsSection';
 import AIChatAssistant from './components/AIChatAssistant';
+import { AffiliateProductGrid } from './components/AffiliateProductCard';
 import { api } from './lib/api';
 
 // --- Separate Functional Components (Stability Fix) ---
@@ -54,7 +55,8 @@ const ProductAnalyticsModal = ({ selectedProductAnalytics, setSelectedProductAna
             >
                 {/* Left: Product Visuals */}
                 <div className="w-full md:w-2/5 relative bg-[#EDEDED] dark:bg-black/40">
-                    <img src={image_url} alt={name} className="w-full h-full object-cover" />
+                    <img src={image_url} alt={name} crossOrigin="anonymous" className="w-full h-full object-cover" />
+
                     <div className="absolute top-8 left-8 bg-black dark:bg-white text-white dark:text-black px-6 py-2 text-[10px] font-black uppercase tracking-[0.4em] shadow-2xl">
                         ID: {selectedProductAnalytics.id}
                     </div>
@@ -193,8 +195,9 @@ const ProductAnalyticsModal = ({ selectedProductAnalytics, setSelectedProductAna
                         <div className="flex -space-x-3">
                             {[1, 2, 3, 4].map(i => (
                                 <div key={i} className="w-10 h-10 rounded-full border-2 border-white dark:border-[#0A0A0A] bg-gray-200 dark:bg-white/10 overflow-hidden">
-                                    <img src={`https://i.pravatar.cc/100?u=${i}`} alt="user" />
+                                    <img src={`https://i.pravatar.cc/100?u=${i}`} crossOrigin="anonymous" alt="user" />
                                 </div>
+
                             ))}
                             <div className="w-10 h-10 rounded-full border-2 border-white dark:border-[#0A0A0A] bg-black dark:bg-white flex items-center justify-center text-white dark:text-black text-[8px] font-black">+42K</div>
                         </div>
@@ -579,6 +582,75 @@ const mockProductsData = [
     }
 ];
 
+const affiliateProducts = [
+    {
+        title: "Premium Wireless Headphones",
+        description: "High-quality noise-cancelling headphones with 30-hour battery life and premium sound quality perfect for music lovers and professionals.",
+        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&h=500&fit=crop",
+        price: 199.99,
+        originalPrice: 299.99,
+        affiliateLink: "https://amazon.com/dp/B0CX23V2ZK?tag=trendly-20",
+        rating: 4.5,
+        reviewCount: 1523,
+        badge: "Best Seller"
+    },
+    {
+        title: "Smart Fitness Watch",
+        description: "Track your health and fitness goals with this advanced smartwatch featuring heart rate monitoring, GPS, and 7-day battery life.",
+        image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&h=500&fit=crop",
+        price: 149.99,
+        originalPrice: null,
+        affiliateLink: "https://amazon.com/dp/B0BDHQS4MH?tag=trendly-20",
+        rating: 4.8,
+        reviewCount: 3421,
+        badge: "Top Rated"
+    },
+    {
+        title: "Portable Bluetooth Speaker",
+        description: "Waterproof wireless speaker with 360° sound, 12-hour playtime, and deep bass. Perfect for outdoor adventures.",
+        image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500&h=500&fit=crop",
+        price: 79.99,
+        originalPrice: 129.99,
+        affiliateLink: "https://amazon.com/dp/B09XS7JWHH?tag=trendly-20",
+        rating: 4.3,
+        reviewCount: 892,
+        badge: null
+    },
+    {
+        title: "Professional Camera Tripod",
+        description: "Sturdy aluminum tripod with fluid head, perfect for photography and videography. Supports up to 15 lbs.",
+        image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500&h=500&fit=crop",
+        price: 89.99,
+        originalPrice: 139.99,
+        affiliateLink: "https://amazon.com/dp/B08B3X7NXC?tag=trendly-20",
+        rating: 4.6,
+        reviewCount: 654,
+        badge: null
+    },
+    {
+        title: "LED Ring Light Kit",
+        description: "Professional 18-inch ring light with adjustable brightness and color temperature, perfect for content creators.",
+        image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=500&h=500&fit=crop",
+        price: 59.99,
+        originalPrice: 99.99,
+        affiliateLink: "https://amazon.com/dp/B08GLD3VPG?tag=trendly-20",
+        rating: 4.7,
+        reviewCount: 2103,
+        badge: "Popular"
+    },
+    {
+        title: "Mechanical Gaming Keyboard",
+        description: "RGB backlit mechanical keyboard with customizable keys, N-key rollover, and dedicated media controls for gamers.",
+        image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&h=500&fit=crop",
+        price: 119.99,
+        originalPrice: null,
+        affiliateLink: "https://amazon.com/dp/B09HKJ5WVH?tag=trendly-20",
+        rating: 4.4,
+        reviewCount: 1876,
+        badge: null
+    }
+];
+
 export default function App() {
     // --- State Management ---
     const [products, setProducts] = useState(mockProductsData);
@@ -766,11 +838,15 @@ export default function App() {
     return (
         <div className="relative min-h-screen selection:bg-pink-500/40 text-black dark:text-white font-sans overflow-x-hidden transition-colors duration-500">
             {/* Aurora Background Layers */}
-            <div className="aurora-bg opacity-40 dark:opacity-20">
+            <div className="aurora-bg">
                 <div className="aurora-blob blob-1"></div>
                 <div className="aurora-blob blob-2"></div>
                 <div className="aurora-blob blob-3"></div>
             </div>
+
+            {/* Grainy Texture Overlay */}
+            <div className="fixed inset-0 z-10 pointer-events-none opacity-[0.03] mix-blend-overlay" style={{ backgroundImage: `url('https://grainy-gradients.vercel.app/noise.svg')` }}></div>
+
 
             {/* Floating Nano-Grid Overlay */}
             <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'radial-gradient(var(--text-primary) 1px, transparent 1px)', opacity: 0.05, backgroundSize: '40px 40px', zIndex: 0 }}></div>
@@ -873,9 +949,10 @@ export default function App() {
                                         ))}
                                     </div>
                                 </div>
-                                <div className="relative group overflow-hidden bg-black aspect-[3/4]">
-                                    <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80" alt="Editorial" className="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-1000" />
+                                <div className="relative group overflow-hidden bg-black aspect-[3/4] rounded-2xl border border-white/10">
+                                    <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80" crossOrigin="anonymous" alt="Editorial" className="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-1000" />
                                 </div>
+
                             </div>
                         </motion.div>
                     </>
@@ -908,12 +985,18 @@ export default function App() {
 
             <main className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 pt-48 pb-20">
                 {/* Hero */}
-                <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} className="relative rounded-[2.5rem] overflow-hidden mb-16 border border-white/10 glass-card p-10 md:p-16 flex flex-col items-center text-center shadow-2xl">
-                    <div className="absolute top-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-[120px] pointer-events-none"></div>
-                    <div className="inline-flex items-center space-x-2 bg-black/50 border border-white/10 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest mb-8">
-                        <div className="pulse-dot mr-1"></div>
-                        <span className="text-white">Neural Discovery Active</span>
+                <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} className="relative rounded-[3.5rem] overflow-hidden mb-24 border border-white/10 glass-dark p-12 md:p-24 flex flex-col items-center text-center shadow-4xl group">
+                    <div className="absolute inset-0 bg-gradient-to-tr from-[#2979FF]/10 via-transparent to-[#E04296]/10 opacity-50" />
+                    <div className="absolute -top-24 -left-24 w-96 h-96 bg-[#2979FF]/10 rounded-full blur-[120px] pointer-events-none group-hover:scale-110 transition-transform duration-1000"></div>
+
+                    <div className="inline-flex items-center space-x-3 bg-black/40 backdrop-blur-md border border-white/10 px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.4em] mb-10 relative z-10">
+                        <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                        </span>
+                        <span className="text-white/80">Neural Discovery <span className="text-blue-400">Active</span></span>
                     </div>
+
                     <h1 className="heading-jumbo mb-8 leading-tight">
                         {isSignedIn ? <>Welcome back,<br /><span className="text-gradient-accent">{userName}</span></> : <>Discover Tomorrow's<br /><span className="text-gradient-accent">Fashion Today</span></>}
                     </h1>
@@ -955,21 +1038,23 @@ export default function App() {
                 <div className="product-grid">
                     {filteredProducts.map(product => (
                         <motion.div key={product.id} layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="product-card-premium group">
-                            <div className="relative aspect-[3/4] overflow-hidden bg-[#EDEDED]">
-                                <img src={product.image_url} alt={product.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                            <div className="relative aspect-[3/4] overflow-hidden bg-[#EDEDED] rounded-[2rem]">
+                                <img src={product.image_url} alt={product.name} crossOrigin="anonymous" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                                 <div className="absolute top-4 right-4 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity translate-x-4 group-hover:translate-x-0 duration-500">
                                     <button
                                         onClick={(e) => { e.stopPropagation(); toggleWatchlist(product); }}
-                                        className={`p-3 rounded-full backdrop-blur-md transition-all ${watchlist.some(w => w.id === product.id) ? "bg-red-500 text-white" : "bg-white/80 hover:bg-white text-black"}`}
+                                        className={`p-3 rounded-full backdrop-blur-md transition-all border border-white/20 ${watchlist.some(w => w.id === product.id) ? "bg-red-500 text-white" : "bg-white/40 hover:bg-white text-black"}`}
                                     >
                                         <Heart className={`w-4 h-4 ${watchlist.some(w => w.id === product.id) ? "fill-current" : ""}`} />
                                     </button>
                                 </div>
-                                <div className="absolute inset-0 flex flex-col justify-end p-6 bg-black/0 group-hover:bg-black/20 transition-all opacity-0 group-hover:opacity-100">
-                                    <button onClick={() => window.open(product.affiliate_link, '_blank')} className="w-full bg-white text-black py-3 text-[8px] font-black uppercase tracking-widest mb-2">View on {product.brand}</button>
-                                    <button onClick={() => handleProductClick(product)} className="w-full bg-black text-white py-3 text-[8px] font-black uppercase tracking-widest flex items-center justify-center"><Activity className="w-3 h-3 mr-2" /> Neural Analytics</button>
+                                <div className="absolute inset-0 flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-all">
+                                    <button onClick={() => window.open(product.affiliate_link, '_blank')} className="w-full bg-white text-black py-4 rounded-xl text-[9px] font-black uppercase tracking-widest mb-3 hover:bg-blue-500 hover:text-white transition-colors">View on {product.brand}</button>
+                                    <button onClick={() => handleProductClick(product)} className="w-full bg-black/80 backdrop-blur-md text-white py-4 rounded-xl text-[9px] font-black uppercase tracking-widest flex items-center justify-center border border-white/10"><Activity className="w-3 h-3 mr-2" /> Neural Analytics</button>
                                 </div>
                             </div>
+
                             <div className="p-6">
                                 <p className="text-[8px] font-black uppercase tracking-widest text-black/40 mb-1">{product.brand}</p>
                                 <h4 className="text-xs font-bold mb-4">{product.name}</h4>
@@ -981,6 +1066,19 @@ export default function App() {
                         </motion.div>
                     ))}
                 </div>
+
+                {/* Affiliate Top Picks Section */}
+                <section id="editorial-section" className="mt-24 mb-12">
+                    <div className="text-center mb-4">
+                        <div className="inline-flex items-center space-x-3 bg-black/5 dark:bg-white/5 backdrop-blur-md border border-black/5 dark:border-white/10 px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.4em] mb-8">
+                            <ExternalLink className="w-3 h-3 text-[#2979FF]" />
+                            <span className="text-black/60 dark:text-white/60">Curated by Trendly.Ai</span>
+                        </div>
+                        <h2 className="heading-display dark:text-white">Top Picks For You</h2>
+                        <p className="text-black/40 dark:text-white/40 font-bold mt-3 text-sm max-w-lg mx-auto">Handpicked products our neural engine recommends based on current market trends</p>
+                    </div>
+                    <AffiliateProductGrid products={affiliateProducts} />
+                </section>
             </main>
 
             {/* Profile Sidebar */}

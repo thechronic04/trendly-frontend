@@ -3,7 +3,10 @@
  * Handles communication with the production FastAPI backend.
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL ||
+    (window.location.hostname === 'localhost' ? 'http://localhost:8000/api' : 'https://trendly-backend.vercel.app/api');
+
+
 
 class ApiClient {
     constructor() {

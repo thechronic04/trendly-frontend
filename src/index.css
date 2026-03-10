@@ -149,3 +149,129 @@
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-primary);
 }
+
+/* --- STUNNING ENHANCEMENTS --- */
+
+/* Aurora Background */
+.aurora-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  filter: blur(100px);
+  pointer-events: none;
+}
+
+.aurora-blob {
+  position: absolute;
+  width: 60vw;
+  height: 60vw;
+  border-radius: 50%;
+  opacity: 0.5;
+  mix-blend-mode: screen;
+}
+
+.blob-1 {
+  background: radial-gradient(circle, #2979FF 0%, transparent 70%);
+  top: -20%;
+  left: -10%;
+  animation: blob-move-1 20s infinite alternate cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+.blob-2 {
+  background: radial-gradient(circle, #E04296 0%, transparent 70%);
+  bottom: -20%;
+  right: -10%;
+  animation: blob-move-2 25s infinite alternate cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+.blob-3 {
+  background: radial-gradient(circle, #00E5FF 0%, transparent 70%);
+  top: 40%;
+  left: 30%;
+  animation: blob-move-3 30s infinite alternate cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+@keyframes blob-move-1 {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+
+  to {
+    transform: translate(20%, 30%) scale(1.2);
+  }
+}
+
+@keyframes blob-move-2 {
+  from {
+    transform: translate(0, 0) scale(1.1);
+  }
+
+  to {
+    transform: translate(-30%, -20%) scale(0.9);
+  }
+}
+
+@keyframes blob-move-3 {
+  from {
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  to {
+    transform: translate(10%, -10%) rotate(180deg);
+  }
+}
+
+/* Glassmorphism Refinement */
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Neural Wave Animation */
+@keyframes neural-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+}
+
+.neural-active {
+  animation: neural-pulse 3s infinite ease-in-out;
+}
+
+/* Text Shimmer */
+.text-shimmer {
+  background: linear-gradient(90deg, #fff, #2979FF, #fff);
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shimmer 5s linear infinite;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: 200% center;
+  }
+}

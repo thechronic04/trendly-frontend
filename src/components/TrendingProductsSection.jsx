@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles, Activity, RefreshCw } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { api } from '../lib/api';
+
 import ProductTrendCard from './ProductTrendCard';
 
 const TrendingProductsSection = ({ watchlist = [], onToggleWatchlist }) => {
@@ -71,12 +73,22 @@ const TrendingProductsSection = ({ watchlist = [], onToggleWatchlist }) => {
             </div>
 
             {loading ? (
-                <div className="flex flex-col items-center justify-center py-24 gap-4">
-                    <Activity className="w-8 h-8 text-[#2979FF] animate-pulse" />
-                    <span className="text-[10px] font-black uppercase tracking-widest text-black/30 dark:text-white/20">Analyzing Hotspots...</span>
+                <div className="flex flex-col items-center justify-center py-32 gap-6 glass rounded-[3rem] border border-white/10 relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-tr from-[#2979FF]/5 to-[#E04296]/5 animate-pulse" />
+                    <Activity className="w-12 h-12 text-[#2979FF] animate-bounce" />
+                    <div className="flex flex-col items-center">
+                        <span className="text-[12px] font-black uppercase tracking-[0.4em] text-black/40 dark:text-white/40 mb-2">Neural Scanning...</span>
+                        <div className="w-48 h-1 bg-black/5 dark:bg-white/10 rounded-full overflow-hidden">
+                            <motion.div
+                                animate={{ x: ['-100%', '100%'] }}
+                                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                                className="w-1/2 h-full bg-[#2979FF]"
+                            />
+                        </div>
+                    </div>
                 </div>
             ) : trendingProducts.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                     {trendingProducts.map((product, idx) => (
                         <ProductTrendCard
                             key={product.id || idx}
@@ -87,16 +99,22 @@ const TrendingProductsSection = ({ watchlist = [], onToggleWatchlist }) => {
                     ))}
                 </div>
             ) : (
-                <div className="text-center py-20 bg-gray-50 dark:bg-black/20 rounded-3xl border border-dashed border-gray-300 dark:border-white/10 text-black dark:text-white">
-                    <Sparkles className="w-10 h-10 mx-auto mb-4 text-black/20 dark:text-white/20" />
-                    <p className="text-sm font-bold text-gray-500 dark:text-white/40 uppercase tracking-widest mb-2">
-                        {error || `No viral trends detected for ${filter} right now.`}
+                <div className="text-center py-20 glass-dark rounded-[3rem] border border-white/10 px-8 relative overflow-hidden group">
+                    <div className="absolute -top-24 -right-24 w-48 h-48 bg-pink-500/10 rounded-full blur-[80px] group-hover:scale-150 transition-transform duration-1000" />
+                    <Sparkles className="w-16 h-16 mx-auto mb-6 text-[#2979FF] opacity-50" />
+                    <h3 className="text-2xl font-black italic tracking-tighter mb-4 dark:text-white uppercase leading-none">Scanning Market Signatures...</h3>
+                    <p className="text-sm font-bold text-gray-400 dark:text-white/40 uppercase tracking-widest mb-8 max-w-md mx-auto">
+                        {error || "We're currently parsing global datasets for the next viral breakout."}
                     </p>
-                    <p className="text-xs text-gray-400 dark:text-white/20 mt-2">
-                        Run <code className="bg-black/5 dark:bg-white/5 px-2 py-0.5 rounded">python scripts/run_trend_engine.py</code> to populate trends.
-                    </p>
+                    <button
+                        onClick={fetchTrends}
+                        className="bg-white text-black px-10 py-4 rounded-full text-[10px] font-black uppercase tracking-[0.3em] hover:-translate-y-1 transition-transform shadow-2xl"
+                    >
+                        Re-Probe Engine
+                    </button>
                 </div>
             )}
+
         </section>
     );
 };
