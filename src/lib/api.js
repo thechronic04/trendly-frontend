@@ -70,6 +70,15 @@ class ApiClient {
         return await this.request(`/discovery/products/${productId}`);
     }
 
+    // AI Trend Engine Discovery (Phase 6)
+    async getTrendingDiscoveredProducts() {
+        return await this.request('/trending-products');
+    }
+
+    async getTrendingByCategory(category) {
+        return await this.request(`/trending-products/${category}`);
+    }
+
     // Tracker Module
     async trackEvent(type, productId, metadata = {}) {
         return await this.request('/tracker/event', {
