@@ -17,12 +17,12 @@ const AIChatAssistant = () => {
         }
     }, [messages, isTyping]);
 
-    const handleSend = async () => {
-        if (!input.trim()) return;
+    const handleSend = async (customMsg = null) => {
+        const textToSend = customMsg || input;
+        if (!textToSend.trim()) return;
 
-        const userMsg = { id: Date.now(), role: 'user', content: input };
+        const userMsg = { id: Date.now(), role: 'user', content: textToSend };
         setMessages(prev => [...prev, userMsg]);
-        const currentInput = input;
         setInput("");
         setIsTyping(true);
 
@@ -33,7 +33,7 @@ const AIChatAssistant = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    message: currentInput,
+                    message: textToSend,
                     history: messages.slice(-5).map(m => ({ role: (m.role === 'bot' ? 'assistant' : m.role), content: m.content }))
                 }),
             });
@@ -138,10 +138,7 @@ const AIChatAssistant = () => {
                                 {['Global Saturation?', 'What is Peak Fashion?', 'Tokyo Scouts'].map(tip => (
                                     <button
                                         key={tip}
-                                        onClick={() => {
-                                            setInput(tip);
-                                            // Optional: automatically trigger send
-                                        }}
+                                        onClick={() => handleSend(tip)}
                                         className="whitespace-nowrap px-4 py-2 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-full text-[9px] font-black uppercase tracking-widest dark:text-white/60 hover:bg-blue-500 hover:text-white hover:border-blue-500 transition-all shadow-sm"
                                     >
                                         {tip}
