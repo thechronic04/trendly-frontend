@@ -5,7 +5,7 @@ import { Sparkles, X, Send, Loader2 } from 'lucide-react';
 const AIChatAssistant = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([
-        { id: 1, role: 'bot', content: "Hi! I'm Trendly's Neural Assistant. How can I help you discover today's trends?" }
+        { id: 1, role: 'bot', content: "Hi! I'm Trendly's Fashion Assistant. How can I help you discover today's trends?" }
     ]);
     const [input, setInput] = useState("");
     const [isTyping, setIsTyping] = useState(false);
@@ -17,29 +17,37 @@ const AIChatAssistant = () => {
         }
     }, [messages, isTyping]);
 
-    const handleSend = () => {
+    const handleSend = async () => {
         if (!input.trim()) return;
 
         const userMsg = { id: Date.now(), role: 'user', content: input };
         setMessages(prev => [...prev, userMsg]);
+        const currentInput = input;
         setInput("");
         setIsTyping(true);
 
-        // Simulated AI logic
-        setTimeout(() => {
-            let response = "That's a great question! Based on my neural scan of global fashion feeds, that style is currently showing a +25% momentum increase in Western Europe.";
-            const lowInput = input.toLowerCase();
-            if (lowInput.includes('milan')) {
-                response = "Milan is currently obsessed with 'Quiet Luxury' silhouettes and oversized vintage leather jackets. We're seeing heavy engagement in the Brera district.";
-            } else if (lowInput.includes('lipstick') || lowInput.includes('makeup')) {
-                response = "Matte lipsticks with earthy undertones are peaking. The Kay Beauty collection is currently a top performer in our neural index.";
-            } else if (lowInput.includes('paris') || lowInput.includes('france')) {
-                response = "Parisian street style is leaning heavily into 'Balletcore' right now. Silk ribbons and lightweight tulle are trending across social signals.";
-            }
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/assistant/chat`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: currentInput,
+                    history: messages.slice(-5).map(m => ({ role: (m.role === 'bot' ? 'assistant' : m.role), content: m.content }))
+                }),
+            });
 
-            setMessages(prev => [...prev, { id: Date.now() + 1, role: 'bot', content: response }]);
+            if (!response.ok) throw new Error("API Network Error");
+
+            const data = await response.json();
+            setMessages(prev => [...prev, { id: Date.now() + 1, role: 'bot', content: data.content }]);
+        } catch (error) {
+            console.error("Chat Error:", error);
+            setMessages(prev => [...prev, { id: Date.now() + 1, role: 'bot', content: "Our neural links are experiencing high traffic. Please try again in a moment." }]);
+        } finally {
             setIsTyping(false);
-        }, 1500);
+        }
     };
 
     return (
@@ -77,8 +85,8 @@ const AIChatAssistant = () => {
                                     <Sparkles className="w-5 h-5 text-white" />
                                 </div>
                                 <div>
-                                    <h3 className="text-sm font-black uppercase tracking-widest">Neural AI</h3>
-                                    <p className="text-[8px] font-bold text-white/40 uppercase tracking-widest leading-none mt-1">Always Scanning...</p>
+                                    <h3 className="text-sm font-black uppercase tracking-widest">Trendly Gemini</h3>
+                                    <p className="text-[8px] font-bold text-white/40 uppercase tracking-widest leading-none mt-1">Powered by Google AI</p>
                                 </div>
                             </div>
                             <button onClick={() => setIsOpen(false)} className="p-2 hover:bg-white/10 rounded-full transition-colors">
@@ -90,9 +98,9 @@ const AIChatAssistant = () => {
                         <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
                             {messages.map(msg => (
                                 <div key={msg.id} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                    <div className={`max-w-[80%] p-4 rounded-3xl text-sm leading-relaxed ${msg.role === 'user'
-                                            ? 'bg-black dark:bg-[#2979FF] text-white rounded-tr-sm'
-                                            : 'bg-black/5 dark:bg-white/5 dark:text-white rounded-tl-sm border border-black/5 dark:border-white/5'
+                                    <div className={`max-w-[85%] p-4 rounded-3xl text-sm leading-relaxed ${msg.role === 'user'
+                                        ? 'bg-black dark:bg-[#2979FF] text-white rounded-tr-sm shadow-lg'
+                                        : 'bg-black/5 dark:bg-white/5 dark:text-white rounded-tl-sm border border-black/10 dark:border-white/10'
                                         }`}>
                                         {msg.content}
                                     </div>
@@ -127,11 +135,14 @@ const AIChatAssistant = () => {
                                 </button>
                             </div>
                             <div className="mt-3 flex gap-2 overflow-x-auto pb-2 custom-scrollbar">
-                                {['Milan Trends?', 'Best Lipstick?', 'Paris Fashion'].map(tip => (
+                                {['Global Saturation?', 'What is Peak Fashion?', 'Tokyo Scouts'].map(tip => (
                                     <button
                                         key={tip}
-                                        onClick={() => setInput(tip)}
-                                        className="whitespace-nowrap px-3 py-1.5 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-full text-[9px] font-black uppercase tracking-widest dark:text-white/60 hover:border-blue-500 transition-colors"
+                                        onClick={() => {
+                                            setInput(tip);
+                                            // Optional: automatically trigger send
+                                        }}
+                                        className="whitespace-nowrap px-4 py-2 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-full text-[9px] font-black uppercase tracking-widest dark:text-white/60 hover:bg-blue-500 hover:text-white hover:border-blue-500 transition-all shadow-sm"
                                     >
                                         {tip}
                                     </button>

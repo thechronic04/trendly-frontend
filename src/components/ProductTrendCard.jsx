@@ -11,9 +11,16 @@ const getScoreColor = (score) => {
 };
 
 const ProductTrendCard = ({ product, watchlist = [], onToggleWatchlist }) => {
-    const isWatched = watchlist && watchlist.some(w => w.id === product.id);
-    const scoreStyle = getScoreColor(product.trend_score || 0);
-    const score = product.trend_score || 0;
+    const displayName = product.title || product.name || product.product_name;
+    const displayImage = product.image_url || product.image;
+    const links = product.affiliate_links || (product.affiliate_link ? { [product.source_platform || 'Store']: product.affiliate_link } : {});
+    const primaryUrl = Object.values(links)[0] || "#";
+    const primaryNetwork = Object.keys(links)[0] || "Store";
+    
+    // Derived values to fix ReferenceErrors
+    const isWatched = watchlist.some(p => p.id === product.id);
+    const score = Math.round(product.trend_score || 50);
+    const scoreStyle = getScoreColor(score);
 
     return (
         <div className="bg-white dark:bg-[#0A0A0A] rounded-[2.5rem] border border-black/5 dark:border-white/5 overflow-hidden group hover:shadow-3xl hover:shadow-pink-500/10 transition-all duration-700 hover:-translate-y-2 relative">
@@ -22,12 +29,12 @@ const ProductTrendCard = ({ product, watchlist = [], onToggleWatchlist }) => {
             {/* Image Section */}
             <div className="relative aspect-[4/5] overflow-hidden bg-gray-50 dark:bg-black/40">
                 <img
-                    src={product.image_url}
-                    alt={product.product_name}
+                    src={displayImage}
+                    alt={displayName}
                     crossOrigin="anonymous"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
                     onError={(e) => {
-                        e.target.src = `https://api.dicebear.com/7.x/shapes/svg?seed=${encodeURIComponent(product.product_name)}`;
+                        e.target.src = `https://api.dicebear.com/7.x/shapes/svg?seed=${encodeURIComponent(displayName)}`;
                     }}
                 />
 
@@ -46,11 +53,6 @@ const ProductTrendCard = ({ product, watchlist = [], onToggleWatchlist }) => {
                     <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
                     {scoreStyle.label}
                 </div>
-
-                {/* Neural Overlay on Hover */}
-                <div className="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                    <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white to-transparent animate-scan" style={{ animation: 'scan 3s linear infinite' }} />
-                </div>
             </div>
 
             {/* Content Section */}
@@ -66,7 +68,7 @@ const ProductTrendCard = ({ product, watchlist = [], onToggleWatchlist }) => {
                 </div>
 
                 <h3 className="font-black text-xl leading-tight line-clamp-2 dark:text-white mb-6 italic tracking-tighter uppercase group-hover:text-pink-500 transition-colors">
-                    {product.product_name}
+                    {displayName}
                 </h3>
 
                 {/* AI Insight Pill */}
@@ -82,10 +84,10 @@ const ProductTrendCard = ({ product, watchlist = [], onToggleWatchlist }) => {
                 {/* Action Row */}
                 <div className="flex gap-3">
                     <button
-                        onClick={() => window.open(product.affiliate_link, '_blank')}
+                        onClick={() => window.open(primaryUrl, '_blank')}
                         className="flex-1 bg-black dark:bg-white text-white dark:text-black hover:bg-[#2979FF] dark:hover:bg-[#00E5FF] transition-all py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] flex items-center justify-center gap-2 hover:-translate-y-1 hover:shadow-2xl shadow-xl"
                     >
-                        Secure Now
+                        Secure on {primaryNetwork}
                     </button>
                     <button
                         onClick={() => onToggleWatchlist && onToggleWatchlist(product)}

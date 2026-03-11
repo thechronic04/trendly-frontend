@@ -54,9 +54,16 @@ class ApiClient {
 
     // Auth Module
     async login(email, password) {
+        const params = new URLSearchParams();
+        params.append('username', email); // OAuth2 expects 'username'
+        params.append('password', password);
+
         const response = await this.request('/auth/login', {
             method: 'POST',
-            body: JSON.stringify({ email, password }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: params.toString(),
         });
         if (response.access_token) {
             this.setToken(response.access_token);
@@ -73,13 +80,13 @@ class ApiClient {
         return await this.request(`/discovery/products/${productId}`);
     }
 
-    // AI Trend Engine Discovery (Phase 6)
+    // AI Trend Engine Discovery (Unified)
     async getTrendingDiscoveredProducts() {
-        return await this.request('/trending-products');
+        return await this.request('/discovery/trending');
     }
 
     async getTrendingByCategory(category) {
-        return await this.request(`/trending-products/${category}`);
+        return await this.request(`/discovery/trending?category=${category}`);
     }
 
     // Tracker Module
