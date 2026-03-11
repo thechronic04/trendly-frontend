@@ -71,6 +71,17 @@ class ApiClient {
         return response;
     }
 
+    async signup(email, password, fullName = "") {
+        return await this.request('/auth/signup', {
+            method: 'POST',
+            body: JSON.stringify({
+                email,
+                password,
+                full_name: fullName
+            }),
+        });
+    }
+
     // Discovery Module
     async getTrendingProducts() {
         return await this.request('/discovery/trending');
