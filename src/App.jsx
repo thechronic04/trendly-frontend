@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Routes, Route, Link } from 'react-router-dom';
+import { Activity } from 'lucide-react';
 
 // New Component Imports
 import Logo from './components/Logo';
