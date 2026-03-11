@@ -4,7 +4,7 @@
  */
 
 const API_BASE_URL = import.meta.env.VITE_API_URL ||
-    (window.location.hostname === 'localhost' ? 'http://localhost:8000/api' : 'https://trendly-backend.vercel.app/api');
+    (['localhost', '127.0.0.1'].includes(window.location.hostname) ? 'http://localhost:8000/api' : 'https://trendly-backend.vercel.app/api');
 
 
 

@@ -5,6 +5,15 @@ import TrendingProductsSection from './components/TrendingProductsSection';
 import AIChatAssistant from './components/AIChatAssistant';
 import { AffiliateProductGrid } from './components/AffiliateProductCard';
 import { api } from './lib/api';
+import { Routes, Route, Link } from 'react-router-dom';
+import About from './pages/About';
+import Blog from './pages/Blog';
+import FAQ from './pages/FAQ';
+import Contact from './pages/Contact';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsConditions from './pages/TermsConditions';
+import UserDashboard from './pages/UserDashboard';
+import AdminDashboard from './pages/AdminDashboard';
 
 // --- Separate Functional Components (Stability Fix) ---
 
@@ -909,9 +918,9 @@ export default function App() {
                     </div>
 
                     <div className="absolute left-1/2 -translate-x-1/2">
-                        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                        <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
                             <Logo />
-                        </button>
+                        </Link>
                     </div>
 
                     <div className="flex items-center space-x-8">
@@ -1036,6 +1045,8 @@ export default function App() {
                 )}
             </AnimatePresence>
 
+            <Routes>
+                <Route path="/" element={
             <main className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 pt-48 pb-20">
                 {/* Hero */}
                 <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} className="relative rounded-[3.5rem] overflow-hidden mb-24 border border-white/10 glass-dark p-12 md:p-24 flex flex-col items-center text-center shadow-4xl group">
@@ -1141,6 +1152,16 @@ export default function App() {
                     <AffiliateProductGrid products={affiliateProducts} />
                 </section>
             </main>
+                } />
+                <Route path="/about" element={<About />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/faq" element={<FAQ />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/privacy" element={<PrivacyPolicy />} />
+                <Route path="/terms" element={<TermsConditions />} />
+                <Route path="/user-dashboard" element={<UserDashboard />} />
+                <Route path="/admin-dashboard" element={<AdminDashboard />} />
+            </Routes>
 
             {/* Profile Sidebar */}
             <AnimatePresence>
@@ -1256,15 +1277,28 @@ export default function App() {
             <SearchOverlay showSearch={showSearch} setShowSearch={setShowSearch} />
 
             <footer className="bg-black text-white py-20 px-12 mt-20">
-                <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-10">
-                    <div>
-                        <Logo className="invert" />
-                        <p className="text-[8px] font-black uppercase tracking-[0.4em] opacity-40 mt-4">Trendly.Ai Archive 2026 // Neural Fashion Discovery</p>
+                <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+                    <div className="md:col-span-2">
+                        <Link to="/" onClick={() => window.scrollTo(0,0)}>
+                            <Logo className="invert" />
+                        </Link>
+                        <p className="text-[8px] font-black uppercase tracking-[0.4em] opacity-40 mt-6 max-w-xs leading-loose">Trendly.Ai Archive 2026<br/>Neural Fashion Discovery Engine</p>
                     </div>
-                    <div className="flex flex-col gap-2">
-                        <p className="text-[9px] font-black uppercase tracking-widest text-white mb-1">Contact Us</p>
-                        <a href="tel:6000010206" className="text-[13px] font-black tracking-wide text-white hover:text-pink-400 transition-colors">📞 +91 6000010206</a>
-                        <p className="text-[13px] font-black tracking-wide text-white">📍 Katakipara, Lokhra, Guwahati</p>
+                    
+                    <div className="flex flex-col gap-3">
+                        <p className="text-[9px] font-black uppercase tracking-widest text-white mb-2 opacity-40">Company</p>
+                        <Link to="/about" className="text-xs font-bold hover:text-[#2979FF] transition-colors">About Us</Link>
+                        <Link to="/blog" className="text-xs font-bold hover:text-[#2979FF] transition-colors">Editorial & Blog</Link>
+                        <Link to="/contact" className="text-xs font-bold hover:text-[#2979FF] transition-colors">Contact</Link>
+                        <Link to="/faq" className="text-xs font-bold hover:text-[#2979FF] transition-colors">FAQ</Link>
+                    </div>
+
+                    <div className="flex flex-col gap-3">
+                        <p className="text-[9px] font-black uppercase tracking-widest text-white mb-2 opacity-40">Legal</p>
+                        <Link to="/privacy" className="text-xs font-bold hover:text-[#2979FF] transition-colors">Privacy Policy</Link>
+                        <Link to="/terms" className="text-xs font-bold hover:text-[#2979FF] transition-colors">Terms & Conditions</Link>
+                        <Link to="/user-dashboard" className="text-xs font-bold hover:text-[#2979FF] transition-colors mt-4 text-[#2979FF]">Dashboard</Link>
+                        <Link to="/admin-dashboard" className="text-xs font-bold hover:text-pink-500 transition-colors text-pink-500">Admin</Link>
                     </div>
                 </div>
             </footer>
