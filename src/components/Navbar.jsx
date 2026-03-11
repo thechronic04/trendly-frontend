@@ -23,13 +23,13 @@ const Navbar = ({
         <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 px-6 py-8 ${isScrolled ? "bg-white/80 dark:bg-black/80 backdrop-blur-xl border-b border-black/5 dark:border-white/10 py-4" : "bg-transparent"}`}>
             <div className="max-w-[1800px] mx-auto flex items-center justify-between">
                 <div className="flex items-center space-x-12">
-                    <button onMouseEnter={() => setShowMegaMenu(true)} className="flex items-center space-x-3 group">
-                        <div className="flex flex-col space-y-1.5 overflow-hidden">
-                            <span className="h-[1px] bg-black dark:bg-white transition-all duration-500 w-8 group-hover:translate-x-4" />
-                            <span className="h-[1px] bg-black dark:bg-white transition-all duration-500 w-5 group-hover:translate-x-2" />
-                            <span className="h-[1px] bg-black dark:bg-white transition-all duration-500 w-8 group-hover:translate-x-0" />
+                    <button onClick={() => setShowMegaMenu(prev => !prev)} className="bg-black text-white dark:bg-white dark:text-black px-6 py-2.5 rounded-full flex items-center space-x-3 group hover:shadow-xl transition-all active:scale-95 z-50">
+                        <div className="flex flex-col space-y-1 overflow-hidden opacity-90">
+                            <span className="h-[1.5px] bg-white dark:bg-black transition-all duration-500 w-4 group-hover:w-5" />
+                            <span className="h-[1.5px] bg-white dark:bg-black transition-all duration-500 w-3 group-hover:w-4" />
+                            <span className="h-[1.5px] bg-white dark:bg-black transition-all duration-500 w-5 group-hover:w-3" />
                         </div>
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em]">Menu</span>
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] mt-0.5">Menu</span>
                     </button>
                     <div className="hidden lg:flex items-center space-x-8">
                         {['New Arrivals', 'Collections', 'Editorial'].map((item) => (

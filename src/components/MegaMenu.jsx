@@ -10,14 +10,13 @@ const MegaMenu = ({ showMegaMenu, setShowMegaMenu, setSelectedCollection, setSel
                         initial={{ opacity: 0 }} 
                         animate={{ opacity: 1 }} 
                         exit={{ opacity: 0 }} 
-                        onMouseEnter={() => setShowMegaMenu(false)} 
+                        onClick={() => setShowMegaMenu(false)} 
                         className="fixed inset-0 bg-white/40 backdrop-blur-md z-[55]" 
                     />
                     <motion.div 
                         initial={{ y: -50, opacity: 0 }} 
                         animate={{ y: 0, opacity: 1 }} 
                         exit={{ y: -50, opacity: 0 }} 
-                        onMouseLeave={() => setShowMegaMenu(false)} 
                         className="fixed top-0 left-0 right-0 bg-white border-b border-black/5 pt-32 pb-20 px-12 z-[56] shadow-2xl"
                     >
                         <div className="max-w-[1400px] mx-auto grid grid-cols-4 gap-12">
