@@ -59,7 +59,7 @@ const TrendingProductsSection = ({ watchlist = [], onToggleWatchlist }) => {
 
                     {/* Category Filters */}
                     <div className="flex gap-2 bg-black/5 dark:bg-white/5 p-1 rounded-full border border-black/5 dark:border-white/10 flex-wrap justify-center">
-                        {['all', 'fashion', 'makeup', 'accessories', 'skincare'].map(cat => (
+                        {['all', 'fashion', 'makeup', 'skincare'].map(cat => (
                             <button
                                 key={cat}
                                 onClick={() => setFilter(cat)}

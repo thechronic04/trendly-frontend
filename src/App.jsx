@@ -109,7 +109,16 @@ export default function App() {
     }, []);
 
     // --- Derived Data ---
-    const currentTabProducts = products.filter(p => p.category === activeTab);
+    const availableCategories = products.length > 0 ? [...new Set(products.map(p => p.category || "Uncategorized"))] : ['clothing', 'makeup'];
+    
+    // Automatically select the first valid category when products change
+    useEffect(() => {
+        if (availableCategories.length > 0 && !availableCategories.includes(activeTab)) {
+            setActiveTab(availableCategories[0]);
+        }
+    }, [availableCategories, activeTab]);
+
+    const currentTabProducts = products.filter(p => (p.category || "Uncategorized") === activeTab);
     const availableBrands = ["All Brands", ...new Set(currentTabProducts.map(p => p.brand || "Unknown"))];
 
     const filteredProducts = currentTabProducts.filter(product => {
@@ -321,8 +330,8 @@ export default function App() {
 
                         {/* Tabs & Filters */}
                         <div id="product-discovery-grid" className="flex flex-col lg:flex-row items-center justify-between mb-12 gap-8 scroll-mt-32">
-                            <div className="flex space-x-2 bg-black/5 p-1 rounded-full border border-black/5">
-                                {['clothing', 'makeup'].map(tab => (
+                            <div className="flex space-x-2 bg-black/5 p-1 rounded-full border border-black/5 overflow-x-auto max-w-full hide-scrollbar">
+                                {availableCategories.slice(0, 5).map(tab => (
                                     <button key={tab} onClick={() => setActiveTab(tab)} className={`relative px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === tab ? 'text-white' : 'text-black/40 hover:text-black'}`}>
                                         {activeTab === tab && <motion.div layoutId="activeTab" className="absolute inset-0 bg-black rounded-full z-[-1]" />}
                                         {tab}

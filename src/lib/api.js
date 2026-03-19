@@ -84,7 +84,7 @@ class ApiClient {
 
     // Discovery Module
     async getTrendingProducts() {
-        return await this.request('/discovery/trending');
+        return await this.request('/discovery/trending?limit=1000');
     }
 
     async getProductAnalytics(productId) {
@@ -93,11 +93,11 @@ class ApiClient {
 
     // AI Trend Engine Discovery (Unified)
     async getTrendingDiscoveredProducts() {
-        return await this.request('/discovery/trending');
+        return await this.request('/discovery/trending?limit=1000');
     }
 
     async getTrendingByCategory(category) {
-        return await this.request(`/discovery/trending?category=${category}`);
+        return await this.request(`/discovery/trending?category=${category}&limit=1000`);
     }
 
     // Tracker Module

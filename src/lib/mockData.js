@@ -96,7 +96,7 @@ export const affiliateProducts = [
         name: "Neural Vision Eyewear",
         brand: "Future Optics",
         price: 185.50,
-        category: "accessories",
+        category: "fashion",
         sub_category: "Eyewear",
         image_url: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800&q=80",
         trend_score: 92.4,
