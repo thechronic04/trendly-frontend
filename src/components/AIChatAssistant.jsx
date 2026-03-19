@@ -36,7 +36,10 @@ const AIChatAssistant = () => {
         setIsTyping(true);
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/assistant/chat`, {
+            const baseUrl = import.meta.env.VITE_API_URL || "https://trendly-backend.vercel.app/api";
+            // Ensure we handle '/api' vs '/api/v1' gracefully if needed, but the backend is mapped appropriately.
+            // Using the base URL ensures it hits the right Vercel backend.
+            const response = await fetch(`${baseUrl}/assistant/chat`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
